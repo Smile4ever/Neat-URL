@@ -1,0 +1,29 @@
+{
+	"name": "Neat URL",
+	"description": "Remove garbage from URLs.",
+	"homepage_url": "http://hugsmile.eu",
+	"manifest_version": 2,
+	"version": "1.0.0",
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"icons": {
+		"48": "icons/neaturl-48.png",
+		"96": "icons/neaturl-96-state0.png"
+	},
+	"applications": {
+		"gecko": {
+			"id": "neaturl@hugsmile.eu",
+			"strict_min_version": "48.0"
+		}
+	},
+	"permissions": ["storage", "notifications", "contextMenus", "webRequest", "webRequestBlocking", "<all_urls>"],
+	"options_ui": {
+		"page": "options.html",
+		"browser_style": true
+	},
+	"browser_action": {
+		"default_icon": "icons/neaturl-96-state0.png",
+		"browser_style": true
+	}	
+}
