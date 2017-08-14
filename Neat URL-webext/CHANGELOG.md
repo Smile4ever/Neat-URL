@@ -1,3 +1,7 @@
+1.0.1
+=====
+- Added utm_userid as default parameter
+
 1.0.0
 =====
 - Fork of Lean URL, with features from Pure URL
