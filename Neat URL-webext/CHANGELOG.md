@@ -1,8 +1,8 @@
 1.1.0
 =====
-- Support for addons.mozilla.org - try https://addons.mozilla.org/nl/firefox/addon/google-pdf-viewer/?src=search after adding src@addons.mozilla.org
+- Support for addons.mozilla.org - try https://addons.mozilla.org/firefox/addon/google-pdf-viewer/?src=search after adding src@addons.mozilla.org to parameters in the options page
 - Fix support for google.co.uk (double domains)
-- Introduce support for root domains. This means you can use wildcards at the beginning of a parameter (*.mozilla.org)
+- Introduce support for root domains with subdomains. This means you can use wildcards at the beginning of a parameter (*.mozilla.org)
 
 1.0.1
 =====
