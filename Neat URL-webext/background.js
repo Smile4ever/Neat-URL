@@ -157,14 +157,49 @@ function buildURL(baseURL, params) {
 }
 
 /// Neat URL code
+// Copied from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
 function getDomain(url) {
-	var arr = url.split("/")[2].split(".");
+	if(url == undefined || url == null) return null;
 	
-	if ( arr.length > 1 ) {
-		return arr[arr.length - 2] + "." + arr[arr.length - 1];
-	}
-	
-	return null;
+    var hostname = url.replace("www.", ""); // leave www out of this discussion. I don't consider this a subdomain
+    //find & remove protocol (http, ftp, etc.) and get hostname
+    
+    if (url.indexOf("://") > -1) {
+        hostname = hostname.split('/')[2];
+    }
+    else {
+        hostname = hostname.split('/')[0];
+    }
+
+    //find & remove port number
+    hostname = hostname.split(':')[0];
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
+
+/// Neat URL code
+// Copied from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+function getRootDomain(url) {
+	if(url == undefined || url == null) return null;
+
+    var domain = getDomain(url),
+        splitArr = domain.split('.'),
+        arrLen = splitArr.length;
+
+    //extracting the root domain here
+    if (arrLen > 2) {
+        if(splitArr[arrLen - 2].length <= 3){
+            // oops.. this is becoming an invalid URL
+            // Example URLs that trigger this code path are https://images.google.co.uk and https://google.co.uk
+            domain = splitArr[arrLen - 3] + '.' + splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+        }else{
+            domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+        }
+    }
+    
+    return domain;
 }
 
 /// Lean URL / Neat URL code
@@ -175,11 +210,17 @@ function cleanURL(details) {
 
     var params = getParams(details.url);
     if ( params == null ) {
+		//console.log("no params for " + details.url);
         return;
     }
 
 	var domain = getDomain(details.url);
 	if ( domain == null ) {
+		return;
+	}
+
+	var rootDomain = getRootDomain(details.url);
+	if ( rootDomain == null ) {
 		return;
 	}
 	
@@ -192,16 +233,32 @@ function cleanURL(details) {
 		
 		var keyValue = gbp.split("@")[0];
 		var keyDomain = gbp.split("@")[1];
-			
-		if( domain == keyDomain ) {
-			blockedParams.push(keyValue);
+		if(keyDomain.indexOf("*.") == 0){
+			// we have a wildcard domain, so compare with root domain please.
+			keyDomain = keyDomain.replace("*.", "");
+			if ( rootDomain == keyDomain ) {
+				//console.log("matching to root domain for " + details.url);
+				blockedParams.push(keyValue);
+			}
+		}else{
+			if( domain == keyDomain ) {
+				//console.log("matching to domain for " + details.url);
+				blockedParams.push(keyValue);
+			}
 		}
 	}
 	
+	//console.log("domain " + domain + " for " + details.url);
+	//console.log("keyDomain " + keyDomain + " for " + details.url);
+	
 	var reducedParams = {};
 	for ( var key in params ) {
+		//console.log("key is " + key);
 		if ( !blockedParams.includes(key) ) {
+			//console.log("not skipping " + key);
 			reducedParams[key] = params[key];
+		}else{
+			//console.log("skipping " + key);
 		}
 	}
 	
@@ -213,6 +270,13 @@ function cleanURL(details) {
 	animateToolbarIcon();
 
     leanURL = buildURL(baseURL, reducedParams);
+    
+    // webRequest blocking is not supported on mozilla.org, lets fix this
+	if(leanURL.indexOf("mozilla.org") > -1){
+		browser.tabs.update({url: leanURL});
+		return;
+	}
+	
     return { redirectUrl: leanURL };
 }
 
