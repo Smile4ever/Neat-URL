@@ -1,13 +1,14 @@
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
-		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map"
+		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l"
 	},
 	"neat_url_icon_animation": {
 		"type": "value",
 		"default": "missing_underscore"
 	}
 };
+var lastWidth = 0;
 
 function saveOptions() { 
 	browser.runtime.sendMessage({action: "notify", data: "Saved preferences"});
@@ -44,8 +45,11 @@ function init(){
 }
 
 function render(){
-	var sheet = document.styleSheets[0];
+	var newWidth = document.documentElement.clientWidth / 3;
+	if(Math.abs(lastWidth - (newWidth / 3)) < 15) return; // do not render again
 	
+	var sheet = document.styleSheets[0];
+
 	// https://stackoverflow.com/questions/29927992/remove-css-rules-by-javascript
 	if (sheet.cssRules) {
 		for (var i = 0; i < sheet.cssRules.length; i++) {
@@ -54,11 +58,10 @@ function render(){
 			}
 		}
 	}
-	
-	var width = document.documentElement.clientWidth;
-	var cssRule = ".labelbox{ min-width: " + width / 3 + "px;}";
-	
+
+	var cssRule = ".labelbox{ min-width: " + newWidth + "px;}";
 	sheet.insertRule(cssRule, 1);
+	lastWidth = newWidth;
 }
 
 window.addEventListener("DOMContentLoaded", init, { passive: true });

@@ -1,3 +1,8 @@
+1.2.0
+=====
+- Fix options.js resizing of textarea width under certain conditions
+- Add parameter gs_l and provide an automatic upgrade path for users using earlier versions
+
 1.1.0
 =====
 - Support for addons.mozilla.org - try https://addons.mozilla.org/firefox/addon/google-pdf-viewer/?src=search after adding src@addons.mozilla.org to parameters in the options page

@@ -1,5 +1,5 @@
 /// Static variables
-var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map"; // From Pure URL
+var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l"; // First version from Pure URL
 var enabled = true;
 
 /// Preferences
@@ -30,6 +30,7 @@ function init(){
 	
 	initBrowserAction();
 	initContextMenus();
+	upgradeParametersIfNeeded();
 }
 init();
 
@@ -120,6 +121,51 @@ function listener(info,tab){
 		openPreferences();
 		return;
 	}
+}
+
+/// Neat URL code
+function upgradeParametersIfNeeded(){
+	//console.log("upgradeParametersIfNeeded");
+	
+	browser.storage.local.get([
+		"neat_url_version"
+	]).then((result) => {
+		let oldVersion = result.neat_url_version;
+		let newVersion = browser.runtime.getManifest().version;
+		
+		//console.log("oldVersion is " + oldVersion);
+		//console.log("newVersion is " + newVersion);
+		
+		if(compareVersionNumbers(oldVersion, newVersion) == -1){
+			// Upgrade for neat_url_blocked_params is needed
+			//console.log("Upgrade for neat_url_blocked_params is needed");
+			// If users skip a version, they will not receive new parameters.
+			// This is a known limitation to this approach, but this is to
+			// prevent adding parameters again and again after deletion
+			
+			if(newVersion == "1.2.0"){
+				// If match becomes true, that means the user added this parameter himself/herself.
+				// Before version 1.2.0 there was no default parameter gs_l.
+				let match = false;
+				for(let param of neat_url_blocked_params){
+					match = param == "gs_l";
+				}
+				if(!match){
+					neat_url_blocked_params.push("gs_l");
+					//console.log("Updating browser.storage.local with new parameter gs_l.");
+					browser.storage.local.set({"neat_url_blocked_params": neat_url_blocked_params.join(', ')})
+				}
+			}
+		}else{
+			//console.log("Upgrade for neat_url_blocked_params is not needed");
+		}
+		
+		// Upgrade value in browser.storage.local if oldVersion != newVersion
+		if(oldVersion != newVersion){
+			browser.storage.local.set({"neat_url_version": newVersion});
+		}
+	}).catch(console.error);
+
 }
 
 /// Lean URL code

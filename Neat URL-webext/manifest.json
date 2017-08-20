@@ -3,9 +3,9 @@
 	"description": "Remove garbage from URLs.",
 	"homepage_url": "http://hugsmile.eu",
 	"manifest_version": 2,
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": ["background.js", "utils/compareVersions.js"]
 	},
 	"icons": {
 		"48": "icons/neaturl-48.png",
