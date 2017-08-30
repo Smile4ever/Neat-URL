@@ -1,4 +1,4 @@
-1.5.0
+2.0.0
 =====
 * Added domain wildcards
 * Added support for anchor tags
