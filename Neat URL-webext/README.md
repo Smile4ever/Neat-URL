@@ -35,23 +35,23 @@ Parameters can contain @ signs (domain-specific):
     
 Parameters can contain @ signs with a wildcard so every subdomain will match too:
 
-    param@&ast;.wired.com
+    param@*.wired.com
     
 Parameters can contain @ signs with a wildcard at the end of a domain name (matches every domain name which begins with "google" and ends in an unknown suffix:
 
-    param@google.&ast;
+    param@google.*
 
 Other valid parameters (exceptions to the ? rule)
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
 	#xtor=RSS-8@futura-sciences.com
-	$/ref@amazon.&ast; (remove everything after /ref on amazon domains)
+	$/ref@amazon.* (remove everything after /ref on amazon domains)
 
 Invalid parameters:
     
-    param@&ast;.google.&ast; (too many wildcards)
+    param@*.google.* (too many wildcards)
     !ved (this is some random string - not supported, but it might work)
-    /ref@amazon.&ast;$ (dollar sign should be at the beginning)
+    /ref@amazon.*$ (dollar sign should be at the beginning)
     
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
