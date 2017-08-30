@@ -1,3 +1,13 @@
+1.5.0
+=====
+* Added domain wildcards
+* Added support for anchor tags
+* Made upgrading of parameters between versions more robust
+* Fixed context menu listeners staying attached after removing them
+* Add gs_l parameter retroactively
+* Add new default parameters: pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*
+* Expanded README
+
 1.2.0
 =====
 - Fix options.js resizing of textarea width under certain conditions

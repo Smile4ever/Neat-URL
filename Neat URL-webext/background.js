@@ -1,10 +1,21 @@
 /// Static variables
-var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l"; // First version from Pure URL
+// Sources:
+// * First version from Pure URL
+// * https://cheeky4n6monkey.blogspot.nl/2014/10/google-eid.html
+// * https://greasyfork.org/en/scripts/10096-general-url-cleaner
+// * https://webapps.stackexchange.com/questions/9863/are-the-parameters-for-www-youtube-com-watch-documented
+// * https://github.com/Smile4ever/firefoxaddons/issues/25
+
+var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*";
 var enabled = true;
 
 /// Preferences
-var neat_url_blocked_params; // this is an array!
+var neat_url_blocked_params; // this is an array
 var neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
+
+// Used for upgrading purposes:
+var neat_url_hidden_params; // this is an array
+var neat_url_version; // previous version when upgrading, after upgrading the current version
 
 function init(){
 	var valueOrDefault = function(value, defaultValue){
@@ -28,9 +39,20 @@ function init(){
 		neat_url_icon_animation = valueOrDefault(result.neat_url_icon_animation, "missing_underscore");
 	}).catch(console.error);
 	
+	browser.storage.local.get([
+		"neat_url_hidden_params",
+		"neat_url_version"
+	]).then((result) => {
+		//console.log("background.js neat_url_hidden_params " + result.neat_url_hidden_params);
+		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, []);
+		//console.log("background.js neat_url_version " + result.neat_url_version);
+		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
+		
+		upgradeParametersIfNeeded();
+	}).catch(console.error);
+	
 	initBrowserAction();
 	initContextMenus();
-	upgradeParametersIfNeeded();
 }
 init();
 
@@ -86,6 +108,13 @@ function initBrowserAction(){
 /// Context menus
 /// Translate Now / Neat URL code
 function initContextMenus(){
+	try{
+		browser.contextMenus.onClicked.removeListener(listener);
+		browser.contextMenus.removeAll();
+	}catch(ex){
+		//console.log("contextMenu remove failed: " + ex);
+	}
+	
 	createContextMenu("neaturl-tb-preferences", "Preferences", ["browser_action"]);
 	browser.contextMenus.onClicked.addListener(listener);
 }
@@ -127,45 +156,124 @@ function listener(info,tab){
 function upgradeParametersIfNeeded(){
 	//console.log("upgradeParametersIfNeeded");
 	
-	browser.storage.local.get([
-		"neat_url_version"
-	]).then((result) => {
-		let oldVersion = result.neat_url_version;
-		let newVersion = browser.runtime.getManifest().version;
+	let oldVersion = neat_url_version;
+	let newVersion = browser.runtime.getManifest().version;
+	
+	//console.log("oldVersion: " + oldVersion);
+	//console.log("newVersion: " + newVersion);
+	
+	if(oldVersion != newVersion){
+		// Upgrade for neat_url_blocked_params is needed
+		//console.log("Upgrade for neat_url_blocked_params is needed");
 		
-		//console.log("oldVersion is " + oldVersion);
-		//console.log("newVersion is " + newVersion);
+		let changes = false;
+		let defaultParams = defaultGlobalBlockedParams.split(", ");
 		
-		if(compareVersionNumbers(oldVersion, newVersion) == -1){
-			// Upgrade for neat_url_blocked_params is needed
-			//console.log("Upgrade for neat_url_blocked_params is needed");
-			// If users skip a version, they will not receive new parameters.
-			// This is a known limitation to this approach, but this is to
-			// prevent adding parameters again and again after deletion
-			
-			if(newVersion == "1.2.0"){
-				// If match becomes true, that means the user added this parameter himself/herself.
-				// Before version 1.2.0 there was no default parameter gs_l.
-				let match = false;
-				for(let param of neat_url_blocked_params){
-					match = param == "gs_l";
-				}
-				if(!match){
-					neat_url_blocked_params.push("gs_l");
-					//console.log("Updating browser.storage.local with new parameter gs_l.");
-					browser.storage.local.set({"neat_url_blocked_params": neat_url_blocked_params.join(', ')})
+		for(let defaultParam of defaultParams){
+			if(neat_url_blocked_params.indexOf(defaultParam) == -1){
+				if(neat_url_hidden_params.indexOf(defaultParam) == -1){
+					//console.log("Adding parameter " + defaultParam + " during upgrade.");
+					neat_url_blocked_params.push(defaultParam);
+					changes = true;
 				}
 			}
-		}else{
-			//console.log("Upgrade for neat_url_blocked_params is not needed");
+		}
+		
+		if(oldVersion == "1.0.1" || oldVersion == "1.1.0" || oldVersion == "1.2.0"){
+			// add gs_l parameter
+			if(neat_url_blocked_params.indexOf("gs_l") == -1){
+				neat_url_blocked_params.push("gs_l");
+				changes = true;
+			}
+		}
+		
+		if(changes){
+			browser.storage.local.set({"neat_url_blocked_params": neat_url_blocked_params.join(', ')})
 		}
 		
 		// Upgrade value in browser.storage.local if oldVersion != newVersion
-		if(oldVersion != newVersion){
-			browser.storage.local.set({"neat_url_version": newVersion});
-		}
-	}).catch(console.error);
+		browser.storage.local.set({"neat_url_version": newVersion});
+	}else{
+		//console.log("Upgrade for neat_url_blocked_params is not needed");
+	}
+}
 
+/// Neat URL code
+// TODO
+function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix){
+	for (let gbp of neat_url_blocked_params) {
+		
+		let firstChar = gbp.substring(0, 1);
+		if(!isAlpha(firstChar) && firstChar != "_"){
+			//console.log("checking2 " + gbp);
+			let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix);
+			leanURL = applyMatchIfNeeded(match, leanURL);
+		}
+	}
+		
+	return leanURL;
+}
+
+// https://stackoverflow.com/questions/2450641/validating-alphabetic-only-string-in-javascript
+function isAlpha(str) {
+	return /^[a-zA-Z]+$/.test(str);
+}
+
+function applyMatchIfNeeded(match2, leanURL){
+	if(match2 != ""){
+		//console.log("removeEndings has match: " + match2);
+		
+		let firstChar = match2.substr(0, 1);
+
+		if(firstChar == "$"){
+			//console.log("leanURL was " + leanURL);
+			
+			match2 = match2.substring(1, match2.length - 1);
+			let startIndexAsEnd = leanURL.lastIndexOf(match2);
+			leanURL = leanURL.substring(0, startIndexAsEnd);
+			
+			//console.log("leanURL should become " + leanURL);
+		}else{
+			//console.log("leanURL before replacing is " + leanURL);
+			leanURL = leanURL.replace(match2, "");
+			//console.log("leanURL after replacing is " + leanURL);
+		}
+	}else{
+		//console.log("no match for " + leanURL);
+	}
+	
+	return leanURL;
+}
+
+function getMatch(gbp, domain, rootDomain, domainMinusSuffix){
+	if (gbp.indexOf("@") == -1) {
+		return gbp;
+	}
+	
+	let keyValue = gbp.split("@")[0];
+	let keyDomain = gbp.split("@")[1];
+	if(keyDomain.indexOf("*.") == 0){
+		// we have a wildcard domain, so compare with root domain please.
+		keyDomain = keyDomain.replace("*.", "");
+		if ( rootDomain == keyDomain ) {
+			//console.log("matching to root domain for " + details.url);
+			return keyValue;
+		}
+	}else if(keyDomain.endsWith(".*")){
+		//console.log("keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
+		keyDomain = keyDomain.replace(".*", "");
+		if ( domainMinusSuffix == keyDomain ) {
+			//console.log("matching to wildcard domain");
+			return keyValue;
+		}
+	}else{
+		if( domain == keyDomain ) {
+			//console.log("matching to domain");
+			return keyValue;
+		}
+	}
+	
+	return "";
 }
 
 /// Lean URL code
@@ -225,6 +333,21 @@ function getDomain(url) {
     return hostname;
 }
 
+function getDomainMinusSuffix(url){
+	let domain = getDomain(url);
+	let lastIndex = domain.lastIndexOf(".");
+	let previousLastIndex = domain.lastIndexOf(".", lastIndex - 1);
+	//console.log(url);
+	//console.log(lastIndex);
+	//console.log(previousLastIndex);
+  
+	if(lastIndex - previousLastIndex < 4){
+		lastIndex = previousLastIndex;
+	}
+	
+	return domain.substring(0, lastIndex);
+}
+
 /// Neat URL code
 // Copied from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
 function getRootDomain(url) {
@@ -253,45 +376,34 @@ function cleanURL(details) {
 	if(!enabled) return;
 	
     var baseURL = details.url.split("?")[0];
-
     var params = getParams(details.url);
-    if ( params == null ) {
+   
+    var test1 = details.url.split("=").length;
+    var test2 = details.url.indexOf("#").length;
+
+	if (test1 == 1 && test2 == 1){
 		//console.log("no params for " + details.url);
-        return;
-    }
-
-	var domain = getDomain(details.url);
-	if ( domain == null ) {
-		return;
-	}
-
-	var rootDomain = getRootDomain(details.url);
-	if ( rootDomain == null ) {
 		return;
 	}
 	
+	/*if ( params == null ) {
+		//console.log("no params for " + details.url);
+		return;
+	}*/
+
+	var domain = getDomain(details.url);
+	var rootDomain = getRootDomain(details.url);
+	var domainMinusSuffix = getDomainMinusSuffix(details.url);
+	
+	if (domain == null || rootDomain == null || domainMinusSuffix == null ){
+		//console.log("oei");
+		return;
+	}	
+	
 	var blockedParams = [];
 	for (let gbp of neat_url_blocked_params) {
-		if (gbp.indexOf("@") == -1) {
-			blockedParams.push(gbp);
-			continue;
-		}
-		
-		var keyValue = gbp.split("@")[0];
-		var keyDomain = gbp.split("@")[1];
-		if(keyDomain.indexOf("*.") == 0){
-			// we have a wildcard domain, so compare with root domain please.
-			keyDomain = keyDomain.replace("*.", "");
-			if ( rootDomain == keyDomain ) {
-				//console.log("matching to root domain for " + details.url);
-				blockedParams.push(keyValue);
-			}
-		}else{
-			if( domain == keyDomain ) {
-				//console.log("matching to domain for " + details.url);
-				blockedParams.push(keyValue);
-			}
-		}
+		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix);
+		if(match != "") blockedParams.push(match);
 	}
 	
 	//console.log("domain " + domain + " for " + details.url);
@@ -300,6 +412,7 @@ function cleanURL(details) {
 	var reducedParams = {};
 	for ( var key in params ) {
 		//console.log("key is " + key);
+		key = key.toLowerCase();
 		if ( !blockedParams.includes(key) ) {
 			//console.log("not skipping " + key);
 			reducedParams[key] = params[key];
@@ -307,15 +420,35 @@ function cleanURL(details) {
 			//console.log("skipping " + key);
 		}
 	}
-	
-    if ( Object.keys(reducedParams).length == Object.keys(params).length ) {
-        return;
-    }
+		
+	let changed = true;
 
-	// Animate the toolbar icon
-	animateToolbarIcon();
+	// Prevent "crash" for # parameters
+	if(params){
+		if ( Object.keys(reducedParams).length == Object.keys(params).length ) {
+			changed = false;
+		}
+	}
 
     leanURL = buildURL(baseURL, reducedParams);
+    let leanURLChanged = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
+    if(leanURL != leanURLChanged){
+		changed = true;
+		leanURL = leanURLChanged;
+	}
+	
+	if(leanURL == details.url){
+		changed = false;
+		return;
+	}
+	
+	if(!changed){
+		//console.log("no changes..");
+		return;
+	}
+    
+    // Animate the toolbar icon
+	animateToolbarIcon();
     
     // webRequest blocking is not supported on mozilla.org, lets fix this
 	if(leanURL.indexOf("mozilla.org") > -1){

@@ -1,17 +1,50 @@
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
-		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l"
+		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*"
 	},
 	"neat_url_icon_animation": {
 		"type": "value",
 		"default": "missing_underscore"
+	},
+	"neat_url_version": {
+		"type": "value",
+		"default": ""
+	},
+	"neat_url_hidden_params": {
+		"type": "value",
+		"default": ""
 	}
 };
 var lastWidth = 0;
 
 function saveOptions() { 
 	browser.runtime.sendMessage({action: "notify", data: "Saved preferences"});
+	
+	// Get default values
+	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(", ");
+	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(", ");
+	let hiddenParams = document.getElementById("neat_url_hidden_params")["value"].split(", ");
+
+	// Add to hidden parameters if needed
+	for(let defaultParam of defaultParams){
+		if(currentParams.indexOf(defaultParam) == -1){
+			// Add to hidden params if not already there.
+			if(hiddenParams.indexOf(defaultParam) == -1){
+				hiddenParams.push(defaultParam);
+			}
+		}
+	}
+
+	// Remove from hidden parameters if needed
+	let newHiddenParams = [];
+	for(let hiddenParam of hiddenParams){
+		if(currentParams.indexOf(hiddenParam) == -1){
+			newHiddenParams.push(hiddenParam);
+		}
+	}
+	
+	document.getElementById("neat_url_hidden_params").value = newHiddenParams.join(", ");
 	
 	const values = {};
 	for(let p in PREFS) {
@@ -32,7 +65,7 @@ function restoreOptions() {
 				val = PREFS[p].default;
 			}
 			document.getElementById(p)[PREFS[p].type] = val;
-			console.log("options.js val restored is " + val);
+			//console.log("options.js val restored is " + val);
 		}
 	}).catch(console.error);
 }
