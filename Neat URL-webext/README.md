@@ -4,7 +4,7 @@ Neat URL cleans URLs, removing parameters such as Google Analytics' utm paramete
 
 ## Blocked Parameters
 
-utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*
+utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.&ast;, pd_rd_w@amazon.&ast;, pd_rd_wg@amazon.&ast;, _encoding@amazon.&ast;, psc@amazon.&ast;, ved@google.&ast;, ei@google.&ast;, sei@google.&ast;, gws_rd@google.&ast;, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.&ast;
 
 ## Example
 
@@ -35,23 +35,23 @@ Parameters can contain @ signs (domain-specific):
     
 Parameters can contain @ signs with a wildcard so every subdomain will match too:
 
-    param@*.wired.com
+    param@&ast;.wired.com
     
 Parameters can contain @ signs with a wildcard at the end of a domain name (matches every domain name which begins with "google" and ends in an unknown suffix:
 
-    param@google.*
+    param@google.&ast;
 
 Other valid parameters (exceptions to the ? rule)
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
 	#xtor=RSS-8@futura-sciences.com
-	$/ref@amazon.* (remove everything after /ref on amazon domains)
+	$/ref@amazon.&ast; (remove everything after /ref on amazon domains)
 
 Invalid parameters:
     
-    param@*.google.* (too many wildcards)
+    param@&ast;.google.&ast; (too many wildcards)
     !ved (this is some random string - not supported, but it might work)
-    /ref@amazon.*$ (dollar sign should be at the beginning)
+    /ref@amazon.&ast;$ (dollar sign should be at the beginning)
     
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
