@@ -153,18 +153,14 @@ function listener(info,tab){
 }
 
 /// Neat URL code
-function upgradeParametersIfNeeded(){
-	//console.log("upgradeParametersIfNeeded");
-	
+function upgradeParametersIfNeeded(){	
 	let oldVersion = neat_url_version;
 	let newVersion = browser.runtime.getManifest().version;
 	
-	//console.log("oldVersion: " + oldVersion);
-	//console.log("newVersion: " + newVersion);
+	//console.log("upgradeParametersIfNeeded - " oldVersion + " => " + newVersion);
 	
 	if(oldVersion != newVersion){
 		// Upgrade for neat_url_blocked_params is needed
-		//console.log("Upgrade for neat_url_blocked_params is needed");
 		
 		let changes = false;
 		let defaultParams = defaultGlobalBlockedParams.split(", ");
@@ -193,8 +189,6 @@ function upgradeParametersIfNeeded(){
 		
 		// Upgrade value in browser.storage.local if oldVersion != newVersion
 		browser.storage.local.set({"neat_url_version": newVersion});
-	}else{
-		//console.log("Upgrade for neat_url_blocked_params is not needed");
 	}
 }
 
@@ -221,20 +215,22 @@ function isAlpha(str) {
 
 function applyMatchIfNeeded(match2, leanURL){
 	if(match2 != ""){
-		//console.log("removeEndings has match: " + match2);
-		
 		let firstChar = match2.substr(0, 1);
-
+		let secondChar = match2.substr(1, 2);
+		
 		if(firstChar == "$"){
-			//console.log("leanURL was " + leanURL);
-			
-			match2 = match2.substring(1, match2.length - 1);
-			let startIndexAsEnd = leanURL.lastIndexOf(match2);
-			leanURL = leanURL.substring(0, startIndexAsEnd);
+			if(leanURL.indexOf("?") == -1 || secondChar == "$"){
+				// Check it twice
+				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+
+				// if startIndexAsEnd is -1, we return an empty string
+				let startIndexAsEnd = leanURL.lastIndexOf(match2);
+				leanURL = leanURL.substring(0, startIndexAsEnd);
+			}
 			
 			//console.log("leanURL should become " + leanURL);
 		}else{
-			//console.log("leanURL before replacing is " + leanURL);
 			leanURL = leanURL.replace(match2, "");
 			//console.log("leanURL after replacing is " + leanURL);
 		}
@@ -337,9 +333,6 @@ function getDomainMinusSuffix(url){
 	let domain = getDomain(url);
 	let lastIndex = domain.lastIndexOf(".");
 	let previousLastIndex = domain.lastIndexOf(".", lastIndex - 1);
-	//console.log(url);
-	//console.log(lastIndex);
-	//console.log(previousLastIndex);
   
 	if(lastIndex - previousLastIndex < 4){
 		lastIndex = previousLastIndex;
@@ -387,7 +380,6 @@ function cleanURL(details) {
 	}
 	
 	/*if ( params == null ) {
-		//console.log("no params for " + details.url);
 		return;
 	}*/
 
@@ -396,7 +388,6 @@ function cleanURL(details) {
 	var domainMinusSuffix = getDomainMinusSuffix(details.url);
 	
 	if (domain == null || rootDomain == null || domainMinusSuffix == null ){
-		//console.log("oei");
 		return;
 	}	
 	
@@ -411,7 +402,6 @@ function cleanURL(details) {
 	
 	var reducedParams = {};
 	for ( var key in params ) {
-		//console.log("key is " + key);
 		key = key.toLowerCase();
 		if ( !blockedParams.includes(key) ) {
 			//console.log("not skipping " + key);

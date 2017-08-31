@@ -1,3 +1,9 @@
+2.0.1
+=====
+* Introduce $$ to force remove everything after a certain string
+* Change $ behaviour to remove everything after a certain string only if there are no query parameters after reducing the query parameters (no longer breaks Amazon links)
+* Drop utils/compareVersions.js (no longer needed)
+
 2.0.0
 =====
 * Added domain wildcards
