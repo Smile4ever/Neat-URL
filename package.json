@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build:neat-url": "cd \"Neat URL-webext\"; web-ext build --overwrite-dest --ignore-files build.sh images *.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Smile4ever/firefoxaddons.git"
+  }
+}
