@@ -1,3 +1,11 @@
+2.0.3
+=====
+* Important bugfix preventing some users from getting upgraded parameters
+
+2.0.2
+=====
+* Add utm_cid for mashable.com
+
 2.0.1
 =====
 * Introduce $$ to force remove everything after a certain string

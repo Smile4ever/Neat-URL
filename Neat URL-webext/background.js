@@ -44,7 +44,7 @@ function init(){
 		"neat_url_version"
 	]).then((result) => {
 		//console.log("background.js neat_url_hidden_params " + result.neat_url_hidden_params);
-		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, []);
+		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, "");
 		//console.log("background.js neat_url_version " + result.neat_url_version);
 		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
 		
