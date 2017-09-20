@@ -1,3 +1,8 @@
+2.0.4
+=====
+* Fix problem related to Google Docs - see https://addons.mozilla.org/nl/firefox/addon/neat-url/reviews/918997/
+* Add _hsenc and mkt_tok to Neat URL defaults
+
 2.0.3
 =====
 * Important bugfix preventing some users from getting upgraded parameters

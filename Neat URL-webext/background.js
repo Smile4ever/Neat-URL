@@ -146,7 +146,6 @@ function openPreferences(){
 /// Translate Now / Lean URL code
 function listener(info,tab){
 	if(info.menuItemId == "neaturl-tb-preferences"){
-		// Open Preferences
 		openPreferences();
 		return;
 	}
@@ -193,7 +192,6 @@ function upgradeParametersIfNeeded(){
 }
 
 /// Neat URL code
-// TODO
 function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix){
 	for (let gbp of neat_url_blocked_params) {
 		
@@ -370,7 +368,7 @@ function cleanURL(details) {
 	
     var baseURL = details.url.split("?")[0];
     var params = getParams(details.url);
-   
+
     var test1 = details.url.split("=").length;
     var test2 = details.url.indexOf("#").length;
 
@@ -378,7 +376,7 @@ function cleanURL(details) {
 		//console.log("no params for " + details.url);
 		return;
 	}
-	
+
 	/*if ( params == null ) {
 		return;
 	}*/
@@ -432,12 +430,18 @@ function cleanURL(details) {
 		return;
 	}
 	
+	if(leanURL.indexOf("=undefined") > -1){
+		// https://addons.mozilla.org/nl/firefox/addon/neat-url/reviews/918997/
+		return;
+	}
+	
 	if(!changed){
 		//console.log("no changes..");
 		return;
 	}
     
     // Animate the toolbar icon
+    // console.log(details.url + " has been changed to " + leanURL);
 	animateToolbarIcon();
     
     // webRequest blocking is not supported on mozilla.org, lets fix this
