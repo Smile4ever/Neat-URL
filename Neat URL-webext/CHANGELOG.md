@@ -1,3 +1,7 @@
+2.0.5
+=====
+* Fix handling of mozilla.org
+
 2.0.4
 =====
 * Fix problem related to Google Docs - see https://addons.mozilla.org/nl/firefox/addon/neat-url/reviews/918997/

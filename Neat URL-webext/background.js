@@ -140,7 +140,7 @@ function openPreferences(){
 		//console.log(`Options page opened`);
 	}
 
-	browser.runtime.openOptionsPage().then(onOpened, onError);	
+	browser.runtime.openOptionsPage().then(onOpened, null);
 }
 
 /// Translate Now / Lean URL code
@@ -445,11 +445,18 @@ function cleanURL(details) {
 	animateToolbarIcon();
     
     // webRequest blocking is not supported on mozilla.org, lets fix this
-	if(leanURL.indexOf("mozilla.org") > -1){
-		browser.tabs.update({url: leanURL});
-		return;
+    // but only if we're already on mozilla.org and the variable leanURL is a subset of the current URL
+
+    if(leanURL.indexOf("mozilla.org") > -1){
+		browser.tabs.query({currentWindow: true, active: true}).then(function logTabs(tabs) {
+			for (tab of tabs) {
+				if(tab.url.indexOf(leanURL) > -1){
+					browser.tabs.update(tab.id, {url: leanURL});
+				}
+			}
+		}, null);
 	}
-	
+
     return { redirectUrl: leanURL };
 }
 
