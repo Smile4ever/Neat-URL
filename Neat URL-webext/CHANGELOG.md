@@ -1,3 +1,7 @@
+2.1.1
+=====
+* Do not update a tab to an empty URL
+
 2.1.0
 =====
 * Fix handling of addons.mozilla.org and mozilla.org again

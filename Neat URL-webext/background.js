@@ -470,11 +470,14 @@ function cleanURL(details) {
 
 		setTimeout(function(){
 			browser.tabs.query({url: globalCurrentURL}).then(function logTabs(tabs) {
+				if(globalNeatURL == null || globalNeatURL == "") return;
+
 				if(tabs.length == 0){
 					//console.log("It was opened in the current tab, update that tab to " + globalNeatURL);
 					browser.tabs.update({url: globalNeatURL});
 				}else{
 					//console.log("It was opened in a new tab, update that tab to " + globalNeatURL);
+
 					for (tab of tabs) {
 						browser.tabs.update(tab.id, {url: globalNeatURL});
 					}
