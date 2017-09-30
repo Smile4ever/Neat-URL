@@ -7,6 +7,10 @@ const PREFS = {
 		"type": "value",
 		"default": "missing_underscore"
 	},
+	"neat_url_icon_theme": {
+		"type": "value",
+		"default": "dark"
+	},
 	"neat_url_version": {
 		"type": "value",
 		"default": ""
@@ -18,9 +22,9 @@ const PREFS = {
 };
 var lastWidth = 0;
 
-function saveOptions() { 
+function saveOptions() {
 	browser.runtime.sendMessage({action: "notify", data: "Saved preferences"});
-	
+
 	// Get default values
 	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(", ");
 	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(", ");
@@ -43,9 +47,9 @@ function saveOptions() {
 			newHiddenParams.push(hiddenParam);
 		}
 	}
-	
+
 	document.getElementById("neat_url_hidden_params").value = newHiddenParams.join(", ");
-	
+
 	const values = {};
 	for(let p in PREFS) {
 		values[p] = document.getElementById(p)[PREFS[p].type];
@@ -80,13 +84,13 @@ function init(){
 function render(){
 	var newWidth = document.documentElement.clientWidth / 3;
 	if(Math.abs(lastWidth - (newWidth / 3)) < 15) return; // do not render again
-	
+
 	var sheet = document.styleSheets[0];
 
 	// https://stackoverflow.com/questions/29927992/remove-css-rules-by-javascript
 	if (sheet.cssRules) {
 		for (var i = 0; i < sheet.cssRules.length; i++) {
-			if (sheet.cssRules[i].selectorText === '.labelbox') {        
+			if (sheet.cssRules[i].selectorText === '.labelbox') {
 				sheet.deleteRule(i);
 			}
 		}

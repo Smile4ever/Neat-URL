@@ -8,10 +8,14 @@
 
 var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok";
 var enabled = true;
+var globalNeatURL = "";
+var globalCurrentURL = "";
+const version = browser.runtime.getManifest().version;
 
 /// Preferences
 var neat_url_blocked_params; // this is an array
 var neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
+var neat_url_icon_theme;
 
 // Used for upgrading purposes:
 var neat_url_hidden_params; // this is an array
@@ -31,12 +35,17 @@ function init(){
 	
 	browser.storage.local.get([
 		"neat_url_blocked_params",
-		"neat_url_icon_animation"
+		"neat_url_icon_animation",
+		"neat_url_icon_theme"
 	]).then((result) => {
 		//console.log("background.js neat_url_blocked_params " + result.neat_url_blocked_params);
 		neat_url_blocked_params = valueOrDefaultArray(result.neat_url_blocked_params, defaultGlobalBlockedParams);
 		//console.log("background.js neat_url_icon_animation " + result.neat_url_icon_animation);
 		neat_url_icon_animation = valueOrDefault(result.neat_url_icon_animation, "missing_underscore");
+		//console.log("background.js neat_url_icon_theme " + result.neat_url_icon_theme);
+		neat_url_icon_theme = valueOrDefault(result.neat_url_icon_theme, "dark");
+
+		initBrowserAction(); // Needs neat_url_icon_theme
 	}).catch(console.error);
 	
 	browser.storage.local.get([
@@ -47,11 +56,10 @@ function init(){
 		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, "");
 		//console.log("background.js neat_url_version " + result.neat_url_version);
 		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
-		
+
 		upgradeParametersIfNeeded();
 	}).catch(console.error);
 	
-	initBrowserAction();
 	initContextMenus();
 }
 init();
@@ -88,20 +96,20 @@ browser.runtime.onMessage.addListener(function(message) {
 /// Browser action
 /// Neat URL code
 function initBrowserAction(){
-	var version = browser.runtime.getManifest().version;
-	browser.browserAction.setTitle({title: "Neat URL " + version});
-	
+	browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0.png")});
+	browser.browserAction.setTitle({title: "Neat URL " + version + " - enabled"});
+
 	browser.browserAction.onClicked.addListener((tab) => {
+		enabled = !enabled;
+
 		if(enabled){
-			browser.browserAction.setIcon({path: "icons/neaturl-96-state0_disabled.png"});
-			browser.browserAction.setTitle({title: "Neat URL " + version + " - disabled"});
-		}
-		else{
-			browser.browserAction.setIcon({path: "icons/neaturl-96-state0.png"});
+			browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0.png")});
 			browser.browserAction.setTitle({title: "Neat URL " + version + " - enabled"});
 		}
-		
-		enabled = !enabled;
+		else{
+			browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0_disabled.png")});
+			browser.browserAction.setTitle({title: "Neat URL " + version + " - disabled"});
+		}
 	});
 }
 
@@ -223,7 +231,13 @@ function applyMatchIfNeeded(match2, leanURL){
 				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 
 				// if startIndexAsEnd is -1, we return an empty string
-				let startIndexAsEnd = leanURL.lastIndexOf(match2);
+				var startIndexAsEnd = leanURL.lastIndexOf(match2);
+				leanURL = leanURL.substring(0, startIndexAsEnd);
+			}
+			if(leanURL.indexOf("/dp/") > -1){
+				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+
+				var startIndexAsEnd = leanURL.lastIndexOf(match2);
 				leanURL = leanURL.substring(0, startIndexAsEnd);
 			}
 			
@@ -365,7 +379,8 @@ function getRootDomain(url) {
 /// Lean URL / Neat URL code
 function cleanURL(details) {
 	if(!enabled) return;
-	
+
+	details.url = decodeURIComponent(details.url);
     var baseURL = details.url.split("?")[0];
     var params = getParams(details.url);
 
@@ -439,22 +454,36 @@ function cleanURL(details) {
 		//console.log("no changes..");
 		return;
 	}
-    
+
     // Animate the toolbar icon
     // console.log(details.url + " has been changed to " + leanURL);
 	animateToolbarIcon();
-    
+
     // webRequest blocking is not supported on mozilla.org, lets fix this
-    // but only if we're already on mozilla.org and the variable leanURL is a subset of the current URL
+    // but only if we are navigating to addons.mozilla.org and there doesn't exist a tab yet with the same URL
+
+	const applyAfter = 400;
 
     if(leanURL.indexOf("mozilla.org") > -1){
-		browser.tabs.query({currentWindow: true, active: true}).then(function logTabs(tabs) {
-			for (tab of tabs) {
-				if(tab.url.indexOf(leanURL) > -1){
-					browser.tabs.update(tab.id, {url: leanURL});
+		globalNeatURL = leanURL;
+		globalCurrentURL = details.url;
+
+		setTimeout(function(){
+			browser.tabs.query({url: globalCurrentURL}).then(function logTabs(tabs) {
+				if(tabs.length == 0){
+					//console.log("It was opened in the current tab, update that tab to " + globalNeatURL);
+					browser.tabs.update({url: globalNeatURL});
+				}else{
+					//console.log("It was opened in a new tab, update that tab to " + globalNeatURL);
+					for (tab of tabs) {
+						browser.tabs.update(tab.id, {url: globalNeatURL});
+					}
 				}
-			}
-		}, null);
+
+				globalNeatURL = "";
+				globalCurrentURL = "";
+			}, null);
+		}, applyAfter);
 	}
 
     return { redirectUrl: leanURL };
@@ -471,10 +500,10 @@ browser.webRequest.onBeforeRequest.addListener(
 function animateToolbarIcon(){
 	if(neat_url_icon_animation == "none") return;
 	
-	var defaultState = "icons/neaturl-96-state0.png";
+	var defaultState = resolveIconURL("neaturl-96-state0.png");
 	var images = [];
-	var imagesMissingUnderscore = ["icons/neaturl-96-state-1.png", defaultState, "icons/neaturl-96-state-1.png"];
-	var imagesRotate = ["icons/neaturl-96-state1.png", "icons/neaturl-96-state2.png", "icons/neaturl-96-state3.png"];
+	var imagesMissingUnderscore = [resolveIconURL("neaturl-96-state-1.png"), defaultState, resolveIconURL("neaturl-96-state-1.png")];
+	var imagesRotate = [resolveIconURL("neaturl-96-state1.png"), resolveIconURL("neaturl-96-state2.png"), resolveIconURL("neaturl-96-state3.png")];
 
 	if(neat_url_icon_animation == "missing_underscore")
 		images = imagesMissingUnderscore
@@ -519,8 +548,27 @@ function notify(message){
 	browser.notifications.create(message.substring(0, 20).replace(" ", ""),
 	{
 		type: "basic",
-		iconUrl: browser.extension.getURL("icons/neaturl-96-state0.png"),
+		iconUrl: browser.extension.getURL(resolveIconUrlNotif("neaturl-96-state0.png")),
 		title: "Neat URL",
 		message: message
 	});
+}
+
+function resolveIconByTheme(file, theme){
+	return "icons/" + theme + "/" + file;
+}
+
+function resolveIconURL(file){
+	let theme = neat_url_icon_theme.replace("_notiflight", "").replace("_notifdark", "");
+	return resolveIconByTheme(file, theme);
+}
+
+function resolveIconUrlNotif(file){
+	if(neat_url_icon_theme.indexOf("_notiflight") > -1){
+		return resolveIconByTheme(file, "light");
+	}
+	if(neat_url_icon_theme.indexOf("_notifdark") > -1){
+		return resolveIconByTheme(file, "dark");
+	}
+	return resolveIconByTheme(file, neat_url_icon_theme);
 }

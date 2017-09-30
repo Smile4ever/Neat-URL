@@ -1,3 +1,9 @@
+2.1.0
+=====
+* Fix handling of addons.mozilla.org and mozilla.org again
+* On Amazon product pages, all parameters are removed
+* Add light icons for dark themes, can be set in the options
+
 2.0.5
 =====
 * Fix handling of mozilla.org

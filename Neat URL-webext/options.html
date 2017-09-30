@@ -11,7 +11,7 @@
 			padding-left: 15px;
 			text-indent: -15px;
 		}
-		
+
 		input[type=checkbox] {
 			width: 13px;
 			height: 13px;
@@ -24,22 +24,22 @@
 			*overflow: hidden;
 		}
 		/* End of used CSS */
-		
+
 		input[type=number]{
 			max-width: 4em;
 		}
-		
+
 		body{
 			margin:0;
 			padding:0;
 		}
-		
+
 		/* CSS used from https://github.com/kainsavage/HistoryBlock/blob/web-extension/options/options.css */
 		body, button, input, textarea {
 		  font-family: Segoe UI, sans-serif;
 		  font-size: 15px;
 		}
-		
+
 		body, button{
 		  color: #333; /* From Mozilla Firefox CSS */
 		}
@@ -64,11 +64,11 @@
 			/* font-size: 1.25rem; */
 			color: gray;
 		}
-		
+
 		.hr{
 			border-bottom: 1px solid #bbb
 		}
-		
+
 		/* CSS used from https://davidwalsh.name/flexbox-column */
 		.flexbox-container {
 			display: -ms-flex;
@@ -85,9 +85,9 @@
 			margin-right: 20px;
 		}
 		/* End of used CSS */
-		
-		button::-moz-focus-inner { 
-			border: 0; 
+
+		button::-moz-focus-inner {
+			border: 0;
 		}
 		/*.labelbox{
 			min-width: 350px;
@@ -124,6 +124,25 @@
 					<option value="missing_underscore">Missing underscore</option>
 					<option value="rotate">Rotate icon</option>
 					<option value="surprise_me">Surprise me</option>
+				</select>
+			</div>
+			<div>
+				<!-- Empty -->
+			</div>
+		</div>
+		
+		<div class="hr"></div>
+		
+		<div class="flexbox-container">
+			<div class="labelbox">
+				<label><span id="icon_theme">Icon theme</span></label><div class="descr">Dark icons are used by default. You can change this option to use Light icons.</div>
+			</div>
+			<div>
+				<select id="neat_url_icon_theme">
+					<option value="dark">Always use dark icons</option>
+					<option value="light">Always use light icons</option>
+					<option value="dark_notiflight">Use dark icons except for notifications</option>
+					<option value="light_notifdark">Use light icons except for notifications</option>
 				</select>
 			</div>
 			<div>
