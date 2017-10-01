@@ -1,3 +1,8 @@
+2.1.2
+=====
+* Fix problem with URL decoding
+* Keys are now case sensitive
+
 2.1.1
 =====
 * Do not update a tab to an empty URL

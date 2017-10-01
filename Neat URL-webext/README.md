@@ -53,7 +53,17 @@ Invalid parameters:
     param@*.google.* (too many wildcards)
     !ved (this is some random string - not supported, but it might work)
     /ref@amazon.*$ (dollar sign should be at the beginning)
-    
+
+## Recommended parameters
+For addons.mozilla.org:
+src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
+
+For Humble Bundle:
+hmb_campaign, hmb_source, hmb_medium
+
+For Tweakers.net:
+nb@tweakers.net, u@tweakers.net
+
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
 

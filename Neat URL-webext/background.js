@@ -376,11 +376,17 @@ function getRootDomain(url) {
     return domain;
 }
 
+function urlDecode(url){
+	return url.replace("%3d", "=").replace("%3D", "=");
+}
+
 /// Lean URL / Neat URL code
 function cleanURL(details) {
 	if(!enabled) return;
 
-	details.url = decodeURIComponent(details.url);
+	let originalDetailsUrl = details.url;
+	details.url = urlDecode(details.url);
+
     var baseURL = details.url.split("?")[0];
     var params = getParams(details.url);
 
@@ -415,7 +421,6 @@ function cleanURL(details) {
 	
 	var reducedParams = {};
 	for ( var key in params ) {
-		key = key.toLowerCase();
 		if ( !blockedParams.includes(key) ) {
 			//console.log("not skipping " + key);
 			reducedParams[key] = params[key];
@@ -440,7 +445,7 @@ function cleanURL(details) {
 		leanURL = leanURLChanged;
 	}
 	
-	if(leanURL == details.url){
+	if(leanURL == details.url || leanURL == originalDetailsUrl){
 		changed = false;
 		return;
 	}
