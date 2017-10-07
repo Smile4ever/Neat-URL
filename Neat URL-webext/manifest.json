@@ -1,9 +1,10 @@
 {
 	"name": "Neat URL",
-	"description": "Remove garbage from URLs.",
+	"description": "__MSG_extensionDescription__",
 	"homepage_url": "http://hugsmile.eu",
 	"manifest_version": 2,
-	"version": "2.1.2",
+	"version": "3.0.0",
+	"default_locale": "en",
 	"background": {
 		"scripts": ["background.js"]
 	},

@@ -1,3 +1,15 @@
+3.0.0
+=====
+* Fix notification theme not respected the first time you click Save preferences when it is different from the default icon theme
+* Add utm_name, utm_pubreferrer, utm_swu, utm_viz_id to Neat URL defaults #43
+* Add hmb_campaign, hmb_medium, hmb_source to Neat URL defaults #43
+* Do not remove hash fragments #47
+* Implement wildcards at the end of the parameter (but before the domain @ sign). For example, utm_*
+* Fix bug in changed=false logic
+* Allow logging the changed URLs to the console #36
+* Add localisation system. The Dutch localisation is already included.
+* Expanded README with extra parameters #43
+
 2.1.2
 =====
 * Fix problem with URL decoding

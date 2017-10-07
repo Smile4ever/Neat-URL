@@ -4,7 +4,7 @@ Neat URL cleans URLs, removing parameters such as Google Analytics' utm paramete
 
 ## Blocked Parameters
 
-utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.&ast;, pd_rd_w@amazon.&ast;, pd_rd_wg@amazon.&ast;, _encoding@amazon.&ast;, psc@amazon.&ast;, ved@google.&ast;, ei@google.&ast;, sei@google.&ast;, gws_rd@google.&ast;, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.&ast;
+utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.&ast;, pd_rd_w@amazon.&ast;, pd_rd_wg@amazon.&ast;, _encoding@amazon.&ast;, psc@amazon.&ast;, ved@google.&ast;, ei@google.&ast;, sei@google.&ast;, gws_rd@google.&ast;, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.&ast, _hsenc, mkt_tok, hmb_campaign, hmb_source, hmb_medium;
 
 ## Example
 
@@ -41,6 +41,11 @@ Parameters can contain @ signs with a wildcard at the end of a domain name (matc
 
     param@google.*
 
+Parameters can contain a wildcard at the end or before the domain sign:
+
+    utm_*
+    utm_*@omgubuntu.co.uk
+
 Other valid parameters (exceptions to the ? rule)
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
@@ -58,11 +63,11 @@ Invalid parameters:
 For addons.mozilla.org:
 src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
 
-For Humble Bundle:
-hmb_campaign, hmb_source, hmb_medium
-
 For Tweakers.net:
 nb@tweakers.net, u@tweakers.net
+
+Other parameters you can consider:
+_hsmi, algo_expid, algo_pvid, aqs, bav, bih, biw, btsid, bvm, cn, cp, csi, dpr, dq, ech, forward, gs_gbg, gs_mss, gs_rn, iact, icid, iid, ijn, mc_cid, mc_eid, ncid, ndsp, nid, nr_email_referer, oq, pbx, pf, pf_rd_i, pf_rd_m, pf_rd_p, pf_rd_r, pf_rd_s, pf_rd_t, pq, prmd, psi, ref_, refsrc, sa, sclient, scroll, sr_share, stick, tbnid, vero_conv, vero_id, vet, ws_ab_test, yv
 
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
@@ -73,3 +78,4 @@ Neat URL contains a few improvements:
 * a nice animation in the toolbar (can be changed or disabled)
 * domain-specific blocked parameters (to reach feature parity with Pure URL)
 * wildcard domain-specific blocked parameters
+* wildcard at the end of blocked parameters (general or domain-specific)

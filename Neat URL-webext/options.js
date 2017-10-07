@@ -1,7 +1,7 @@
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
-		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok"
+		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source"
 	},
 	"neat_url_icon_animation": {
 		"type": "value",
@@ -10,6 +10,10 @@ const PREFS = {
 	"neat_url_icon_theme": {
 		"type": "value",
 		"default": "dark"
+	},
+	"neat_url_logging": {
+		"type": "checked",
+		"default": false
 	},
 	"neat_url_version": {
 		"type": "value",
@@ -23,8 +27,6 @@ const PREFS = {
 var lastWidth = 0;
 
 function saveOptions() {
-	browser.runtime.sendMessage({action: "notify", data: "Saved preferences"});
-
 	// Get default values
 	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(", ");
 	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(", ");
@@ -55,7 +57,13 @@ function saveOptions() {
 		values[p] = document.getElementById(p)[PREFS[p].type];
 	}
 
-	browser.storage.local.set(values).then(() => browser.runtime.sendMessage({action: "refresh-options"}));
+	browser.storage.local.set(values).then(() => {
+		browser.runtime.sendMessage({action: "refresh-options"});
+
+		setTimeout(function(){
+			browser.runtime.sendMessage({action: "notify", data: browser.i18n.getMessage("notify_preferences_saved")});
+		}, 10);
+	});
 }
 
 function restoreOptions() {
@@ -74,9 +82,25 @@ function restoreOptions() {
 	}).catch(console.error);
 }
 
+function i18n() {
+	var i18nElements = document.querySelectorAll('[data-i18n]');
+
+	for(let i in i18nElements){
+		try{
+			if(i18nElements[i].getAttribute == null)
+				continue;
+			i18n_attrib = i18nElements[i].getAttribute("data-i18n");
+			i18nElements[i].textContent = browser.i18n.getMessage(i18n_attrib);
+		}catch(ex){
+			console.error("i18n id " + IDS[id] + " not found");
+		}
+	}
+}
+
 function init(){
 	render();
 	restoreOptions();
+	i18n();
 	document.querySelector("form").style.display = "block";
 	document.querySelector(".refreshOptions").style.display = "none";
 }

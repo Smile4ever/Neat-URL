@@ -1,0 +1,78 @@
+{
+  "extensionDescription": {
+    "message": "Remove garbage from URLs.",
+    "description": "Description of the extension."
+  },
+  "blocked_params": {
+    "message": "Blocked parameters",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "Icon animation",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Animation to use when Neat URL is cleaning up the URL.",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "No animation",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "Missing underscore",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "Rotate icon",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "Surprise me",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "Icon theme",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "Dark icons are used by default. You can change this option to use light icons.",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "Always use dark icons",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "Always use light icons",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "Use dark icons except for notifications",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "Use light icons except for notifications",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "Enable logging",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "Log URL changes to the browser console.",
+    "description": ""
+  },
+  "savepreferences": {
+    "message": "Save preferences",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "Saved preferences",
+    "description": ""
+  }
+}

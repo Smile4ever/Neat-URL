@@ -6,7 +6,8 @@
 // * https://webapps.stackexchange.com/questions/9863/are-the-parameters-for-www-youtube-com-watch-documented
 // * https://github.com/Smile4ever/firefoxaddons/issues/25
 
-var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok";
+var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source";
+
 var enabled = true;
 var globalNeatURL = "";
 var globalCurrentURL = "";
@@ -16,6 +17,7 @@ const version = browser.runtime.getManifest().version;
 var neat_url_blocked_params; // this is an array
 var neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
 var neat_url_icon_theme;
+var neat_url_logging;
 
 // Used for upgrading purposes:
 var neat_url_hidden_params; // this is an array
@@ -36,7 +38,8 @@ function init(){
 	browser.storage.local.get([
 		"neat_url_blocked_params",
 		"neat_url_icon_animation",
-		"neat_url_icon_theme"
+		"neat_url_icon_theme",
+		"neat_url_logging"
 	]).then((result) => {
 		//console.log("background.js neat_url_blocked_params " + result.neat_url_blocked_params);
 		neat_url_blocked_params = valueOrDefaultArray(result.neat_url_blocked_params, defaultGlobalBlockedParams);
@@ -44,6 +47,8 @@ function init(){
 		neat_url_icon_animation = valueOrDefault(result.neat_url_icon_animation, "missing_underscore");
 		//console.log("background.js neat_url_icon_theme " + result.neat_url_icon_theme);
 		neat_url_icon_theme = valueOrDefault(result.neat_url_icon_theme, "dark");
+		//console.log("background.js neat_url_logging " + result.neat_url_logging);
+		neat_url_logging = valueOrDefault(result.neat_url_logging, false);
 
 		initBrowserAction(); // Needs neat_url_icon_theme
 	}).catch(console.error);
@@ -201,16 +206,16 @@ function upgradeParametersIfNeeded(){
 
 /// Neat URL code
 function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix){
-	for (let gbp of neat_url_blocked_params) {
-		
+	for(let gbp of neat_url_blocked_params){
 		let firstChar = gbp.substring(0, 1);
 		if(!isAlpha(firstChar) && firstChar != "_"){
-			//console.log("checking2 " + gbp);
-			let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix);
-			leanURL = applyMatchIfNeeded(match, leanURL);
+			let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, leanURL);
+			if(match == "" || match == null) continue;
+
+			leanURL = applyMatch(match, leanURL);
 		}
 	}
-		
+
 	return leanURL;
 }
 
@@ -219,68 +224,59 @@ function isAlpha(str) {
 	return /^[a-zA-Z]+$/.test(str);
 }
 
-function applyMatchIfNeeded(match2, leanURL){
-	if(match2 != ""){
-		let firstChar = match2.substr(0, 1);
-		let secondChar = match2.substr(1, 2);
-		
-		if(firstChar == "$"){
-			if(leanURL.indexOf("?") == -1 || secondChar == "$"){
-				// Check it twice
-				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
-				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+function applyMatch(match2, leanURL){
+	let firstChar = match2.substr(0, 1);
+	let secondChar = match2.substr(1, 2);
+	let startIndexAsEnd = -1;
 
-				// if startIndexAsEnd is -1, we return an empty string
-				var startIndexAsEnd = leanURL.lastIndexOf(match2);
-				leanURL = leanURL.substring(0, startIndexAsEnd);
-			}
-			if(leanURL.indexOf("/dp/") > -1){
-				if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+	if(firstChar == "$"){
+		if(leanURL.indexOf("?") == -1 || secondChar == "$" || leanURL.indexOf("/dp/") > -1){
+			// Check it twice
+			if(match2.indexOf("$") == 0) match2 = match2.substring(1);
+			if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 
-				var startIndexAsEnd = leanURL.lastIndexOf(match2);
+			// if startIndexAsEnd is -1, we return the original URL without altering it
+			startIndexAsEnd = leanURL.lastIndexOf(match2);
+			if(startIndexAsEnd > -1)
 				leanURL = leanURL.substring(0, startIndexAsEnd);
-			}
-			
-			//console.log("leanURL should become " + leanURL);
-		}else{
-			leanURL = leanURL.replace(match2, "");
-			//console.log("leanURL after replacing is " + leanURL);
 		}
-	}else{
-		//console.log("no match for " + leanURL);
 	}
-	
+
 	return leanURL;
 }
 
-function getMatch(gbp, domain, rootDomain, domainMinusSuffix){
+function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 	if (gbp.indexOf("@") == -1) {
 		return gbp;
 	}
-	
+
 	let keyValue = gbp.split("@")[0];
 	let keyDomain = gbp.split("@")[1];
+
 	if(keyDomain.indexOf("*.") == 0){
 		// we have a wildcard domain, so compare with root domain please.
 		keyDomain = keyDomain.replace("*.", "");
 		if ( rootDomain == keyDomain ) {
-			//console.log("matching to root domain for " + details.url);
+			//console.log("matching to root domain");
 			return keyValue;
 		}
-	}else if(keyDomain.endsWith(".*")){
+	}
+
+	if(keyDomain.endsWith(".*")){
 		//console.log("keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
 		keyDomain = keyDomain.replace(".*", "");
 		if ( domainMinusSuffix == keyDomain ) {
 			//console.log("matching to wildcard domain");
 			return keyValue;
 		}
-	}else{
-		if( domain == keyDomain ) {
-			//console.log("matching to domain");
-			return keyValue;
-		}
 	}
-	
+
+	if( domain == keyDomain ) {
+		//console.log("matching to domain " + domain + " for " + detailsUrl);
+		return keyValue;
+	}
+
+	//console.log("not matching to domain " + domain + " with keyDomain " + keyDomain);
 	return "";
 }
 
@@ -303,17 +299,52 @@ function getParams(URL) {
 }
 
 /// Lean URL code
-function buildURL(baseURL, params) {
-    if ( Object.keys(params).length == 0 ) {
-        return baseURL;
+function buildURL(detailsUrl, blockedParams, hashParams) {
+    if (Object.keys(blockedParams).length == 0 && Object.keys(hashParams).length == 0) {
+        return detailsUrl;
     }
 
-    var newURL = baseURL + "?";
+	let urlObject = new URL(detailsUrl);
+	let originalSearchParams = urlObject.searchParams;
 
-    for ( var key in params ) {
-        newURL += key + "=" + params[key] + "&";
-    }
-    newURL = newURL.slice(0, newURL.length-1);
+	/// Process wildcards first for cleaner code
+	let wildcardBlockedParams = [];
+
+	for(let blockedParam of blockedParams){
+		let wildcardIndex = blockedParam.indexOf("*");
+		if(wildcardIndex == -1) continue;
+
+		let isLastChar = wildcardIndex == blockedParam.length - 1;
+		if(!isLastChar) continue;
+
+		let prefixParam = blockedParam.substring(0, wildcardIndex);
+		for(let pair of originalSearchParams.entries()){
+			if(pair[0].indexOf(prefixParam) == 0){
+				// Match! We should remove this parameter.
+				//console.log("buildURL - found wildcard parameter " + pair[0]);
+				if(!wildcardBlockedParams.includes(pair[0])){
+					wildcardBlockedParams.push(pair[0]);
+				}
+			}
+		}
+	}
+
+	for(let wildcardBlockedParam of wildcardBlockedParams){
+		blockedParams.push(wildcardBlockedParam);
+	}
+
+	/// Remove blocked url params
+	for(let blockedParam of blockedParams){
+		if(blockedParam.indexOf("*") > -1) continue; // Wildcard parameters should have been processed by now
+		originalSearchParams.delete(blockedParam);
+	}
+
+	let newURL = urlObject.href;
+
+	/// Replace hash params
+	for(let hashParam of hashParams){
+		newURL = newURL.replace(hashParam, "");
+	}
 
     return newURL;
 }
@@ -358,11 +389,11 @@ function getDomainMinusSuffix(url){
 function getRootDomain(url) {
 	if(url == undefined || url == null) return null;
 
-    var domain = getDomain(url),
+    let domain = getDomain(url),
         splitArr = domain.split('.'),
         arrLen = splitArr.length;
 
-    //extracting the root domain here
+    // Extract the root domain
     if (arrLen > 2) {
         if(splitArr[arrLen - 2].length <= 3){
             // oops.. this is becoming an invalid URL
@@ -387,20 +418,13 @@ function cleanURL(details) {
 	let originalDetailsUrl = details.url;
 	details.url = urlDecode(details.url);
 
-    var baseURL = details.url.split("?")[0];
-    var params = getParams(details.url);
+    let baseURL = details.url.split("?")[0];
+    let params = getParams(details.url);
 
-    var test1 = details.url.split("=").length;
-    var test2 = details.url.indexOf("#").length;
-
-	if (test1 == 1 && test2 == 1){
+	if (details.url.split("=").length == 1 && details.url.indexOf("#").length == 1){
 		//console.log("no params for " + details.url);
 		return;
 	}
-
-	/*if ( params == null ) {
-		return;
-	}*/
 
 	var domain = getDomain(details.url);
 	var rootDomain = getRootDomain(details.url);
@@ -410,35 +434,38 @@ function cleanURL(details) {
 		return;
 	}	
 	
-	var blockedParams = [];
+	let blockedParams = [];
+	let hashParams = [];
+
 	for (let gbp of neat_url_blocked_params) {
-		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix);
-		if(match != "") blockedParams.push(match);
+		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, details.url);
+		if(match == "" || match == null) continue;
+
+		if(match.indexOf("#") > -1){
+			hashParams.push(match);
+			continue;
+		}
+
+		blockedParams.push(match);
 	}
-	
-	//console.log("domain " + domain + " for " + details.url);
-	//console.log("keyDomain " + keyDomain + " for " + details.url);
-	
-	var reducedParams = {};
-	for ( var key in params ) {
-		if ( !blockedParams.includes(key) ) {
-			//console.log("not skipping " + key);
+
+	let reducedParams = {};
+	for (let key in params) {
+		if (!blockedParams.includes(key)) {
 			reducedParams[key] = params[key];
-		}else{
-			//console.log("skipping " + key);
 		}
 	}
-		
+
 	let changed = true;
 
-	// Prevent "crash" for # parameters
-	if(params){
-		if ( Object.keys(reducedParams).length == Object.keys(params).length ) {
-			changed = false;
-		}
+	if (Object.keys(reducedParams).length == 0) {
+		changed = false;
 	}
 
-    leanURL = buildURL(baseURL, reducedParams);
+	// https://github.com/Smile4ever/firefoxaddons/issues/30 should no longer occur with the new buildURL function
+	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
+    leanURL = buildURL(details.url, blockedParams, hashParams);
+
     let leanURLChanged = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
     if(leanURL != leanURLChanged){
 		changed = true;
@@ -450,18 +477,16 @@ function cleanURL(details) {
 		return;
 	}
 	
-	if(leanURL.indexOf("=undefined") > -1){
-		// https://addons.mozilla.org/nl/firefox/addon/neat-url/reviews/918997/
-		return;
-	}
-	
 	if(!changed){
 		//console.log("no changes..");
 		return;
 	}
 
+	if(neat_url_logging){
+		console.log("Neat URL: " + originalDetailsUrl + " has been changed to " + leanURL);
+	}
+
     // Animate the toolbar icon
-    // console.log(details.url + " has been changed to " + leanURL);
 	animateToolbarIcon();
 
     // webRequest blocking is not supported on mozilla.org, lets fix this

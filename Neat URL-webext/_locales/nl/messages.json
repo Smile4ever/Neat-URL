@@ -1,0 +1,78 @@
+{
+  "extensionDescription": {
+    "message": "Verwijder rommel van URLs.",
+    "description": "Description of the extension."
+  },
+  "blocked_params": {
+    "message": "Geblokkeerde parameters",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "Hoofdlettergevoelige parameters die uit de URL verwijderd zullen worden. Gebruik parameter@domein.com om domeinspecifieke geblokkeerde parameters te gebruiken. Gebruik een komma als scheidingsteken tussen geblokkeerde parameters.",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "Icoonanimatie",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Animatie die gebruikt wordt terwijl Neat URL de URL opschoont.",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "Geen animatie",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "Ontbrekende underscore",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "Roteer icoon",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "Verras me",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "Icoonthema",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "Donkere icoontjes worden standaard gebruikt. Je kan deze optie veranderen om lichte icoontjes te gebruiken.",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "Gebruik altijd donkere icoontjes",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "Gebruik altijd lichte icoontjes",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "Gebruik donkere icoontjes behalve voor notificaties",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "Gebruik lichte icoontjes behalve voor notificaties",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "Zet logging aan",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "Log URL-veranderingen naar de browserconsole.",
+    "description": ""
+  },
+  "savepreferences": {
+    "message": "Voorkeuren opslaan",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "Voorkeuren opgeslagen",
+    "description": ""
+  }
+}
