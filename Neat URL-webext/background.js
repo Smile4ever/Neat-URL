@@ -6,22 +6,22 @@
 // * https://webapps.stackexchange.com/questions/9863/are-the-parameters-for-www-youtube-com-watch-documented
 // * https://github.com/Smile4ever/firefoxaddons/issues/25
 
-var defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source";
+let defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source";
 
-var enabled = true;
-var globalNeatURL = "";
-var globalCurrentURL = "";
+let enabled = true;
+let globalNeatURL = "";
+let globalCurrentURL = "";
 const version = browser.runtime.getManifest().version;
 
 /// Preferences
-var neat_url_blocked_params; // this is an array
-var neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
-var neat_url_icon_theme;
-var neat_url_logging;
+let neat_url_blocked_params; // this is an array
+let neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
+let neat_url_icon_theme;
+let neat_url_logging;
 
 // Used for upgrading purposes:
-var neat_url_hidden_params; // this is an array
-var neat_url_version; // previous version when upgrading, after upgrading the current version
+let neat_url_hidden_params; // this is an array
+let neat_url_version; // previous version when upgrading, after upgrading the current version
 
 function init(){
 	var valueOrDefault = function(value, defaultValue){
@@ -346,6 +346,10 @@ function buildURL(detailsUrl, blockedParams, hashParams) {
 		newURL = newURL.replace(hashParam, "");
 	}
 
+	if(decodeURI(newURL.replace("+", "%20")) == decodeURI(detailsUrl)){
+		return detailsUrl;
+	}
+
     return newURL;
 }
 
@@ -456,29 +460,17 @@ function cleanURL(details) {
 		}
 	}
 
-	let changed = true;
-
-	if (Object.keys(reducedParams).length == 0) {
-		changed = false;
-	}
-
 	// https://github.com/Smile4ever/firefoxaddons/issues/30 should no longer occur with the new buildURL function
 	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
     leanURL = buildURL(details.url, blockedParams, hashParams);
-
-    let leanURLChanged = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
-    if(leanURL != leanURLChanged){
-		changed = true;
-		leanURL = leanURLChanged;
-	}
+    leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
 	
-	if(leanURL == details.url || leanURL == originalDetailsUrl){
-		changed = false;
+	// Is the URL changed?
+	if(decodeURI(leanURL) == decodeURI(details.url) || decodeURI(leanURL) == decodeURI(originalDetailsUrl) || leanURL == details.url + "="){
 		return;
 	}
 	
-	if(!changed){
-		//console.log("no changes..");
+	if(leanURL.indexOf("utm.gif") > -1){
 		return;
 	}
 
@@ -494,7 +486,7 @@ function cleanURL(details) {
 
 	const applyAfter = 400;
 
-    if(leanURL.indexOf("mozilla.org") > -1){
+    if(details.url.indexOf(leanURL) > -1 && getDomain(leanURL) == "addons.mozilla.org"){
 		globalNeatURL = leanURL;
 		globalCurrentURL = details.url;
 
@@ -539,18 +531,18 @@ function animateToolbarIcon(){
 	var imagesRotate = [resolveIconURL("neaturl-96-state1.png"), resolveIconURL("neaturl-96-state2.png"), resolveIconURL("neaturl-96-state3.png")];
 
 	if(neat_url_icon_animation == "missing_underscore")
-		images = imagesMissingUnderscore
+		images = imagesMissingUnderscore;
 	if(neat_url_icon_animation == "rotate")
-		images = imagesRotate
+		images = imagesRotate;
 		
 	if(images.length == 0 && neat_url_icon_animation == "surprise_me"){
 		// https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
 		var zeroOrOne = Math.floor(Math.random() * 2);
 		
 		if(zeroOrOne == 0)
-			images = imagesMissingUnderscore
+			images = imagesMissingUnderscore;
 		if(zeroOrOne == 1)
-			images = imagesRotate
+			images = imagesRotate;
 	}
 	
 	var time = 350 * images.length;

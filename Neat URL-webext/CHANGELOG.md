@@ -9,6 +9,7 @@
 * Allow logging the changed URLs to the console #36
 * Add localisation system. The Dutch localisation is already included.
 * Expanded README with extra parameters #43
+* Ignore utm.gif links
 
 2.1.2
 =====
