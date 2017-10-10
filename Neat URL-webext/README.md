@@ -50,13 +50,13 @@ Other valid parameters (exceptions to the ? rule)
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
 	#xtor=RSS-8@futura-sciences.com
-	$/ref@amazon.* (remove everything after /ref on amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters)
+	$/ref@amazon.* (remove everything after /ref on amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters. Exception: Amazon product pages parameters are cleaned like they contain two dollar signs)
 	$$/ref@amazon.* (remove everything after /ref on amazon domains - this will always apply, even when there are other query parameters after removing the filtered query parameters - this option is available because the user should be in control but beware that double dollar signs are dangerous, it might break the URL)
 	
 Invalid parameters:
     
     param@*.google.* (too many wildcards)
-    !ved (this is some random string - not supported, but it might work)
+    !ved (this is some random string - not supported, it will not work)
     /ref@amazon.*$ (dollar sign should be at the beginning)
 
 ## Recommended parameters

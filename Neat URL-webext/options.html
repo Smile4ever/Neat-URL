@@ -164,6 +164,37 @@
 			</div>
 		</div>
 		
+		<h2 data-i18n="advanced">Advanced</h2>
+		<div style="margin-bottom: 20px" data-i18n="advanced_descr">These options may bite.</div>
+		
+		<div class="hr"></div>
+		
+		<div class="flexbox-container">
+			<div class="labelbox">
+				<label><span data-i18n="blocked_tracking_domains">Blocked tracking domains</span></label><div class="descr" data-i18n="blocked_tracking_domains_descr">These requests will not be allowed and will be cancelled by Neat URL to improve your privacy.</div>
+			</div>
+			<div>
+				<textarea id="neat_url_blocked_tracking_domains" style="width:180%; z-index: 99; height: 150px;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea><!-- 215% for Nightly is better -->
+			</div>
+			<div style="display:none">
+				<!-- Empty -->
+			</div>
+		</div>
+		
+		<div class="hr"></div>
+		
+		<div class="flexbox-container">
+			<div class="labelbox">
+				<label><span data-i18n="url_request_types">URL request types</span></label><div class="descr" data-i18n="url_request_types_descr">Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType" target="_blank">the list of resource types</a>.</div>
+			</div>
+			<div>
+				<div><input type="input" id="neat_url_types" style="width:180%; z-index: 99;"></div>
+			</div>
+			<div style="display:none">
+				<!-- Empty -->
+			</div>
+		</div>
+		
 		<div style="display:none">
 			<!-- Used to facilitate upgrades -->
 			<input type="text" id="neat_url_version">

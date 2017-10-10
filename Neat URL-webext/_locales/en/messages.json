@@ -67,6 +67,30 @@
     "message": "Log URL changes to the browser console.",
     "description": ""
   },
+  "advanced": {
+	"message": "Advanced",
+	"description": ""
+  },
+  "advanced_descr": {
+    "message": "These options may bite.",
+	"description": ""
+  },
+  "blocked_tracking_domains": {
+	"message": "Blocked tracking domains",
+	"description": ""
+  },
+  "blocked_tracking_domains_descr": {
+	"message": "These requests will not be allowed and will be cancelled by Neat URL to safeguard your privacy. This list is comma-separated.",
+	"description": ""
+  },
+  "url_request_types": {
+    "message": "URL request types",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
   "savepreferences": {
     "message": "Save preferences",
     "description": ""

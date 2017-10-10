@@ -15,6 +15,14 @@ const PREFS = {
 		"type": "checked",
 		"default": false
 	},
+	"neat_url_blocked_tracking_domains": {
+		"type": "value",
+		"default": "google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
+	},
+	"neat_url_types": {
+		"type": "value",
+		"default": "main_frame"
+	},
 	"neat_url_version": {
 		"type": "value",
 		"default": ""
@@ -28,9 +36,9 @@ var lastWidth = 0;
 
 function saveOptions() {
 	// Get default values
-	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(", ");
-	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(", ");
-	let hiddenParams = document.getElementById("neat_url_hidden_params")["value"].split(", ");
+	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(" ").join("").split(",");
+	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(" ").join("").split(",");
+	let hiddenParams = document.getElementById("neat_url_hidden_params")["value"].split(" ").join("").split(",");
 
 	// Add to hidden parameters if needed
 	for(let defaultParam of defaultParams){
@@ -76,6 +84,7 @@ function restoreOptions() {
 			else {
 				val = PREFS[p].default;
 			}
+
 			document.getElementById(p)[PREFS[p].type] = val;
 			//console.log("options.js val restored is " + val);
 		}
@@ -90,7 +99,12 @@ function i18n() {
 			if(i18nElements[i].getAttribute == null)
 				continue;
 			i18n_attrib = i18nElements[i].getAttribute("data-i18n");
-			i18nElements[i].textContent = browser.i18n.getMessage(i18n_attrib);
+			let message = browser.i18n.getMessage(i18n_attrib);
+			if(message.indexOf("<") > -1 && message.indexOf(">") > -1){
+				i18nElements[i].innerHTML = message;
+			}else{
+				i18nElements[i].textContent = message;
+			}
 		}catch(ex){
 			console.error("i18n id " + IDS[id] + " not found");
 		}

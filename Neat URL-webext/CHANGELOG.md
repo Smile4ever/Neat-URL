@@ -1,3 +1,13 @@
+3.1.0
+=====
+* Fix some websites breaking / problems caused by the use of URL() constructor #52
+* Default request filter will now only filter "main_frame" requests - see the advanced section of the options to change that (tip: if you want all requests to be filtered, you can use an empty value - it might break some sites, so make sure you report all URLs which do not work in this mode). #48 #52 livejournal.com
+* Safer handling of addons.mozilla.org - only main_frame requests will be changed to prevent issues. #48
+* Added tracking protection - it will cancel requests to listed domains
+* Expanded existing localisations
+* Explicit support for stripping of # parameters
+* Fix double dollar support
+
 3.0.0
 =====
 * Fix notification theme not respected the first time you click Save preferences when it is different from the default icon theme

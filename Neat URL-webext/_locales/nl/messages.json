@@ -20,43 +20,43 @@
     "description": ""
   },
   "icon_animation_none": {
-	"message": "Geen animatie",
+    "message": "Geen animatie",
     "description": ""
   },
   "icon_animation_missing_underscore": {
-	"message": "Ontbrekende underscore",
+    "message": "Ontbrekende underscore",
     "description": ""
   },
   "icon_animation_rotate": {
-	"message": "Roteer icoon",
+    "message": "Roteer icoon",
     "description": ""
   },
   "icon_animation_surprise_me": {
-	"message": "Verras me",
+    "message": "Verras me",
     "description": ""
   },
   "icon_theme": {
-	"message": "Icoonthema",
+    "message": "Icoonthema",
     "description": ""
   },
   "icon_theme_descr": {
-	"message": "Donkere icoontjes worden standaard gebruikt. Je kan deze optie veranderen om lichte icoontjes te gebruiken.",
+    "message": "Donkere icoontjes worden standaard gebruikt. Je kan deze optie veranderen om lichte icoontjes te gebruiken.",
     "description": ""
   },
   "icon_theme_dark": {
-	"message": "Gebruik altijd donkere icoontjes",
+    "message": "Gebruik altijd donkere icoontjes",
     "description": ""
   },
   "icon_theme_light": {
-	"message": "Gebruik altijd lichte icoontjes",
+    "message": "Gebruik altijd lichte icoontjes",
     "description": ""
   },
   "icon_theme_dark_notiflight": {
-	"message": "Gebruik donkere icoontjes behalve voor notificaties",
+    "message": "Gebruik donkere icoontjes behalve voor notificaties",
     "description": ""
   },
   "icon_theme_light_notifdark": {
-	"message": "Gebruik lichte icoontjes behalve voor notificaties",
+    "message": "Gebruik lichte icoontjes behalve voor notificaties",
     "description": ""
   },
   "enable_logging": {
@@ -67,12 +67,36 @@
     "message": "Log URL-veranderingen naar de browserconsole.",
     "description": ""
   },
+  "advanced": {
+    "message": "Geavanceerd",
+    "description": ""
+  },
+  "advanced_descr": {
+    "message": "Deze opties kunnen bijten.",
+    "description": ""
+  },
+  "blocked_tracking_domains": {
+	"message": "Geblokkeerde trackingdomeinen",
+	"description": ""
+  },
+  "blocked_tracking_domains_descr": {
+	"message": "Deze aanvragen zullen niet toegestaan worden en zullen geannuleerd worden door Neat URL om uw privacy te waarborgen. Deze lijst is kommagescheiden.",
+	"description": ""
+  },
+  "url_request_types": {
+    "message": "URL-aanvraagtypes",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "Standaardwaarde: main_frame. Deze lijst is kommagescheiden. Geldige waardees kunnen gevonden worden in <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>de lijst van aanvraagtypes</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
   "savepreferences": {
     "message": "Voorkeuren opslaan",
     "description": ""
   },
   "notify_preferences_saved": {
-	"message": "Voorkeuren opgeslagen",
+    "message": "Voorkeuren opgeslagen",
     "description": ""
   }
 }

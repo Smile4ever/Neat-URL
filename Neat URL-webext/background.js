@@ -1,16 +1,20 @@
-/// Static variables
 // Sources:
 // * First version from Pure URL
 // * https://cheeky4n6monkey.blogspot.nl/2014/10/google-eid.html
 // * https://greasyfork.org/en/scripts/10096-general-url-cleaner
 // * https://webapps.stackexchange.com/questions/9863/are-the-parameters-for-www-youtube-com-watch-documented
 // * https://github.com/Smile4ever/firefoxaddons/issues/25
+// * https://github.com/Smile4ever/firefoxaddons/issues/43
 
+/// Static variables
 let defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source";
+let defaultRequestTypes = "main_frame";
+let defaultBlockedTrackingDomains = "google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net";
 
 let enabled = true;
 let globalNeatURL = "";
 let globalCurrentURL = "";
+let handleAllRequests = true;
 const version = browser.runtime.getManifest().version;
 
 /// Preferences
@@ -18,6 +22,7 @@ let neat_url_blocked_params; // this is an array
 let neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
 let neat_url_icon_theme;
 let neat_url_logging;
+let neat_url_types;
 
 // Used for upgrading purposes:
 let neat_url_hidden_params; // this is an array
@@ -32,6 +37,7 @@ function init(){
 	
 	var valueOrDefaultArray = function(value, defaultValue){
 		var calcValue = valueOrDefault(value, defaultValue);
+		if(calcValue == "") return [];
 		return calcValue.split(" ").join("").split(",");
 	}
 	
@@ -39,7 +45,9 @@ function init(){
 		"neat_url_blocked_params",
 		"neat_url_icon_animation",
 		"neat_url_icon_theme",
-		"neat_url_logging"
+		"neat_url_logging",
+		"neat_url_blocked_tracking_domains",
+		"neat_url_types"
 	]).then((result) => {
 		//console.log("background.js neat_url_blocked_params " + result.neat_url_blocked_params);
 		neat_url_blocked_params = valueOrDefaultArray(result.neat_url_blocked_params, defaultGlobalBlockedParams);
@@ -49,6 +57,30 @@ function init(){
 		neat_url_icon_theme = valueOrDefault(result.neat_url_icon_theme, "dark");
 		//console.log("background.js neat_url_logging " + result.neat_url_logging);
 		neat_url_logging = valueOrDefault(result.neat_url_logging, false);
+		//console.log("background.js neat_url_blocked_tracking_domains " + result.neat_url_blocked_tracking_domains);
+		neat_url_blocked_tracking_domains = valueOrDefaultArray(result.neat_url_blocked_tracking_domains, defaultBlockedTrackingDomains);
+		//console.log("background.js neat_url_types " + result.neat_url_types);
+		neat_url_types = valueOrDefaultArray(result.neat_url_types, defaultRequestTypes);
+
+		if(neat_url_blocked_tracking_domains != "" && neat_url_types.length != 0){
+			handleAllRequests = false; // We will filter in cleanURL on the requested types. We will filter by default.
+		}
+
+		if(neat_url_blocked_tracking_domains != "" || neat_url_types.length == 0){
+			/// Register for types specified in neat_url_types
+			browser.webRequest.onBeforeRequest.addListener(
+				cleanURL,
+				{urls: ["<all_urls>"]},
+				["blocking"]
+			);
+		}else{
+			/// Register for types specified in neat_url_types
+			browser.webRequest.onBeforeRequest.addListener(
+				cleanURL,
+				{urls: ["<all_urls>"], types: neat_url_types},
+				["blocking"]
+			);
+		}
 
 		initBrowserAction(); // Needs neat_url_icon_theme
 	}).catch(console.error);
@@ -83,20 +115,6 @@ browser.runtime.onMessage.addListener(function(message) {
 			break;
 	}
 });
-
-// See also https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/Tabs/sendMessage
-/*function sendMessage(action, data, errorCallback){
-	function logTabs(tabs) {
-		for (tab of tabs) {
-			browser.tabs.sendMessage(tab.id, {"action": action, "data": data}).catch(function(){
-				onError("failed to execute " + action + "with data " + data);
-				if(errorCallback) errorCallback(data);
-			});
-		}
-	}
-
-	browser.tabs.query({currentWindow: true, active: true}).then(logTabs, onError);
-}*/
 
 /// Browser action
 /// Neat URL code
@@ -226,7 +244,7 @@ function isAlpha(str) {
 
 function applyMatch(match2, leanURL){
 	let firstChar = match2.substr(0, 1);
-	let secondChar = match2.substr(1, 2);
+	let secondChar = match2.substr(1, 1);
 	let startIndexAsEnd = -1;
 
 	if(firstChar == "$"){
@@ -237,9 +255,15 @@ function applyMatch(match2, leanURL){
 
 			// if startIndexAsEnd is -1, we return the original URL without altering it
 			startIndexAsEnd = leanURL.lastIndexOf(match2);
+			//console.log("startIndexAsEnd is " + startIndexAsEnd + " inside of " + leanURL + " for " + match2);
+
 			if(startIndexAsEnd > -1)
 				leanURL = leanURL.substring(0, startIndexAsEnd);
 		}
+	}
+
+	if(firstChar == "#"){
+		leanURL = leanURL.replace(match2, "");
 	}
 
 	return leanURL;
@@ -346,7 +370,16 @@ function buildURL(detailsUrl, blockedParams, hashParams) {
 		newURL = newURL.replace(hashParam, "");
 	}
 
-	if(decodeURI(newURL.replace("+", "%20")) == decodeURI(detailsUrl)){
+	/// URL() woes - + is not always %20
+	if(decodeURIComponent(detailsUrl).indexOf("+") == -1){
+		newURL = newURL.replace("+", "%20");
+	}
+
+	/// URL() woes - Don't encode too much, thank you
+	newURL = urlDecode(newURL);
+
+	/// URL() woes - do not add = when it's not needed
+	if(newURL.split("#")[0].replaceAll("=", "") == detailsUrl.split("#")[0].replaceAll("=", "")){
 		return detailsUrl;
 	}
 
@@ -412,7 +445,11 @@ function getRootDomain(url) {
 }
 
 function urlDecode(url){
-	return url.replace("%3d", "=").replace("%3D", "=");
+	return url
+		.replaceAll("%3d", "=").replaceAll("%3D", "=")
+		.replaceAll("%2c", ",").replaceAll("%2C", ",")
+		.replaceAll("%3A", ":").replaceAll("%3A", ":")
+		.replaceAll("%2f", "/").replaceAll("%2F", "/");
 }
 
 /// Lean URL / Neat URL code
@@ -421,6 +458,32 @@ function cleanURL(details) {
 
 	let originalDetailsUrl = details.url;
 	details.url = urlDecode(details.url);
+
+	// Do not load links to google-analytics or other trackers.
+	if(details.type != "main_frame"){
+		for(let trackingDomain of neat_url_blocked_tracking_domains){
+			if(details.url.indexOf(trackingDomain) > -1){
+				if(neat_url_logging){
+					console.log("cancelling " + details.url);
+				}
+				return {cancel: true};
+			}
+		}
+	}
+
+	let isValid = false;
+	if(!handleAllRequests){
+		for(let requestType of neat_url_types){
+			if(requestType == details.type){
+				isValid = true;
+			}
+		}
+		if(!isValid){
+			// Skipping this request
+			//console.log("Skipping type " + details.type + " for url " + details.url);
+			return;
+		}
+	}
 
     let baseURL = details.url.split("?")[0];
     let params = getParams(details.url);
@@ -433,11 +496,11 @@ function cleanURL(details) {
 	var domain = getDomain(details.url);
 	var rootDomain = getRootDomain(details.url);
 	var domainMinusSuffix = getDomainMinusSuffix(details.url);
-	
+
 	if (domain == null || rootDomain == null || domainMinusSuffix == null ){
 		return;
 	}	
-	
+
 	let blockedParams = [];
 	let hashParams = [];
 
@@ -464,18 +527,23 @@ function cleanURL(details) {
 	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
     leanURL = buildURL(details.url, blockedParams, hashParams);
     leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
-	
+
 	// Is the URL changed?
-	if(decodeURI(leanURL) == decodeURI(details.url) || decodeURI(leanURL) == decodeURI(originalDetailsUrl) || leanURL == details.url + "="){
+	let decodedDetailsURL = urlDecode(decodeURIComponent(details.url));
+	let decodedOriginalDetailsURL = urlDecode(decodeURIComponent(originalDetailsUrl));
+	let decodedLeanURL = urlDecode(decodeURIComponent(leanURL));
+
+	if(decodedLeanURL == decodedDetailsURL || decodedLeanURL == decodedOriginalDetailsURL){
 		return;
 	}
-	
-	if(leanURL.indexOf("utm.gif") > -1){
+
+	// Don't change the URL if any of these is true
+	if(decodedLeanURL.indexOf("utm.gif") > -1 || decodedDetailsURL.indexOf("&&") > -1){
 		return;
 	}
 
 	if(neat_url_logging){
-		console.log("Neat URL: " + originalDetailsUrl + " has been changed to " + leanURL);
+		console.log("Neat URL (type " + details.type + "): " + originalDetailsUrl + " has been changed to " + leanURL);
 	}
 
     // Animate the toolbar icon
@@ -486,7 +554,9 @@ function cleanURL(details) {
 
 	const applyAfter = 400;
 
-    if(details.url.indexOf(leanURL) > -1 && getDomain(leanURL) == "addons.mozilla.org"){
+	if(getDomain(leanURL) == "addons.mozilla.org"){
+		if(details.type != "main_frame") return;
+
 		globalNeatURL = leanURL;
 		globalCurrentURL = details.url;
 
@@ -513,13 +583,6 @@ function cleanURL(details) {
 
     return { redirectUrl: leanURL };
 }
-
-/// Lean URL / Neat URL code
-browser.webRequest.onBeforeRequest.addListener(
-    cleanURL,
-    {urls: ["<all_urls>"]},
-    ["blocking"]
-);
 
 /// Neat URL code
 function animateToolbarIcon(){
@@ -597,3 +660,8 @@ function resolveIconUrlNotif(file){
 	}
 	return resolveIconByTheme(file, neat_url_icon_theme);
 }
+
+String.prototype.replaceAll = function(search, replacement) {
+	var target = this;
+	return target.replace(new RegExp(search, 'g'), replacement);
+};
