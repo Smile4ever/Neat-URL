@@ -1,3 +1,8 @@
+3.1.1
+=====
+* Fix handling of addons.mozilla.org again, browser.tabs.update triggers a new request, catch that
+* Change applyAfter from 400ms to 300ms on addons.mozilla.org
+
 3.1.0
 =====
 * Fix some websites breaking / problems caused by the use of URL() constructor #52

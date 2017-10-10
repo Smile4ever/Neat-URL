@@ -552,10 +552,11 @@ function cleanURL(details) {
     // webRequest blocking is not supported on mozilla.org, lets fix this
     // but only if we are navigating to addons.mozilla.org and there doesn't exist a tab yet with the same URL
 
-	const applyAfter = 400;
+	const applyAfter = 300;
 
 	if(getDomain(leanURL) == "addons.mozilla.org"){
 		if(details.type != "main_frame") return;
+		if(globalNeatURL == leanURL) return;
 
 		globalNeatURL = leanURL;
 		globalCurrentURL = details.url;
@@ -575,8 +576,10 @@ function cleanURL(details) {
 					}
 				}
 
-				globalNeatURL = "";
-				globalCurrentURL = "";
+				setTimeout(function(){
+					globalNeatURL = "";
+					globalCurrentURL = "";
+				}, applyAfter);
 			}, null);
 		}, applyAfter);
 	}
