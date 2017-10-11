@@ -1,0 +1,54 @@
+{
+  "extensionDescription": {
+    "message": "以 VIM 式 j 和 k 键滚动页面。",
+    "description": "Description of the extension."
+  },
+  "scrollvalue": {
+    "message": "滚动值",
+    "description": ""
+  },
+  "scrollvalueshift": {
+    "message": "滚动值 (按住 Shift)",
+    "description": ""
+  },
+  "scrollvaluealt": {
+    "message": "滚动值 (按住 Alt)",
+    "description": ""
+  },
+  "pixels": {
+    "message": "像素",
+    "description": ""
+  },
+  "pagedownpageup": {
+    "message": "PageDown 和 PageUp 键的滚动也采用上述值",
+    "description": ""
+  },
+  "horizontalscroll": {
+    "message": "使用 J/K 键操控水平滚动",
+    "description": ""
+  },
+  "horizontalscrollshift": {
+    "message": "使用 Shift+J/Shift+K 键操控水平滚动",
+    "description": ""
+  },
+  "horizontalscrollalt": {
+    "message": "使用 Alt+J/Alt+K 键操控水平滚动",
+    "description": ""
+  },
+  "savepreferences": {
+    "message": "保存设置",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "设置已保存",
+    "description": ""
+  },
+  "notify_tip_horizontal": {
+	"message": "此页面无法水平滚动。将首选项更改为垂直滚动或尝试配置其他快捷键。",
+	"description": ""  
+  },
+  "notify_tip_vertical": {
+	"message": "此页面无法垂直滚动。将首选项更改为垂直滚动或尝试配置其他快捷键。",
+	"description": ""  
+  }
+}

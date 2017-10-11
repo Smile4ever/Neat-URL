@@ -1,0 +1,102 @@
+{
+  "extensionDescription": {
+    "message": "移除网址中的无用段。",
+    "description": "Description of the extension."
+  },
+  "blocked_params": {
+    "message": "拦截参数",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。使用逗号分隔多个参数。",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "图标动画",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Neat URL 清理网址时呈现的动画。",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "无动画",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "下划线消失",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "图标旋转",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "提醒",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "图标主题",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "默认使用暗色图标。您可以更改此选项以使用明亮图标。",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "始终使用暗色图标",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "始终使用明亮图标",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "使用暗色图标（通知除外）",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "使用明亮图标（通知除外）",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "启用日志",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "将网址变更记录到浏览器控制台。",
+    "description": ""
+  },
+  "advanced": {
+	"message": "高级",
+	"description": ""
+  },
+  "advanced_descr": {
+    "message": "慎重修改，以防故障。",
+	"description": ""
+  },
+  "blocked_tracking_domains": {
+	"message": "拦截跟踪域名",
+	"description": ""
+  },
+  "blocked_tracking_domains_descr": {
+	"message": "禁止这些请求（由 Neat URL 取消），从而保护您的隐私。此列表以逗号分隔。",
+	"description": ""
+  },
+  "url_request_types": {
+    "message": "网址请求类型",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "默认值：main_frame。此列表以逗号分隔。有效值见<a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>资源类型列表</a>。",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
+  "savepreferences": {
+    "message": "保存设置",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "设置已保存",
+    "description": ""
+  }
+}
