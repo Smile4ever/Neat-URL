@@ -56,7 +56,7 @@
     "description": ""
   },
   "icon_theme_light_notifdark": {
-	"message": "Использовать светлые пиктограммы, кроме уведомлений",
+	"message": "Использовать светлые значки, кроме уведомлений",
     "description": ""
   },
   "enable_logging": {
