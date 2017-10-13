@@ -1,0 +1,102 @@
+{
+  "extensionDescription": {
+    "message": "Удаляет мусор из URL.",
+    "description": "Description of the extension."
+  },
+  "blocked_params": {
+    "message": "Заблокированные параметры URL-адресов.",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "Анимация значка",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Анимация, которую нужно использовать, когда Neat URL очищает URL-адрес.",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "Без анимации",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "Мигающий знак подчёркивания",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "Вращение значка",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "Удивите меня",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "Тема значка",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "Тёмные значки используются по умолчанию. Вы можете изменить этот параметр, чтобы использовать светлые значки.",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "Всегда использовать тёмные значки",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "Всегда использовать светлые значки",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "Использовать тёмные значки, кроме уведомлений",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "Использовать светлые пиктограммы, кроме уведомлений",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "Включить журналирование",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "Записывать изменения URL-адресов в консоль браузера",
+    "description": ""
+  },
+  "advanced": {
+	"message": "Дополнительно",
+	"description": ""
+  },
+  "advanced_descr": {
+    "message": "Это параметры для опытного пользователя.",
+	"description": ""
+  },
+  "blocked_tracking_domains": {
+	"message": "Заблокированные следящие домены ",
+	"description": ""
+  },
+  "blocked_tracking_domains_descr": {
+	"message": "Эти запросы будут отменены с помощью Neat URL для защиты вашей конфиденциальности. Этот список разделен запятыми.",
+	"description": ""
+  },
+  "url_request_types": {
+    "message": "Типы URL-запросов",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "Значение по умолчанию: main_frame. Этот список разделен запятыми. Допустимые значения можно найти здесь: <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
+  "savepreferences": {
+    "message": "Сохранить настройки",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "Настройки сохранены",
+    "description": ""
+  }
+}
