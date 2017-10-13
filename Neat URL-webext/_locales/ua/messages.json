@@ -96,7 +96,7 @@
     "description": ""
   },
   "notify_preferences_saved": {
-	"message": "Збережені налаштування",
+	"message": "Налаштування збережено",
     "description": ""
   }
 }
