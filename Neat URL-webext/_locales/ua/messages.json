@@ -1,0 +1,102 @@
+{
+  "extensionDescription": {
+    "message": "Видаляє сміття з URL-адрес.",
+    "description": "Description of the extension."
+  },
+  "blocked_params": {
+    "message": "Заблоковані параметри URL-адрес.",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "Чутливі до регістру параметри, котрі будуть видалені з URL. Використовуйте шаблон param@domain.com щоб застосовувати видалення параметрів для конкретних доменів. Розділяйте окремі параметри комою.",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "Анімація піктограми",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Анімація, яку потрібно використовувати, коли Neat URL очищає URL-адресу.",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "Без анімації",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "Блимаючий знак підкреслення",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "Обертання піктограми",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "Здивуйте мене",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "Тема піктограм",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "Темні піктограми використовуються за замовчуванням. Ви можете змінити цей параметр, щоб використовувати світлі піктограми.",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "Завжди використовувати темні піктограми",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "Завжди використовувати світлі піктограми",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "Використовувати темні піктограми, крім сповіщень",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "Використовувати світі піктограми, крім сповіщень",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "Ввімкнути ведення журналу",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "Записувати зміни URL-адрес в консоль браузера",
+    "description": ""
+  },
+  "advanced": {
+	"message": "Додатково",
+	"description": ""
+  },
+  "advanced_descr": {
+    "message": "Це параметри для досвідченого користувача.",
+	"description": ""
+  },
+  "blocked_tracking_domains": {
+	"message": "Заблоковані відстежуючі домени ",
+	"description": ""
+  },
+  "blocked_tracking_domains_descr": {
+	"message": "Ці запити буде скасовано за допомогою Neat URL для захисту вашої конфіденційності. Цей список розділено комами.",
+	"description": ""
+  },
+  "url_request_types": {
+    "message": "Типи URL-запитів",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "Значення за замовчуванням: main_frame. Цей список розділено комами. Допустимі значення можна знайти тут: <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
+  "savepreferences": {
+    "message": "Зберегти налаштування",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "Збережені налаштування",
+    "description": ""
+  }
+}
