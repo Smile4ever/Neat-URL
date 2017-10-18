@@ -59,6 +59,22 @@
     "message": "Gebruik lichte icoontjes behalve voor notificaties",
     "description": ""
   },
+  "show_counter": {
+	"message": "Toon teller",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Toon een teller die het aantal herschreven URLs toont.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Achtergrondkleur teller",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "De achtergrondkleur die gebruikt wordt door de teller.",
+    "description": ""
+  },
   "enable_logging": {
     "message": "Zet logging aan",
     "description": ""
@@ -75,13 +91,13 @@
     "message": "Deze opties kunnen bijten.",
     "description": ""
   },
-  "blocked_tracking_domains": {
-	"message": "Geblokkeerde trackingdomeinen",
-	"description": ""
+  "blacklist": {
+    "message": "Zwarte lijst van domeinen",
+    "description": ""
   },
-  "blocked_tracking_domains_descr": {
-	"message": "Deze aanvragen zullen niet toegestaan worden en zullen geannuleerd worden door Neat URL om uw privacy te waarborgen. Deze lijst is kommagescheiden.",
-	"description": ""
+  "blacklist_descr": {
+    "message": "Kommagescheiden lijst van domeinen. Neat URL zal niet werken op deze websites.",
+    "description": ""
   },
   "url_request_types": {
     "message": "URL-aanvraagtypes",

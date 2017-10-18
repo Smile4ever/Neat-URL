@@ -59,6 +59,22 @@
 	"message": "Use light icons except for notifications",
     "description": ""
   },
+  "show_counter": {
+	"message": "Show counter",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Show a counter which displays the number of rewritten URLs.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Counter background color",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "The background color used by the counter.",
+    "description": ""
+  },
   "enable_logging": {
     "message": "Enable logging",
     "description": ""
@@ -75,13 +91,13 @@
     "message": "These options may bite.",
 	"description": ""
   },
-  "blocked_tracking_domains": {
-	"message": "Blocked tracking domains",
-	"description": ""
+  "blacklist": {
+    "message": "Domain blacklist",
+    "description": ""
   },
-  "blocked_tracking_domains_descr": {
-	"message": "These requests will not be allowed and will be cancelled by Neat URL to safeguard your privacy. This list is comma-separated.",
-	"description": ""
+  "blacklist_descr": {
+    "message": "Comma separated list of domains. Neat URL will not work on these websites.",
+    "description": ""
   },
   "url_request_types": {
     "message": "URL request types",

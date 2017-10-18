@@ -11,13 +11,21 @@ const PREFS = {
 		"type": "value",
 		"default": "dark"
 	},
+	"neat_url_show_counter": {
+		"type": "checked",
+		"default": true
+	},
+	"neat_url_counter_color": {
+		"type": "value",
+		"default": "#eeeeee"
+	},
 	"neat_url_logging": {
 		"type": "checked",
 		"default": false
 	},
-	"neat_url_blocked_tracking_domains": {
+	"neat_url_blacklist": {
 		"type": "value",
-		"default": "google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
+		"default": ""
 	},
 	"neat_url_types": {
 		"type": "value",

@@ -59,6 +59,22 @@
 	"message": "Использовать светлые значки, кроме уведомлений",
     "description": ""
   },
+  "show_counter": {
+	"message": "Show counter",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Show a counter which displays the number of rewritten URLs.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Counter background color",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "The background color used by the counter.",
+    "description": ""
+  },
   "enable_logging": {
     "message": "Включить журналирование",
     "description": ""
@@ -75,12 +91,12 @@
     "message": "Это параметры для опытного пользователя.",
 	"description": ""
   },
-  "blocked_tracking_domains": {
-	"message": "Заблокированные следящие домены ",
+  "blacklist": {
+	"message": "Domain blacklist",
 	"description": ""
   },
-  "blocked_tracking_domains_descr": {
-	"message": "Эти запросы будут отменены с помощью Neat URL для защиты вашей конфиденциальности. Этот список разделен запятыми.",
+  "blacklist_descr": {
+	"message": "Comma separated list of domains. Neat URL will not work on these websites.",
 	"description": ""
   },
   "url_request_types": {

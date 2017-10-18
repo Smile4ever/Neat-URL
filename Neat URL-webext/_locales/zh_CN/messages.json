@@ -59,6 +59,22 @@
 	"message": "使用明亮图标（通知除外）",
     "description": ""
   },
+  "show_counter": {
+	"message": "Show counter",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Show a counter which displays the number of rewritten URLs.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Counter background color",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "The background color used by the counter.",
+    "description": ""
+  },
   "enable_logging": {
     "message": "启用日志",
     "description": ""
@@ -75,12 +91,12 @@
     "message": "慎重修改，以防故障。",
 	"description": ""
   },
-  "blocked_tracking_domains": {
-	"message": "拦截跟踪域名",
+  "blacklist": {
+	"message": "Domain blacklist",
 	"description": ""
   },
-  "blocked_tracking_domains_descr": {
-	"message": "禁止这些请求（由 Neat URL 取消），从而保护您的隐私。此列表以逗号分隔。",
+  "blacklist_descr": {
+	"message": "Comma separated list of domains. Neat URL will not work on these websites.",
 	"description": ""
   },
   "url_request_types": {

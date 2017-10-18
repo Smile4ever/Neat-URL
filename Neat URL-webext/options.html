@@ -154,6 +154,34 @@
 		
 		<div class="flexbox-container">
 			<div class="labelbox">
+				<label><span data-i18n="show_counter">Show counter</span></label><div class="descr" data-i18n="show_counter_descr">Show a counter which displays the number of rewritten URLs.</div>
+			</div>
+			<div>
+				<div><input type="checkbox" id="neat_url_show_counter"><label for="neat_url_show_badge"><span data-i18n="show_counter">Show counter</span></label></div>
+			</div>
+			<div>
+				<!-- Empty -->
+			</div>
+		</div>
+		
+		<div class="hr"></div>
+		
+		<div class="flexbox-container">
+			<div class="labelbox">
+				<label><span data-i18n="counter_background_color">Counter background color</span></label><div class="descr" data-i18n="counter_background_color_descr">The background color used by the counter</div>
+			</div>
+			<div>
+				<div><input type="color" id="neat_url_counter_color"><label for="neat_url_logging"><span data-i18n="neat_url_counter_color">Counter background color</span></label></div>
+			</div>
+			<div>
+				<!-- Empty -->
+			</div>
+		</div>
+		
+		<div class="hr"></div>
+		
+		<div class="flexbox-container">
+			<div class="labelbox">
 				<label><span data-i18n="enable_logging">Enable logging</span></label><div class="descr" data-i18n="enable_logging_descr">Log URL changes to the browser console.</div>
 			</div>
 			<div>
@@ -171,10 +199,10 @@
 		
 		<div class="flexbox-container">
 			<div class="labelbox">
-				<label><span data-i18n="blocked_tracking_domains">Blocked tracking domains</span></label><div class="descr" data-i18n="blocked_tracking_domains_descr">These requests will not be allowed and will be cancelled by Neat URL to improve your privacy.</div>
+				<label><span data-i18n="blacklist">Domain blacklist</span></label><div class="descr" data-i18n="blacklist_descr">Comma separated list of domains. Neat URL will not work on these websites.</div>
 			</div>
 			<div>
-				<textarea id="neat_url_blocked_tracking_domains" style="width:180%; z-index: 99; height: 150px;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea><!-- 215% for Nightly is better -->
+				<textarea id="neat_url_blacklist" style="width:180%; z-index: 99; height: 150px;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea><!-- 215% for Nightly is better -->
 			</div>
 			<div style="display:none">
 				<!-- Empty -->

@@ -59,6 +59,22 @@
 	"message": "Використовувати світі піктограми, крім сповіщень",
     "description": ""
   },
+  "show_counter": {
+	"message": "Show counter",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Show a counter which displays the number of rewritten URLs.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Counter background color",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "The background color used by the counter.",
+    "description": ""
+  },
   "enable_logging": {
     "message": "Ввімкнути ведення журналу",
     "description": ""
@@ -75,12 +91,12 @@
     "message": "Це параметри для досвідченого користувача.",
 	"description": ""
   },
-  "blocked_tracking_domains": {
-	"message": "Заблоковані відстежуючі домени ",
+  "blacklist": {
+	"message": "Domain blacklist",
 	"description": ""
   },
-  "blocked_tracking_domains_descr": {
-	"message": "Ці запити буде скасовано за допомогою Neat URL для захисту вашої конфіденційності. Цей список розділено комами.",
+  "blacklist_descr": {
+	"message": "Comma separated list of domains. Neat URL will not work on these websites.",
 	"description": ""
   },
   "url_request_types": {

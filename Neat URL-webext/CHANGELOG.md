@@ -1,3 +1,14 @@
+3.2.0
+=====
+* Add counter which shows the number of rewritten URLs
+* Add option to show/hide counter
+* Add option to set the counter background color
+* Fix addons.mozilla.org logic and change applyAfter to 1000ms
+* Drop tracking feature introduced in 3.1.0
+* Add blacklist feature to skip certain URLs
+* Skip rewriting urls which contain ??
+* Empty list of request types now means no request types are filtered at all
+
 3.1.1
 =====
 * Fix handling of addons.mozilla.org again, browser.tabs.update triggers a new request, catch that

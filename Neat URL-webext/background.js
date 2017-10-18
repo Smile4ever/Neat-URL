@@ -9,18 +9,26 @@
 /// Static variables
 let defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source";
 let defaultRequestTypes = "main_frame";
-let defaultBlockedTrackingDomains = "google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net";
+let defaultBlacklist = ""; // google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
 
+/// Runtime setting
 let enabled = true;
+
+/// Used by addons.mozilla.org handling
 let globalNeatURL = "";
 let globalCurrentURL = "";
-let handleAllRequests = true;
+let globalTabId = -1;
+
+/// Badge and browserAction (the variable version is also used for upgrades)
+let badge=[]; // Hold the badge counts
 const version = browser.runtime.getManifest().version;
 
 /// Preferences
-let neat_url_blocked_params; // this is an array
+let neat_url_blacklist; // this is an array
 let neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
 let neat_url_icon_theme;
+let neat_url_show_counter;
+let neat_url_counter_color;
 let neat_url_logging;
 let neat_url_types;
 
@@ -45,35 +53,24 @@ function init(){
 		"neat_url_blocked_params",
 		"neat_url_icon_animation",
 		"neat_url_icon_theme",
+		"neat_url_show_counter",
+		"neat_url_counter_color",
 		"neat_url_logging",
-		"neat_url_blocked_tracking_domains",
+		"neat_url_blacklist",
 		"neat_url_types"
 	]).then((result) => {
-		//console.log("background.js neat_url_blocked_params " + result.neat_url_blocked_params);
 		neat_url_blocked_params = valueOrDefaultArray(result.neat_url_blocked_params, defaultGlobalBlockedParams);
-		//console.log("background.js neat_url_icon_animation " + result.neat_url_icon_animation);
 		neat_url_icon_animation = valueOrDefault(result.neat_url_icon_animation, "missing_underscore");
-		//console.log("background.js neat_url_icon_theme " + result.neat_url_icon_theme);
 		neat_url_icon_theme = valueOrDefault(result.neat_url_icon_theme, "dark");
-		//console.log("background.js neat_url_logging " + result.neat_url_logging);
+		neat_url_show_counter = valueOrDefault(result.neat_url_show_counter, true);
+		neat_url_counter_color = valueOrDefault(result.neat_url_counter_color, "#000000");
 		neat_url_logging = valueOrDefault(result.neat_url_logging, false);
-		//console.log("background.js neat_url_blocked_tracking_domains " + result.neat_url_blocked_tracking_domains);
-		neat_url_blocked_tracking_domains = valueOrDefaultArray(result.neat_url_blocked_tracking_domains, defaultBlockedTrackingDomains);
-		//console.log("background.js neat_url_types " + result.neat_url_types);
+		neat_url_blacklist = valueOrDefaultArray(result.neat_url_blacklist, defaultBlacklist);
 		neat_url_types = valueOrDefaultArray(result.neat_url_types, defaultRequestTypes);
 
-		if(neat_url_blocked_tracking_domains != "" && neat_url_types.length != 0){
-			handleAllRequests = false; // We will filter in cleanURL on the requested types. We will filter by default.
-		}
+		browser.browserAction.setBadgeBackgroundColor({color: neat_url_counter_color});
 
-		if(neat_url_blocked_tracking_domains != "" || neat_url_types.length == 0){
-			/// Register for types specified in neat_url_types
-			browser.webRequest.onBeforeRequest.addListener(
-				cleanURL,
-				{urls: ["<all_urls>"]},
-				["blocking"]
-			);
-		}else{
+		if(neat_url_types.length != 0){
 			/// Register for types specified in neat_url_types
 			browser.webRequest.onBeforeRequest.addListener(
 				cleanURL,
@@ -89,9 +86,7 @@ function init(){
 		"neat_url_hidden_params",
 		"neat_url_version"
 	]).then((result) => {
-		//console.log("background.js neat_url_hidden_params " + result.neat_url_hidden_params);
 		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, "");
-		//console.log("background.js neat_url_version " + result.neat_url_version);
 		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
 
 		upgradeParametersIfNeeded();
@@ -383,6 +378,11 @@ function buildURL(detailsUrl, blockedParams, hashParams) {
 		return detailsUrl;
 	}
 
+	/// URL() woes - Don't encode too much, thank you
+	if(newURL.indexOf("??") == -1 && detailsUrl.indexOf("??") > -1){
+		return detailsUrl;
+	}
+
     return newURL;
 }
 
@@ -459,28 +459,13 @@ function cleanURL(details) {
 	let originalDetailsUrl = details.url;
 	details.url = urlDecode(details.url);
 
-	// Do not load links to google-analytics or other trackers.
-	if(details.type != "main_frame"){
-		for(let trackingDomain of neat_url_blocked_tracking_domains){
-			if(details.url.indexOf(trackingDomain) > -1){
-				if(neat_url_logging){
-					console.log("cancelling " + details.url);
-				}
-				return {cancel: true};
+	// Do not change links for these domains
+	for(let blackDomain of neat_url_blacklist){
+		//console.log("blackDomain " + blackDomain);
+		if(details.url.indexOf(blackDomain) > -1){
+			if(neat_url_logging){
+				console.log("not rewriting " + details.url);
 			}
-		}
-	}
-
-	let isValid = false;
-	if(!handleAllRequests){
-		for(let requestType of neat_url_types){
-			if(requestType == details.type){
-				isValid = true;
-			}
-		}
-		if(!isValid){
-			// Skipping this request
-			//console.log("Skipping type " + details.type + " for url " + details.url);
 			return;
 		}
 	}
@@ -546,33 +531,41 @@ function cleanURL(details) {
 		console.log("Neat URL (type " + details.type + "): " + originalDetailsUrl + " has been changed to " + leanURL);
 	}
 
+	let leanURLDomain = getDomain(leanURL);
+
     // Animate the toolbar icon
-	animateToolbarIcon();
+    if(leanURLDomain != "addons.mozilla.org"){
+		animateToolbarIcon();
+		incrementBadgeValue(details.tabId);
+	}
 
     // webRequest blocking is not supported on mozilla.org, lets fix this
     // but only if we are navigating to addons.mozilla.org and there doesn't exist a tab yet with the same URL
 
-	const applyAfter = 300;
+	const applyAfter = 1000;
 
-	if(getDomain(leanURL) == "addons.mozilla.org"){
+	if(leanURLDomain == "addons.mozilla.org"){
 		if(details.type != "main_frame") return;
 		if(globalNeatURL == leanURL) return;
 
 		globalNeatURL = leanURL;
 		globalCurrentURL = details.url;
+		globalTabId = details.tabId;
 
 		setTimeout(function(){
 			browser.tabs.query({url: globalCurrentURL}).then(function logTabs(tabs) {
 				if(globalNeatURL == null || globalNeatURL == "") return;
 
 				if(tabs.length == 0){
-					//console.log("It was opened in the current tab, update that tab to " + globalNeatURL);
-					browser.tabs.update({url: globalNeatURL});
+					//console.log("the query for " + globalCurrentURL + " returned nothing. Attempting " + globalNeatURL);
 				}else{
 					//console.log("It was opened in a new tab, update that tab to " + globalNeatURL);
 
 					for (tab of tabs) {
+						console.log("really updating " + tab.url + " to " + globalNeatURL);
 						browser.tabs.update(tab.id, {url: globalNeatURL});
+						animateToolbarIcon();
+						incrementBadgeValue(globalTabId);
 					}
 				}
 
@@ -668,3 +661,74 @@ String.prototype.replaceAll = function(search, replacement) {
 	var target = this;
 	return target.replace(new RegExp(search, 'g'), replacement);
 };
+
+function updateBadgeText(tabId){
+	// We're only updating the view
+	// The data won't be touched
+
+	//console.log("updateBadgeText - I'm updating the badge text for tabId " + tabId);
+	let badgeCounts = badge[tabId];
+	if(badgeCounts == null){
+		//console.log("badgeCounts == null");
+		badgeCounts = ""; // Set empty instead of null or 0
+	}else{
+		//console.log("badgeCounts is not null");
+	}
+
+	/// Update browserAction with badge count for the current tab. If the current tab changes, we will update it again
+	//console.log("updateBadgeText - badgeCounts is " + badgeCounts);
+	browser.browserAction.setBadgeText({text: badgeCounts+""});
+}
+
+function incrementBadgeValue(tabId){
+	// We're only updating the data
+	// The view will be updated when needed by the listeners
+
+	if(tabId == -1)
+	{
+		// The request is unrelated to a tab
+		return;
+	}
+
+	//console.log("getting badgeCounts for tabId " + tabId + " is " + badge[tabId]);
+	let badgeCounts = badge[tabId];
+	if(badgeCounts == null){
+		//console.log("badgeCounts == null");
+		badgeCounts = 0;
+	}else{
+		//console.log("badgeCounts is not null, but " + badgeCounts);
+	}
+	badgeCounts++;
+	badge[tabId] = badgeCounts;
+
+	//console.log("setting badgeCount to " + badgeCounts + " - result is " + badge[tabId]);
+}
+
+browser.tabs.onCreated.addListener(function(tab){
+	// Tabs can be created in the background. We're not interested in that.
+	if(tab.active){
+		//console.log("Updating currentTabId to " + tab.id + " by onCreated");
+		updateBadgeText(tab.id);
+	}
+});
+
+browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tabInfo){
+	// Tabs can be updated in the background. We're not interested in that.
+	if(tabInfo.active){
+		//console.log("Updating currentTabId to " + tabInfo.id + " by onUpdated");
+		updateBadgeText(tabInfo.id);
+	}
+});
+
+browser.tabs.onActivated.addListener(function(activeInfo){
+	// Tabs can be inactive when updating or creating and afterwards activated. We could check tab.active but it will always be true
+	//console.log("Updating currentTabId to " + activeInfo.tabId + " by onActivated");
+	updateBadgeText(activeInfo.tabId);
+});
+
+// Reset inside "dictionary"
+browser.tabs.onRemoved.addListener(function(tab){
+	// We're not changing the currentTabId here, since onRemoved will call onActivated implicitly
+	// We're only resetting the count for the badge, so that if another tab gets the same id, we don't be using the badge count of that unrelated tab
+	badge[tab.id] = null;
+});
