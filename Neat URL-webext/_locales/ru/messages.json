@@ -60,19 +60,19 @@
     "description": ""
   },
   "show_counter": {
-	"message": "Show counter",
+	"message": "Показывать счетчик",
     "description": ""
   },
   "show_counter_descr": {
-	"message": "Show a counter which displays the number of rewritten URLs.",
+	"message": "Показывать счетчик, отображающий количество исправленных url-адресов.",
     "description": ""
   },
   "counter_background_color": {
-	"message": "Counter background color",
+	"message": "Цвет фона счетчика",
     "description": ""
   },
   "counter_background_color_descr": {
-	"message": "The background color used by the counter.",
+	"message": "Цвет фона, используемый счетчиком.",
     "description": ""
   },
   "enable_logging": {
@@ -92,11 +92,11 @@
 	"description": ""
   },
   "blacklist": {
-	"message": "Domain blacklist",
+	"message": "Черный список доменов",
 	"description": ""
   },
   "blacklist_descr": {
-	"message": "Comma separated list of domains. Neat URL will not work on these websites.",
+	"message": "Список доменов, разделённый запятыми. Neat URL не будет срабатывать на этих сайтах.",
 	"description": ""
   },
   "url_request_types": {
