@@ -487,10 +487,10 @@ function cleanURL(details) {
 	}
 
     //let baseURL = url.split("?")[0];
-    let params = url.search;
-    let hashParams = url.hash;
+    //let params = url.search;
+    //let hashParams = url.hash;
     
-	if ("" === params && "" === hashParams){
+	if ("" === url.search && "" === url.hash){
 		//console.log("no params for " + url);
 		return;
 	}
