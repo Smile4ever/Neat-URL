@@ -306,7 +306,7 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 }
 
 /// Lean URL code
-function getParams(URL) {
+/*function getParams(URL) { //not used
     var splitURL = URL.split("?");
     if ( splitURL.length == 1 ) {
         return null;
@@ -321,7 +321,7 @@ function getParams(URL) {
     }
 
     return params;
-}
+}*/
 
 /// Lean URL code
 function buildURL(url, blockedParams, hashParams) {
@@ -334,10 +334,10 @@ function buildURL(url, blockedParams, hashParams) {
 
 	/// Process wildcards first for cleaner code
     //I see no mention about parameter wildcards???. 3.0.0 :/
-	let wildcardBlockedParams = [];
+	//let wildcardBlockedParams = []; //not used
 
 	for(let blockedParam of blockedParams){
-        if(blockedParam.startsWith('$')) continue;//another feature
+        if(blockedParam.startsWith('$')) continue;//another feature -> removeEndings()
         
 		let wildcardIndex = blockedParam.indexOf("*");
 		if(wildcardIndex == -1) continue;
@@ -403,7 +403,7 @@ function buildURL(url, blockedParams, hashParams) {
 
 /// Neat URL code
 // Copied from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-function getDomain(url) {
+/*function getDomain(url) { //not used
 	if(url == undefined || url == null) return null;
 	
     var hostname = url.replace("www.", ""); // leave www out of this discussion. I don't consider this a subdomain
@@ -422,7 +422,7 @@ function getDomain(url) {
     hostname = hostname.split('?')[0];
 
     return hostname;
-}
+}*/
 
 function getDomainMinusSuffix(domain){
 	//let domain = getDomain(url);
@@ -460,13 +460,13 @@ function getRootDomain(domain) {
     return domain;
 }
 
-function urlDecode(url){
+/*function urlDecode(url){ //not used
 	return url
 		.replaceAll("%3d", "=").replaceAll("%3D", "=")
 		.replaceAll("%2c", ",").replaceAll("%2C", ",")
 		.replaceAll("%3A", ":").replaceAll("%3A", ":")
 		.replaceAll("%2f", "/").replaceAll("%2F", "/");
-}
+}*/
 
 /// Lean URL / Neat URL code
 function cleanURL(details) {
@@ -478,7 +478,7 @@ function cleanURL(details) {
 	// Do not change links for these domains
 	for(let blackDomain of neat_url_blacklist){
 		//console.log("blackDomain " + blackDomain);
-		if(domain.indexOf(blackDomain) > -1){
+		if(domain.endsWith(blackDomain)){
 			if(neat_url_logging){
 				console.log("not rewriting " + url.href);
 			}
@@ -496,6 +496,7 @@ function cleanURL(details) {
 	}
 
 	//var domain = getDomain(url);
+	domain = domain.replace(/^www\./i, '');//getDomain() -> //leave www out of this discussion. I don't consider this a subdomain
 	var rootDomain = getRootDomain(domain);
 	var domainMinusSuffix = getDomainMinusSuffix(domain);
 
