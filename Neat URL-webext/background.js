@@ -218,32 +218,36 @@ function upgradeParametersIfNeeded(){
 }
 
 /// Neat URL code
-function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix){
-	for(let gbp of neat_url_blocked_params){
-		let firstChar = gbp.substring(0, 1);
-		if(!isAlpha(firstChar) && firstChar != "_"){
-			let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, leanURL);
-			if(match == "" || match == null) continue;
+function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams){
+    let isSearch = leanURL.search == "" ? false : true ;
+    let path = leanURL.path;
 
-			leanURL = applyMatch(match, leanURL);
+	for(let gbp of blockedParams){//Again!? This is third loop!
+		//let firstChar = gbp.substring(0, 1);
+		//if(!isAlpha(firstChar) && firstChar != "_"){//why this now? For $ and $$? Why not check for $ then?
+        if(gbp.startsWith('$')){
+			//let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, leanURL);//this has already been doone
+			//if(match == "" || match == null) continue;
+
+			path = applyMatch(gbp, isSearch, path);
 		}
 	}
-
+    leanURL.path = path;
 	return leanURL;
 }
 
 // https://stackoverflow.com/questions/2450641/validating-alphabetic-only-string-in-javascript
-function isAlpha(str) {
-	return /^[a-zA-Z]+$/.test(str);
-}
+/*function isAlpha(str) {//used only once... not even once
+	return /^[a-zA-Z]$/.test(str);//no need for `+` for one char only
+}*/
 
-function applyMatch(match2, leanURL){
-	let firstChar = match2.substr(0, 1);
+function applyMatch(match2, isSearch, leanURL){
+	//let firstChar = match2.substr(0, 1);
 	let secondChar = match2.substr(1, 1);
 	let startIndexAsEnd = -1;
 
-	if(firstChar == "$"){
-		if(leanURL.indexOf("?") == -1 || secondChar == "$" || leanURL.indexOf("/dp/") > -1){
+	//if(firstChar == "$"){//done earlier
+		if(!isSearch || secondChar == "$" /*|| leanURL.indexOf("/dp/") > -1*/){//what is `/dp/` for???
 			// Check it twice
 			if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 			if(match2.indexOf("$") == 0) match2 = match2.substring(1);
@@ -255,11 +259,12 @@ function applyMatch(match2, leanURL){
 			if(startIndexAsEnd > -1)
 				leanURL = leanURL.substring(0, startIndexAsEnd);
 		}
-	}
+	//}
 
+	/*this has already been doone
 	if(firstChar == "#"){
 		leanURL = leanURL.replace(match2, "");
-	}
+	}*/
 
 	return leanURL;
 }
@@ -269,10 +274,11 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 		return gbp;
 	}
 
-	let keyValue = gbp.split("@")[0];
-	let keyDomain = gbp.split("@")[1];
+	let keyValue, keyDomain, index;
+    index = gbp.indexOf('@');
+    [keyValue, keyDomain] = [gbp.slice(0,index), gbp.slice(index+1)];
 
-	if(keyDomain.indexOf("*.") == 0){
+	if(keyDomain.startsWith("*.")){
 		// we have a wildcard domain, so compare with root domain please.
 		keyDomain = keyDomain.replace("*.", "");
 		if ( rootDomain == keyDomain ) {
@@ -318,72 +324,81 @@ function getParams(URL) {
 }
 
 /// Lean URL code
-function buildURL(detailsUrl, blockedParams, hashParams) {
-    if (Object.keys(blockedParams).length == 0 && Object.keys(hashParams).length == 0) {
-        return detailsUrl;
+function buildURL(url, blockedParams, hashParams) {
+    if (blockedParams.length == 0 && hashParams.length == 0) {
+        return url;
     }
 
-	let urlObject = new URL(detailsUrl);
-	let originalSearchParams = urlObject.searchParams;
+	//let urlObject = new URL(url);
+	//let originalSearchParams = urlObject.searchParams;
 
 	/// Process wildcards first for cleaner code
+    //I see no mention about parameter wildcards???. 3.0.0 :/
 	let wildcardBlockedParams = [];
 
 	for(let blockedParam of blockedParams){
+        if(blockedParam.startsWith('$')) continue;//another feature
+        
 		let wildcardIndex = blockedParam.indexOf("*");
 		if(wildcardIndex == -1) continue;
 
-		let isLastChar = wildcardIndex == blockedParam.length - 1;
-		if(!isLastChar) continue;
+		//let isLastChar = wildcardIndex == blockedParam.length - 1;
+		if(wildcardIndex != blockedParam.length - 1) continue;
 
 		let prefixParam = blockedParam.substring(0, wildcardIndex);
-		for(let pair of originalSearchParams.entries()){
-			if(pair[0].indexOf(prefixParam) == 0){
+		for(let key of url.searchParams.keys()){
+			if(key.startsWith(prefixParam)){
 				// Match! We should remove this parameter.
+                //Here be dragons ;)
 				//console.log("buildURL - found wildcard parameter " + pair[0]);
-				if(!wildcardBlockedParams.includes(pair[0])){
-					wildcardBlockedParams.push(pair[0]);
-				}
+				url.searchParams.delete(key);
 			}
 		}
 	}
 
-	for(let wildcardBlockedParam of wildcardBlockedParams){
+	/*for(let wildcardBlockedParam of wildcardBlockedParams){
 		blockedParams.push(wildcardBlockedParam);
-	}
+	}*/
 
 	/// Remove blocked url params
-	for(let blockedParam of blockedParams){
+	/*for(let blockedParam of blockedParams){
 		if(blockedParam.indexOf("*") > -1) continue; // Wildcard parameters should have been processed by now
 		originalSearchParams.delete(blockedParam);
-	}
+	}*/
 
-	let newURL = urlObject.href;
+	//let newURL = urlObject.href;
 
 	/// Replace hash params
+	
 	for(let hashParam of hashParams){
-		newURL = newURL.replace(hashParam, "");
+        //this will remove only one, exact, hashParam
+        if(hashParam == url.hash){
+            url.hash = "";
+            break;
+        }
 	}
 
 	/// URL() woes - + is not always %20
-	if(decodeURIComponent(detailsUrl).indexOf("+") == -1){
+	//this should not matter
+	/*if(decodeURIComponent(url).indexOf("+") == -1){
 		newURL = newURL.replace("+", "%20");
-	}
+	}*/
 
 	/// URL() woes - Don't encode too much, thank you
-	newURL = urlDecode(newURL);
+	//???
+	//newURL = urlDecode(newURL);
 
 	/// URL() woes - do not add = when it's not needed
-	if(newURL.split("#")[0].replaceAll("=", "") == detailsUrl.split("#")[0].replaceAll("=", "")){
-		return detailsUrl;
-	}
+	/*if(newURL.split("#")[0].replaceAll("=", "") == url.split("#")[0].replaceAll("=", "")){
+		return url;
+	}*/
 
 	/// URL() woes - Don't encode too much, thank you
-	if(newURL.indexOf("??") == -1 && detailsUrl.indexOf("??") > -1){
-		return detailsUrl;
-	}
+	/*if(newURL.indexOf("??") == -1 && url.indexOf("??") > -1){
+		return url;
+	}*/
 
-    return newURL;
+    return url;
 }
 
 /// Neat URL code
@@ -409,8 +424,8 @@ function getDomain(url) {
     return hostname;
 }
 
-function getDomainMinusSuffix(url){
-	let domain = getDomain(url);
+function getDomainMinusSuffix(domain){
+	//let domain = getDomain(url);
 	let lastIndex = domain.lastIndexOf(".");
 	let previousLastIndex = domain.lastIndexOf(".", lastIndex - 1);
   
@@ -423,14 +438,15 @@ function getDomainMinusSuffix(url){
 
 /// Neat URL code
 // Copied from https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
-function getRootDomain(url) {
-	if(url == undefined || url == null) return null;
+function getRootDomain(domain) {
+	if(domain == undefined || domain == null) return null;
 
-    let domain = getDomain(url),
+    let /*domain = getDomain(url),*/
         splitArr = domain.split('.'),
         arrLen = splitArr.length;
 
     // Extract the root domain
+    //http://publicsuffix.org/list/
     if (arrLen > 2) {
         if(splitArr[arrLen - 2].length <= 3){
             // oops.. this is becoming an invalid URL
@@ -457,30 +473,31 @@ function cleanURL(details) {
 	if(!enabled) return;
 
 	let originalDetailsUrl = details.url;
-	details.url = urlDecode(details.url);
-
+	let url = new URL(details.url);
+    let domain = url.hostname
 	// Do not change links for these domains
 	for(let blackDomain of neat_url_blacklist){
 		//console.log("blackDomain " + blackDomain);
-		if(details.url.indexOf(blackDomain) > -1){
+		if(domain.indexOf(blackDomain) > -1){
 			if(neat_url_logging){
-				console.log("not rewriting " + details.url);
+				console.log("not rewriting " + url.href);
 			}
 			return;
 		}
 	}
 
-    let baseURL = details.url.split("?")[0];
-    let params = getParams(details.url);
-
-	if (details.url.split("=").length == 1 && details.url.indexOf("#").length == 1){
-		//console.log("no params for " + details.url);
+    //let baseURL = url.split("?")[0];
+    let params = url.search;
+    let hashParams = url.hash;
+    
+	if ("" === params && "" === hashParams){
+		//console.log("no params for " + url);
 		return;
 	}
 
-	var domain = getDomain(details.url);
-	var rootDomain = getRootDomain(details.url);
-	var domainMinusSuffix = getDomainMinusSuffix(details.url);
+	//var domain = getDomain(url);
+	var rootDomain = getRootDomain(domain);
+	var domainMinusSuffix = getDomainMinusSuffix(domain);
 
 	if (domain == null || rootDomain == null || domainMinusSuffix == null ){
 		return;
@@ -490,7 +507,7 @@ function cleanURL(details) {
 	let hashParams = [];
 
 	for (let gbp of neat_url_blocked_params) {
-		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, details.url);
+		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, url);
 		if(match == "" || match == null) continue;
 
 		if(match.indexOf("#") > -1){
@@ -501,55 +518,56 @@ function cleanURL(details) {
 		blockedParams.push(match);
 	}
 
-	let reducedParams = {};
-	for (let key in params) {
-		if (!blockedParams.includes(key)) {
-			reducedParams[key] = params[key];
+	//let reducedParams = {};// == url.searchParams
+	//! ?a=1&a=2 is valid
+	for (let key in url.searchParams.keys()) {
+		if (blockedParams.includes(key)) {
+            url.searchParams.delete(key);
 		}
 	}
 
 	// https://github.com/Smile4ever/firefoxaddons/issues/30 should no longer occur with the new buildURL function
 	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
-    leanURL = buildURL(details.url, blockedParams, hashParams);
-    leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix);
+    leanURL = buildURL(url, blockedParams, hashParams);
+    leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams);
 
 	// Is the URL changed?
-	let decodedDetailsURL = urlDecode(decodeURIComponent(details.url));
+	/*let decodedDetailsURL = urlDecode(decodeURIComponent(url));
 	let decodedOriginalDetailsURL = urlDecode(decodeURIComponent(originalDetailsUrl));
 	let decodedLeanURL = urlDecode(decodeURIComponent(leanURL));
 
 	if(decodedLeanURL == decodedDetailsURL || decodedLeanURL == decodedOriginalDetailsURL){
 		return;
-	}
+	}*/
+    if(originalDetailsUrl == leanURL.href) return;
 
 	// Don't change the URL if any of these is true
-	if(decodedLeanURL.indexOf("utm.gif") > -1 || decodedDetailsURL.indexOf("&&") > -1){
+	/*if(decodedLeanURL.indexOf("utm.gif") > -1 || decodedDetailsURL.indexOf("&&") > -1){//will see
 		return;
-	}
+	}*/
 
 	if(neat_url_logging){
 		console.log("Neat URL (type " + details.type + "): " + originalDetailsUrl + " has been changed to " + leanURL);
 	}
 
-	let leanURLDomain = getDomain(leanURL);
+	//let leanURLDomain = leanURL.hostname;
 
+	const applyAfter = 1000;
     // Animate the toolbar icon
-    if(leanURLDomain != "addons.mozilla.org"){
+    if(leanURL.hostname != "addons.mozilla.org"){
 		animateToolbarIcon();
 		incrementBadgeValue(details.tabId);
-	}
+	} else {
 
     // webRequest blocking is not supported on mozilla.org, lets fix this
     // but only if we are navigating to addons.mozilla.org and there doesn't exist a tab yet with the same URL
 
-	const applyAfter = 1000;
-
-	if(leanURLDomain == "addons.mozilla.org"){
+	//if(leanURLDomain == "addons.mozilla.org"){
 		if(details.type != "main_frame") return;
-		if(globalNeatURL == leanURL) return;
+		if(globalNeatURL == leanURL.href) return;
 
-		globalNeatURL = leanURL;
-		globalCurrentURL = details.url;
+		globalNeatURL = leanURL.href;
+		globalCurrentURL = originalDetailsUrl;
 		globalTabId = details.tabId;
 
 		setTimeout(function(){
@@ -563,7 +581,7 @@ function cleanURL(details) {
 
 					for (tab of tabs) {
 						console.log("really updating " + tab.url + " to " + globalNeatURL);
-						browser.tabs.update(tab.id, {url: globalNeatURL});
+						browser.tabs.update(tab.id, {url: globalNeatURL});//May be fired more than once?
 						animateToolbarIcon();
 						incrementBadgeValue(globalTabId);
 					}
@@ -577,7 +595,7 @@ function cleanURL(details) {
 		}, applyAfter);
 	}
 
-    return { redirectUrl: leanURL };
+    return { redirectUrl: leanURL.href };
 }
 
 /// Neat URL code
