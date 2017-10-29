@@ -138,7 +138,7 @@ function initContextMenus(){
 		browser.contextMenus.onClicked.removeListener(listener);
 		browser.contextMenus.removeAll();
 	}catch(ex){
-		//console.log("contextMenu remove failed: " + ex);
+		//console.log("[Neat URL]: contextMenu remove failed: " + ex);
 	}
 	
 	createContextMenu("neaturl-tb-preferences", "Preferences", ["browser_action"]);
@@ -155,7 +155,7 @@ function createContextMenu(id, title, contexts){
 
 	function onCreated(n) {
 		if (browser.runtime.lastError) {
-			//console.log(`Error: ${browser.runtime.lastError}`);
+			//console.log(`[Neat URL]: Error: ${browser.runtime.lastError}`);
 		}
 	}
 }
@@ -163,7 +163,7 @@ function createContextMenu(id, title, contexts){
 /// Get Archive code
 function openPreferences(){
 	function onOpened() {
-		//console.log(`Options page opened`);
+		//console.log(`[Neat URL]: Options page opened`);
 	}
 
 	browser.runtime.openOptionsPage().then(onOpened, null);
@@ -182,7 +182,7 @@ function upgradeParametersIfNeeded(){
 	let oldVersion = neat_url_version;
 	let newVersion = browser.runtime.getManifest().version;
 	
-	//console.log("upgradeParametersIfNeeded - " oldVersion + " => " + newVersion);
+	//console.log("[Neat URL]: upgradeParametersIfNeeded - " + oldVersion + " => " + newVersion);
 	
 	if(oldVersion != newVersion){
 		// Upgrade for neat_url_blocked_params is needed
@@ -193,7 +193,7 @@ function upgradeParametersIfNeeded(){
 		for(let defaultParam of defaultParams){
 			if(neat_url_blocked_params.indexOf(defaultParam) == -1){
 				if(neat_url_hidden_params.indexOf(defaultParam) == -1){
-					//console.log("Adding parameter " + defaultParam + " during upgrade.");
+					//console.log("[Neat URL]: Adding parameter " + defaultParam + " during upgrade.");
 					neat_url_blocked_params.push(defaultParam);
 					changes = true;
 				}
@@ -254,7 +254,7 @@ function applyMatch(match2, isSearch, leanURL){
 
 			// if startIndexAsEnd is -1, we return the original URL without altering it
 			startIndexAsEnd = leanURL.lastIndexOf(match2);
-			//console.log("startIndexAsEnd is " + startIndexAsEnd + " inside of " + leanURL + " for " + match2);
+			//console.log("[Neat URL]: startIndexAsEnd is " + startIndexAsEnd + " inside of " + leanURL + " for " + match2);
 
 			if(startIndexAsEnd > -1)
 				leanURL = leanURL.substring(0, startIndexAsEnd);
@@ -282,26 +282,26 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 		// we have a wildcard domain, so compare with root domain please.
 		keyDomain = keyDomain.replace("*.", "");
 		if ( rootDomain == keyDomain ) {
-			//console.log("matching to root domain");
+			//console.log("[Neat URL]: matching to root domain");
 			return keyValue;
 		}
 	}
 
 	if(keyDomain.endsWith(".*")){
-		//console.log("keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
+		//console.log("[Neat URL]: keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
 		keyDomain = keyDomain.replace(".*", "");
 		if ( domainMinusSuffix == keyDomain ) {
-			//console.log("matching to wildcard domain");
+			//console.log("[Neat URL]: matching to wildcard domain");
 			return keyValue;
 		}
 	}
 
 	if( domain == keyDomain ) {
-		//console.log("matching to domain " + domain + " for " + detailsUrl);
+		//console.log("[Neat URL]: matching to domain " + domain + " for " + detailsUrl);
 		return keyValue;
 	}
 
-	//console.log("not matching to domain " + domain + " with keyDomain " + keyDomain);
+	//console.log("[Neat URL]: not matching to domain " + domain + " with keyDomain " + keyDomain);
 	return "";
 }
 
@@ -350,7 +350,7 @@ function buildURL(url, blockedParams, hashParams) {
 			if(key.startsWith(prefixParam)){
 				// Match! We should remove this parameter.
                 //Here be dragons ;)
-				//console.log("buildURL - found wildcard parameter " + pair[0]);
+				//console.log("[Neat URL]: buildURL - found wildcard parameter " + pair[0]);
 				url.searchParams.delete(key);
 			}
 		}
@@ -477,10 +477,10 @@ function cleanURL(details) {
     let domain = url.hostname
 	// Do not change links for these domains
 	for(let blackDomain of neat_url_blacklist){
-		//console.log("blackDomain " + blackDomain);
+		//console.log("[Neat URL]: blackDomain " + blackDomain);
 		if(domain.endsWith(blackDomain)){
 			if(neat_url_logging){
-				console.log("not rewriting " + url.href);
+				console.log(`[Neat URL]: not rewriting '${url.href}'`);
 			}
 			return;
 		}
@@ -491,9 +491,10 @@ function cleanURL(details) {
     //let hashParams = url.hash;
     
 	if ("" === url.search && "" === url.hash){
-		//console.log("no params for " + url);
+		//console.log(`[Neat URL]: no params for '${url.href}'`);
 		return;
 	}
+	//console.log(`[Neat URL]: processing '${url.href}'`);
 
 	//var domain = getDomain(url);
 	domain = domain.replace(/^www\./i, '');//getDomain() -> //leave www out of this discussion. I don't consider this a subdomain
@@ -522,7 +523,9 @@ function cleanURL(details) {
 	//let reducedParams = {};// == url.searchParams
 	//! ?a=1&a=2 is valid
 	for (let key in url.searchParams.keys()) {
+		//console.log(`[Neat URL]: if includes(${key})`)
 		if (blockedParams.includes(key)) {
+			//console.log(`[Neat URL]: delete(${key})`)
             url.searchParams.delete(key);
 		}
 	}
@@ -548,7 +551,7 @@ function cleanURL(details) {
 	}*/
 
 	if(neat_url_logging){
-		console.log("Neat URL (type " + details.type + "): " + originalDetailsUrl + " has been changed to " + leanURL);
+		console.log(`[Neat URL]: (type ${details.type}): '${originalDetailsUrl}' has been changed to '${leanURL}'`);
 	}
 
 	//let leanURLDomain = leanURL.hostname;
@@ -576,12 +579,14 @@ function cleanURL(details) {
 				if(globalNeatURL == null || globalNeatURL == "") return;
 
 				if(tabs.length == 0){
-					//console.log("the query for " + globalCurrentURL + " returned nothing. Attempting " + globalNeatURL);
+					//console.log(`[Neat URL]: the query for '${globalCurrentURL}' returned nothing. Attempting '${globalNeatURL}'`);
 				}else{
-					//console.log("It was opened in a new tab, update that tab to " + globalNeatURL);
+					//console.log(`[Neat URL]: It was opened in a new tab, update that tab to '${globalNeatURL}'`);
 
 					for (tab of tabs) {
-						console.log("really updating " + tab.url + " to " + globalNeatURL);
+						if(neat_url_logging){
+							console.log(`[Neat URL]: really updating '${tab.url}' to '${globalNeatURL}'`);
+						}
 						browser.tabs.update(tab.id, {url: globalNeatURL});//May be fired more than once?
 						animateToolbarIcon();
 						incrementBadgeValue(globalTabId);
@@ -685,17 +690,17 @@ function updateBadgeText(tabId){
 	// We're only updating the view
 	// The data won't be touched
 
-	//console.log("updateBadgeText - I'm updating the badge text for tabId " + tabId);
+	//console.log("[Neat URL]: updateBadgeText - I'm updating the badge text for tabId " + tabId);
 	let badgeCounts = badge[tabId];
 	if(badgeCounts == null){
-		//console.log("badgeCounts == null");
+		//console.log("[Neat URL]: badgeCounts == null");
 		badgeCounts = ""; // Set empty instead of null or 0
 	}else{
-		//console.log("badgeCounts is not null");
+		//console.log("[Neat URL]: badgeCounts is not null");
 	}
 
 	/// Update browserAction with badge count for the current tab. If the current tab changes, we will update it again
-	//console.log("updateBadgeText - badgeCounts is " + badgeCounts);
+	//console.log("[Neat URL]: updateBadgeText - badgeCounts is " + badgeCounts);
 	browser.browserAction.setBadgeText({text: badgeCounts+""});
 }
 
@@ -709,24 +714,24 @@ function incrementBadgeValue(tabId){
 		return;
 	}
 
-	//console.log("getting badgeCounts for tabId " + tabId + " is " + badge[tabId]);
+	//console.log("[Neat URL]: getting badgeCounts for tabId " + tabId + " is " + badge[tabId]);
 	let badgeCounts = badge[tabId];
 	if(badgeCounts == null){
-		//console.log("badgeCounts == null");
+		//console.log("[Neat URL]: badgeCounts == null");
 		badgeCounts = 0;
 	}else{
-		//console.log("badgeCounts is not null, but " + badgeCounts);
+		//console.log("[Neat URL]: badgeCounts is not null, but " + badgeCounts);
 	}
 	badgeCounts++;
 	badge[tabId] = badgeCounts;
 
-	//console.log("setting badgeCount to " + badgeCounts + " - result is " + badge[tabId]);
+	//console.log("[Neat URL]: setting badgeCount to " + badgeCounts + " - result is " + badge[tabId]);
 }
 
 browser.tabs.onCreated.addListener(function(tab){
 	// Tabs can be created in the background. We're not interested in that.
 	if(tab.active){
-		//console.log("Updating currentTabId to " + tab.id + " by onCreated");
+		//console.log("[Neat URL]: Updating currentTabId to " + tab.id + " by onCreated");
 		updateBadgeText(tab.id);
 	}
 });
@@ -734,14 +739,14 @@ browser.tabs.onCreated.addListener(function(tab){
 browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tabInfo){
 	// Tabs can be updated in the background. We're not interested in that.
 	if(tabInfo.active){
-		//console.log("Updating currentTabId to " + tabInfo.id + " by onUpdated");
+		//console.log("[Neat URL]: Updating currentTabId to " + tabInfo.id + " by onUpdated");
 		updateBadgeText(tabInfo.id);
 	}
 });
 
 browser.tabs.onActivated.addListener(function(activeInfo){
 	// Tabs can be inactive when updating or creating and afterwards activated. We could check tab.active but it will always be true
-	//console.log("Updating currentTabId to " + activeInfo.tabId + " by onActivated");
+	//console.log("[Neat URL]: Updating currentTabId to " + activeInfo.tabId + " by onActivated");
 	updateBadgeText(activeInfo.tabId);
 });
 
