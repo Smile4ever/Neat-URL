@@ -525,7 +525,10 @@ function cleanURL(details) {
 
 	//let reducedParams = {};// == url.searchParams
 	//! ?a=1&a=2 is valid
-	for (let key of url.searchParams.keys()) {
+	// keys must be removed in reverse,
+	// because, when first is removed, third is moved to second position
+	let forparams = new URL(url);//or... make copy
+	for (let key of forparams.searchParams.keys()) {
 		//console.log(`[Neat URL]: if includes(${key})`)
 		if (blockedParams.includes(key)) {
 			//console.log(`[Neat URL]: delete(${key})`)
