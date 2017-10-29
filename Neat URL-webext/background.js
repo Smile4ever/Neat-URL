@@ -512,7 +512,7 @@ function cleanURL(details) {
 		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, url);
 		if(match == "" || match == null) continue;
 
-		if(match.indexOf("#") > -1){
+		if(match.startsWith("#")){
 			hashParams.push(match);
 			continue;
 		}
@@ -522,7 +522,7 @@ function cleanURL(details) {
 
 	//let reducedParams = {};// == url.searchParams
 	//! ?a=1&a=2 is valid
-	for (let key in url.searchParams.keys()) {
+	for (let key of url.searchParams.keys()) {
 		//console.log(`[Neat URL]: if includes(${key})`)
 		if (blockedParams.includes(key)) {
 			//console.log(`[Neat URL]: delete(${key})`)
