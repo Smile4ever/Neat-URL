@@ -220,7 +220,7 @@ function upgradeParametersIfNeeded(){
 /// Neat URL code
 function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams){
     let isSearch = leanURL.search == "" ? false : true ;
-    let path = leanURL.path;
+    let path = leanURL.pathname;
 
 	for(let gbp of blockedParams){//Again!? This is third loop!
 		//let firstChar = gbp.substring(0, 1);
@@ -232,7 +232,10 @@ function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedPa
 			path = applyMatch(gbp, isSearch, path);
 		}
 	}
-    leanURL.path = path;
+	if(leanURL.pathname != path){
+		leanURL.pathname = path;
+		leanURL.search = "";//should be empty before or removed right now by $$
+	}
 	return leanURL;
 }
 
