@@ -74,6 +74,9 @@ nb@tweakers.net, u@tweakers.net
 For Vivaldi.com:
 #?pk_campaign@vivaldi.com, #?pk_kwd@vivaldi.com
 
+For Twitch.tv:
+tt_medium, tt_content
+
 Other parameters you can consider:
 _hsmi, algo_expid, algo_pvid, aqs, bav, bih, biw, btsid, bvm, cn, cp, csi, dpr, dq, ech, forward, gs_gbg, gs_mss, gs_rn, iact, icid, iid, ijn, mc_cid, mc_eid, ncid, ndsp, nid, nr_email_referer, oq, pbx, pf, pf_rd_i, pf_rd_m, pf_rd_p, pf_rd_r, pf_rd_s, pf_rd_t, pq, prmd, psi, ref_, refsrc, sa, sclient, scroll, sr_share, stick, tbnid, vero_conv, vero_id, vet, ws_ab_test, yv
 

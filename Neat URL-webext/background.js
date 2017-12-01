@@ -320,7 +320,7 @@ function buildURL(url, blockedParams, hashParams) {
 			if(key.startsWith(prefixParam)){
 				// Match! We should remove this parameter.
 				// Here be dragons ;)
-				if(neat_url_logging) console.log("[Neat URL]: buildURL - found wildcard parameter " + pair[0]);
+				if(neat_url_logging) console.log("[Neat URL]: buildURL - found wildcard parameter " + key);
 				url.searchParams.delete(key);
 			}
 		}
@@ -410,9 +410,7 @@ function cleanURL(details) {
 		if(neat_url_logging) console.log(`[Neat URL]: no params for '${url.href}'`);
 		return;
 	}
-	//console.log(`[Neat URL]: processing '${url.href}'`);
 
-	//let domain = getDomain(url);
 	domain = domain.replace(/^www\./i, '');//getDomain() -> //leave www out of this discussion. I don't consider this a subdomain
 	let rootDomain = getRootDomain(domain);
 	let domainMinusSuffix = getDomainMinusSuffix(domain);
@@ -437,7 +435,6 @@ function cleanURL(details) {
 		blockedParams.push(match);
 	}
 
-	//let reducedParams = {};// == url.searchParams
 	//! ?a=1&a=2 is valid
 	// keys must be removed in reverse,
 	// because, when first is removed, third is moved to second position
@@ -456,7 +453,7 @@ function cleanURL(details) {
 	leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams);
 
 	// Is the URL changed?
-	if(originalDetailsUrl == leanURL.href) return;
+	if(new URL(originalDetailsUrl).href == leanURL.href) return;
 
 	if(neat_url_logging){
 		console.log(`[Neat URL]: (type ${details.type}): '${originalDetailsUrl}' has been changed to '${leanURL}'`);
