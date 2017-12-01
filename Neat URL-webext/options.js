@@ -100,7 +100,7 @@ function restoreOptions() {
 }
 
 function i18n() {
-	var i18nElements = document.querySelectorAll('[data-i18n]');
+	let i18nElements = document.querySelectorAll('[data-i18n]');
 
 	for(let i in i18nElements){
 		try{

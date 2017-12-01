@@ -46,13 +46,18 @@ Parameters can contain a wildcard at the end or before the domain sign:
     utm_*
     utm_*@omgubuntu.co.uk
 
-Other valid parameters (exceptions to the ? rule)
+Other valid parameters - ending parameters (exceptions to the ? rule):
+
+	$/ref@amazon.* (remove everything after /ref on amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters. Exception: Amazon product pages parameters are cleaned like they contain two dollar signs)
+	$$/ref@amazon.* (remove everything after /ref on amazon domains - this will always apply, even when there are other query parameters after removing the filtered query parameters - this option is available because the user should be in control but beware that double dollar signs are dangerous, it might break the URL)
+
+Other valid parameters - hash parameters (exceptions to the ? rule):
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
 	#xtor=RSS-8@futura-sciences.com
-	$/ref@amazon.* (remove everything after /ref on amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters. Exception: Amazon product pages parameters are cleaned like they contain two dollar signs)
-	$$/ref@amazon.* (remove everything after /ref on amazon domains - this will always apply, even when there are other query parameters after removing the filtered query parameters - this option is available because the user should be in control but beware that double dollar signs are dangerous, it might break the URL)
-	
+	#?pk_campaign (normal parameters that come after a hash sign, for example this URL  https://vivaldi.com/blog/teamblog/vivaldi-1-13-adds-window-panel/#pk_campaign=newsletter&pk_kwd=community gets changed to https://vivaldi.com/blog/teamblog/vivaldi-1-13-adds-window-panel/#pk_kwd=community)
+	#?pk_campaign@vivaldi.com (same as above, but domain-matched instead of global)
+
 Invalid parameters:
     
     param@*.google.* (too many wildcards)
@@ -65,6 +70,9 @@ src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.
 
 For Tweakers.net:
 nb@tweakers.net, u@tweakers.net
+
+For Vivaldi.com:
+#?pk_campaign@vivaldi.com, #?pk_kwd@vivaldi.com
 
 Other parameters you can consider:
 _hsmi, algo_expid, algo_pvid, aqs, bav, bih, biw, btsid, bvm, cn, cp, csi, dpr, dq, ech, forward, gs_gbg, gs_mss, gs_rn, iact, icid, iid, ijn, mc_cid, mc_eid, ncid, ndsp, nid, nr_email_referer, oq, pbx, pf, pf_rd_i, pf_rd_m, pf_rd_p, pf_rd_r, pf_rd_s, pf_rd_t, pq, prmd, psi, ref_, refsrc, sa, sclient, scroll, sr_share, stick, tbnid, vero_conv, vero_id, vet, ws_ab_test, yv

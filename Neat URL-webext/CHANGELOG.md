@@ -1,3 +1,15 @@
+4.0.0
+=====
+* Performance improvements
+* Several encoding bugs fixed #73 #75 #93
+* Re-initialise listener, hopefully fixes #92
+* Fix "Show counter" setting (introduced in 3.2.0) doesn't do anything #91
+* Workaround for gws_rd@google.* on google.com #76
+* Implement hash parameters using #? #83
+* Cleanups
+* Fix translation string mapped to wrong i18n id 
+* Move most functions related to the toolbar button to a separate file
+
 3.2.0
 =====
 * Add counter which shows the number of rewritten URLs
