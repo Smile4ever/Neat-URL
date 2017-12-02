@@ -244,10 +244,10 @@ function applyMatch(match2, isSearch, leanURL){
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 
-		// if startIndexAsEnd is -1, we return the original URL without altering it
 		startIndexAsEnd = leanURL.lastIndexOf(match2);
 		//console.log("[Neat URL]: startIndexAsEnd is " + startIndexAsEnd + " inside of " + leanURL + " for " + match2);
 
+		// if startIndexAsEnd is -1, we return the original URL without altering it
 		if(startIndexAsEnd > -1)
 			leanURL = leanURL.substring(0, startIndexAsEnd);
 	}
@@ -282,13 +282,13 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 		//console.log("[Neat URL]: keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
 		keyDomain = keyDomain.replace(".*", "");
 
-		if ( domainMinusSuffix == keyDomain ) {
+		if (domainMinusSuffix == keyDomain) {
 			//console.log("[Neat URL]: matching to wildcard domain");
 			return keyValue;
 		}
 	}
 
-	if( domain == keyDomain ) {
+	if(domain == keyDomain) {
 		//console.log("[Neat URL]: matching to domain " + domain + " for " + detailsUrl);
 		return keyValue;
 	}
@@ -304,35 +304,22 @@ function buildURL(url, blockedParams, hashParams) {
 	}
 
 	/// Process wildcards parameters
-	// utm_*
-
 	for(let blockedParam of blockedParams){
 		if(blockedParam.startsWith('$')) continue;//another feature -> removeEndings()
 
-		let wildcardIndex = blockedParam.indexOf("*");
-		if(wildcardIndex == -1) continue;
-
-		//let isLastChar = wildcardIndex == blockedParam.length - 1;
-		if(wildcardIndex != blockedParam.length - 1) continue;
-
-		let prefixParam = blockedParam.substring(0, wildcardIndex);
-		for(let key of url.searchParams.keys()){
-			if(key.startsWith(prefixParam)){
-				// Match! We should remove this parameter.
-				// Here be dragons ;)
-				if(neat_url_logging) console.log("[Neat URL]: buildURL - found wildcard parameter " + key);
-				url.searchParams.delete(key);
-			}
-		}
+		// Wildcard support :)
+		// utm_*
+		let wildcardParam = getWildcardParam(blockedParam);
+		if(wildcardParam != "")	url = deleteWildcardParam(wildcardParam, url);
 	}
 
 	/// Replace hash params
-	const hashUrl = new URL(url.href);
+	let hashUrl = new URL(url.href);
     hashUrl.search = hashUrl.hash.replace('#', '');
     hashUrl.hash = '';
 
 	for(let hashParam of hashParams){
-		//this will remove only one, exact, hashParam
+		//this will remove one, exact, hashParam
 		if(hashParam == "#" + hashUrl.search){
 			hashUrl.search = "";
 			break;
@@ -345,6 +332,13 @@ function buildURL(url, blockedParams, hashParams) {
 		if (hashParam.startsWith('#?')) {
             let specialHashParam = hashParam.replace('#?', '');
             if(neat_url_logging) console.log("[Neat URL]: buildURL - found hash parameter " + hashParam);
+
+			// Wildcard support :)
+			// utm_*
+			let wildcardParam = getWildcardParam(specialHashParam);
+			if(wildcardParam != "")	hashUrl = deleteWildcardParam(wildcardParam, hashUrl);
+
+			// utm_source
             hashUrl.searchParams.delete(specialHashParam);
         }
 	}
@@ -355,10 +349,33 @@ function buildURL(url, blockedParams, hashParams) {
 	return url;
 }
 
+function getWildcardParam(param){
+	let wildcardIndex = param.indexOf("*");
+
+	let wildcard = wildcardIndex > -1;
+	let isLastChar = wildcardIndex == param.length - 1;
+
+	if(!wildcard || !isLastChar) return "";
+	return param.substring(0, wildcardIndex);
+}
+
+function deleteWildcardParam(wildcardParam, url){
+	for(let key of url.searchParams.keys()){
+		if(key.startsWith(wildcardParam)){
+			// Match! We should remove this parameter.
+			// Here be dragons ;)
+			if(neat_url_logging) console.log("[Neat URL]: buildURL - found wildcard parameter " + key + " for " + wildcardParam);
+			url.searchParams.delete(key);
+		}
+	}
+
+	return url;
+}
+
 function getDomainMinusSuffix(domain){
 	let lastIndex = domain.lastIndexOf(".");
 	let previousLastIndex = domain.lastIndexOf(".", lastIndex - 1);
-  
+
 	if(lastIndex - previousLastIndex < 4){
 		lastIndex = previousLastIndex;
 	}
@@ -371,8 +388,7 @@ function getDomainMinusSuffix(domain){
 function getRootDomain(domain) {
 	if(domain == undefined || domain == null) return null;
 
-	let /*domain = getDomain(url),*/
-		splitArr = domain.split('.'),
+	let splitArr = domain.split('.'),
 		arrLen = splitArr.length;
 
 	// Extract the root domain
@@ -506,7 +522,7 @@ function cleanURL(details) {
 
 /// Translate Now code
 function notify(message){
-	browser.notifications.create(message.substring(0, 20).replace(" ", ""),
+	browser.notifications.create(message.substring(0, 20),
 	{
 		type: "basic",
 		iconUrl: browser.extension.getURL(resolveIconUrlNotif("neaturl-96-state0.png")),
