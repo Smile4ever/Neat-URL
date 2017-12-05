@@ -318,6 +318,8 @@ function buildURL(url, blockedParams, hashParams) {
     hashUrl.search = hashUrl.hash.replace('#', '');
     hashUrl.hash = '';
 
+	let searchParamsBefore = hashUrl.href;
+
 	for(let hashParam of hashParams){
 		//this will remove one, exact, hashParam
 		if(hashParam == "#" + hashUrl.search){
@@ -343,8 +345,14 @@ function buildURL(url, blockedParams, hashParams) {
         }
 	}
 
-	const newHash = hashUrl.search.replace('?', '');
-    url.hash = newHash ? `#${newHash}` : '';
+	// Stringify from URL object adds = to the other parameters without value, sadly.
+	// In most cases this won't be a problem, if it is there will be bugs about it
+	// Workaround to above issue: only use the new value if the length is less now
+	// Also account for re-encoding by specifying one occurence of "="
+    if(searchParamsBefore.length + 1 != hashUrl.href.length){
+		const newHash = hashUrl.search.replace('?', '');
+		url.hash = newHash ? `#${newHash}` : '';
+	}
 
 	return url;
 }
