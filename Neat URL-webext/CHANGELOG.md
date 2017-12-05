@@ -9,6 +9,7 @@
 * Cleanups
 * Fix translation string mapped to wrong i18n id 
 * Move most functions related to the toolbar button to a separate file
+* Automatically remove newlines from the Blocked parameters textarea when saving
 
 3.2.0
 =====

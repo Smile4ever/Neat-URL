@@ -42,11 +42,19 @@ const PREFS = {
 };
 var lastWidth = 0;
 
+function getClean(text){
+	let clean = text.split(",");
+	for(let i = 0; i < clean.length; i++){
+		clean[i] = clean[i].trim();
+	}
+	return clean;
+}
+
 function saveOptions() {
 	// Get default values
-	let defaultParams = PREFS["neat_url_blocked_params"]["default"].split(" ").join("").split(",");
-	let currentParams = document.getElementById("neat_url_blocked_params")["value"].split(" ").join("").split(",");
-	let hiddenParams = document.getElementById("neat_url_hidden_params")["value"].split(" ").join("").split(",");
+	let defaultParams = getClean(PREFS["neat_url_blocked_params"]["default"]);
+	let currentParams = getClean(document.getElementById("neat_url_blocked_params")["value"]);
+	let hiddenParams = getClean(document.getElementById("neat_url_hidden_params")["value"]);
 
 	// Add to hidden parameters if needed
 	for(let defaultParam of defaultParams){
@@ -66,6 +74,7 @@ function saveOptions() {
 		}
 	}
 
+	document.getElementById("neat_url_blocked_params").value = currentParams.join(", ");
 	document.getElementById("neat_url_hidden_params").value = newHiddenParams.join(", ");
 
 	const values = {};
