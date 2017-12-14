@@ -137,12 +137,8 @@ function initBrowserAction(){
 /// Context menus
 /// Translate Now / Neat URL code
 function initContextMenus(){
-	try{
-		browser.contextMenus.onClicked.removeListener(listener);
-		browser.contextMenus.removeAll();
-	}catch(ex){
-		//console.log("[Neat URL]: contextMenu remove failed: " + ex);
-	}
+	browser.contextMenus.onClicked.removeListener(listener);
+	browser.contextMenus.removeAll();
 	
 	createContextMenu("neaturl-tb-preferences", "Preferences", ["browser_action"]);
 	browser.contextMenus.onClicked.addListener(listener);
@@ -157,19 +153,13 @@ function createContextMenu(id, title, contexts){
 	}, onCreated);
 
 	function onCreated(n) {
-		if (browser.runtime.lastError) {
-			//console.log(`[Neat URL]: Error: ${browser.runtime.lastError}`);
-		}
+		//console.log(`[Neat URL]: Error: ${browser.runtime.lastError}`);
 	}
 }
 
 /// Get Archive code
 function openPreferences(){
-	function onOpened() {
-		//console.log(`[Neat URL]: Options page opened`);
-	}
-
-	browser.runtime.openOptionsPage().then(onOpened, null);
+	browser.runtime.openOptionsPage();
 }
 
 /// Translate Now / Lean URL code
@@ -219,7 +209,7 @@ function upgradeParametersIfNeeded(){
 }
 
 /// Neat URL code
-function removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams){
+function removeEndings(leanURL, blockedParams){
 	let isSearch = leanURL.search == "" ? false : true ;
 	let path = leanURL.pathname;
 
@@ -239,7 +229,8 @@ function applyMatch(match2, isSearch, leanURL){
 	let secondChar = match2.substr(1, 1);
 	let startIndexAsEnd = -1;
 
-	if(!isSearch || secondChar == "$"){
+	// /dp/ is for Amazon product pages
+	if(!isSearch || secondChar == "$" || leanURL.indexOf("/dp/") > -1){
 		// Check it twice
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
@@ -431,8 +422,20 @@ function cleanURL(details) {
 	}
 
 	if ("" === url.search && "" === url.hash){
-		if(neat_url_logging) console.log(`[Neat URL]: no params for '${url.href}'`);
-		return;
+		let hasEndingParams = false;
+
+		for (let gbp of neat_url_blocked_params) {
+			let gbp_clean = gbp.replace("$$", "").replace("$", "").split("@")[0];
+			if(url.href.indexOf(gbp_clean) > -1){
+				if(neat_url_logging) console.log(`[Neat URL]: We have an ending parameter`);
+				hasEndingParams = true;
+			}
+		}
+
+		if(!hasEndingParams){
+			if(neat_url_logging) console.log(`[Neat URL]: no params for '${url.href}'`);
+			return;
+		}
 	}
 
 	domain = domain.replace(/^www\./i, '');//getDomain() -> //leave www out of this discussion. I don't consider this a subdomain
@@ -474,7 +477,7 @@ function cleanURL(details) {
 	// https://github.com/Smile4ever/firefoxaddons/issues/30 should no longer occur with the new buildURL function
 	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
 	leanURL = buildURL(url, blockedParams, hashParams);
-	leanURL = removeEndings(leanURL, domain, rootDomain, domainMinusSuffix, blockedParams);
+	leanURL = removeEndings(leanURL, blockedParams);
 
 	// Is the URL changed?
 	if(new URL(originalDetailsUrl).href == leanURL.href) return;

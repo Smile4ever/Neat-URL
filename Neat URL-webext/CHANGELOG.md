@@ -1,3 +1,9 @@
+4.0.1
+=====
+* Fix ending parameters not detected when there are no query or hash parameters
+* Fix regression: Amazon product pages are not cleaned when not all parameters are included
+* Remove unused method parameters passed to removeEndings function
+
 4.0.0
 =====
 * Performance improvements
