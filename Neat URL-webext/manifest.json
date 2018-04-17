@@ -3,7 +3,7 @@
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "http://hugsmile.eu",
 	"manifest_version": 2,
-	"version": "4.1.0",
+	"version": "4.1.1",
 	"default_locale": "en",
 	"background": {
 		"scripts": ["background.js", "toolbaricon.js"]

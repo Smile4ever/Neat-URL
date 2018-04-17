@@ -1,3 +1,7 @@
+4.1.1
+=====
+* Add spm@*.aliexpress.com, scm@*.aliexpress.com, aff_platform, aff_trace_key and terminal_id
+
 4.1.0
 =====
 * Add source@sourceforge.net, position@sourceforge.net, callback@bilibili.com, fixes #116
