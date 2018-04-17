@@ -1,7 +1,7 @@
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
-		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source"
+		"default": "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_*@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source, source@sourceforge.net, position@sourceforge.net, callback@bilibili.com, elqTrackId, elqTrack, assetType, assetId, recipientId, campaignId, siteId, ref, tag@amazon.*,  ref_@amazon.*, pf_rd_*@amazon.*"
 	},
 	"neat_url_icon_animation": {
 		"type": "value",
@@ -31,6 +31,10 @@ const PREFS = {
 		"type": "value",
 		"default": "main_frame"
 	},
+	"neat_url_counter_default_color": {
+		"type": "checked",
+		"default": true
+	},
 	"neat_url_version": {
 		"type": "value",
 		"default": ""
@@ -44,9 +48,11 @@ var lastWidth = 0;
 
 function getClean(text){
 	let clean = text.split(",");
+
 	for(let i = 0; i < clean.length; i++){
 		clean[i] = clean[i].trim();
 	}
+
 	return clean;
 }
 
@@ -74,12 +80,13 @@ function saveOptions() {
 		}
 	}
 
-	document.getElementById("neat_url_blocked_params").value = currentParams.join(", ");
+	//document.getElementById("neat_url_blocked_params").value = currentParams.join(", ");
 	document.getElementById("neat_url_hidden_params").value = newHiddenParams.join(", ");
 
 	const values = {};
 	for(let p in PREFS) {
 		values[p] = document.getElementById(p)[PREFS[p].type];
+		if(p == "neat_url_blocked_params") values[p] = currentParams.join(", "); //formatting
 	}
 
 	browser.storage.local.set(values).then(() => {

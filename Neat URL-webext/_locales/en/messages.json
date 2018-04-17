@@ -107,6 +107,10 @@
     "message": "Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
+  "counter_default_color": {
+	"message": "Use the default counter color",
+	"description": ""
+  },
   "savepreferences": {
     "message": "Save preferences",
     "description": ""

@@ -107,6 +107,10 @@
     "message": "Standaardwaarde: main_frame. Deze lijst is kommagescheiden. Geldige waardees kunnen gevonden worden in <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>de lijst van aanvraagtypes</a>.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
+  "counter_default_color": {
+	"message": "Gebruik de standaard achtergrondkleur voor de teller",
+	"description": ""
+  },
   "savepreferences": {
     "message": "Voorkeuren opslaan",
     "description": ""

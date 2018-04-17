@@ -1,3 +1,13 @@
+4.1.0
+=====
+* Add source@sourceforge.net, position@sourceforge.net, callback@bilibili.com, fixes #116
+* Fix #97 revert counter color to default color
+* Add eloqua tracking parameters #105
+* Exception support #111
+* Fix Neat URL breaks Google Product Forums #122
+* Add ref, tag@amazon.*, ref_@amazon.* and pf_rd_*@amazon.* by default (fixes #118 #120 #125)
+* Drop pd_rd_r@amazon.*, pd_rd_w@amazon.*, pd_rd_wg@amazon.* in favor of pd_rd_*@amazon.* (including automatic upgrade path)
+
 4.0.1
 =====
 * Fix ending parameters not detected when there are no query or hash parameters
