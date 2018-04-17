@@ -1,6 +1,6 @@
 4.1.1
 =====
-* Add spm@*.aliexpress.com, scm@*.aliexpress.com, aff_platform, aff_trace_key and terminal_id
+* Add spm@*.aliexpress.com, scm@*.aliexpress.com, aff_platform, aff_trace_key and terminal_id, fixes #103
 
 4.1.0
 =====

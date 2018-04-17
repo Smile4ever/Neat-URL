@@ -46,6 +46,13 @@ Parameters can contain a wildcard at the end or before the domain sign:
     utm_*
     utm_*@omgubuntu.co.uk
 
+Parameters can also apply globally (first rule), except for a (wilcard) domain (second rule):
+
+	ref
+	!ref@amazon.co.uk
+
+The excluded domain always takes precedence. Should you include "ref" and "!ref", "!ref" will apply.
+
 Other valid parameters - ending parameters (exceptions to the ? rule):
 
 	$/ref@amazon.* (remove everything after /ref on amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters. Exception: Amazon product pages parameters are cleaned like they contain two dollar signs)
@@ -61,7 +68,7 @@ Other valid parameters - hash parameters (exceptions to the ? rule):
 Invalid parameters:
     
     param@*.google.* (too many wildcards)
-    !ved (this is some random string - not supported, it will not work)
+    |ved (this is some random string - not supported, it will not work)
     /ref@amazon.*$ (dollar sign should be at the beginning)
 
 ## Recommended parameters
