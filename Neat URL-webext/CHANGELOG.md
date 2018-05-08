@@ -1,3 +1,7 @@
+4.1.3
+=====
+* Add _hsmi
+
 4.1.2
 =====
 * Remove ref, fixes #130
