@@ -1,34 +1,30 @@
 {
-  "name": "Neat URL",
-  "description": "__MSG_extensionDescription__",
-  "homepage_url": "http://hugsmile.eu",
-  "manifest_version": 2,
-  "version": "4.1.4",
-  "default_locale": "en",
-  "background": {
-    "scripts": [
-      "browser-polyfill.min.js",
-      "background.js",
-      "toolbaricon.js"
-    ]
-  },
-  "icons": {
-    "48": "icons/dark/neaturl-48.png",
-    "96": "icons/dark/neaturl-96-state0.png"
-  },
-  "permissions": [
-    "storage",
-    "notifications",
-    "contextMenus",
-    "webRequest",
-    "webRequestBlocking",
-    "tabs",
-    "<all_urls>"
-  ],
-  "options_ui": {
-    "page": "options.html"
-  },
-  "browser_action": {
-    "default_icon": "icons/dark/neaturl-96-state0.png"
-  }
+	"name": "Neat URL",
+	"description": "__MSG_extensionDescription__",
+	"homepage_url": "http://hugsmile.eu",
+	"manifest_version": 2,
+	"version": "4.1.4",
+	"default_locale": "en",
+	"background": {
+		"scripts": ["browser-polyfill.min.js", "background.js", "toolbaricon.js"]
+	},
+	"icons": {
+		"48": "icons/dark/neaturl-48.png",
+		"96": "icons/dark/neaturl-96-state0.png"
+	},
+	"applications": {
+		"gecko": {
+			"id": "neaturl@hugsmile.eu",
+			"strict_min_version": "48.0"
+		}
+	},
+	"permissions": ["storage", "notifications", "contextMenus", "webRequest", "webRequestBlocking", "tabs", "<all_urls>"],
+	"options_ui": {
+		"page": "options.html",
+		"browser_style": true
+	},
+	"browser_action": {
+		"default_icon": "icons/dark/neaturl-96-state0.png",
+		"browser_style": true
+	}	
 }
