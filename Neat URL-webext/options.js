@@ -45,6 +45,7 @@ const PREFS = {
 	}
 };
 var lastWidth = 0;
+var rendered = false;
 
 function getClean(text){
 	let clean = text.split(",");
@@ -137,6 +138,7 @@ function i18n() {
 
 function init(){
 	render();
+	useCorrectStylesheet();
 	restoreOptions();
 	i18n();
 	document.querySelector("form").style.display = "block";
@@ -144,23 +146,44 @@ function init(){
 }
 
 function render(){
-	var newWidth = document.documentElement.clientWidth / 3;
-	if(Math.abs(lastWidth - (newWidth / 3)) < 15) return; // do not render again
+	if(rendered === false){
+		return; // do not render again
+	}
 
-	var sheet = document.styleSheets[0];
+	rendered = true;
+
+	let sheet = document.styleSheets[0];
 
 	// https://stackoverflow.com/questions/29927992/remove-css-rules-by-javascript
 	if (sheet.cssRules) {
-		for (var i = 0; i < sheet.cssRules.length; i++) {
+		for (let i = 0; i < sheet.cssRules.length; i++) {
 			if (sheet.cssRules[i].selectorText === '.labelbox') {
 				sheet.deleteRule(i);
 			}
 		}
 	}
 
-	var cssRule = ".labelbox{ min-width: " + newWidth + "px;}";
+	let cssRule = ".labelbox{ min-width: " + newWidth + "px;}";
 	sheet.insertRule(cssRule, 1);
 	lastWidth = newWidth;
+}
+
+function useCorrectStylesheet(){
+	let userAgent = navigator.userAgent;
+	let b = "";
+	if(userAgent.indexOf("Firefox") > -1){
+		b = "firefox";
+	}
+	if(userAgent.indexOf("Chrome") > -1){
+		b = "chrome";
+	}
+	
+	let styles = document.createElement('link');
+	styles.rel = "stylesheet";
+	styles.type = "text/css";
+	styles.media = "screen";
+	styles.href = "css/options." + b + ".css";
+	document.getElementsByTagName('head')[0].appendChild(styles);
 }
 
 window.addEventListener("DOMContentLoaded", init, { passive: true });

@@ -1,3 +1,8 @@
+4.1.4
+=====
+* Port to Chrome
+* Extract CSS into separate files
+
 4.1.3
 =====
 * Add _hsmi

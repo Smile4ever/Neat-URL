@@ -1,0 +1,13 @@
+body{
+	margin:0;
+	padding:0;
+}
+
+.flexbox-container > div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.description{
+	display: none;
+}

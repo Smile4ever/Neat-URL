@@ -2,103 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/options.css">
   </head>
   <body>
-	<style>
-		/* Used from http://stackoverflow.com/questions/306252/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers */
-		.labelbox label {
-			display: block;
-			padding-left: 15px;
-			text-indent: -15px;
-		}
-
-		input[type=checkbox] {
-			width: 13px;
-			height: 13px;
-			padding: 0;
-			margin:0;
-			margin-right: 3px;
-			vertical-align: bottom;
-			position: relative;
-			top: -1px;
-			*overflow: hidden;
-		}
-		/* End of used CSS */
-
-		input[type=number]{
-			max-width: 4em;
-		}
-
-		body{
-			margin:0;
-			padding:0;
-		}
-
-		/* CSS used from https://github.com/kainsavage/HistoryBlock/blob/web-extension/options/options.css */
-		body, button, input, textarea {
-		  font-family: Segoe UI, sans-serif;
-		  font-size: 15px;
-		}
-
-		body, button{
-		  color: #333; /* From Mozilla Firefox CSS */
-		}
-
-		button {
-		  padding: 4px 20px;
-		  background-color: #fbfbfb;
-		  border: 1px solid #bbb;
-		  border-radius: 2px; /* From Mozilla Firefox CSS */
-		  margin: 0 4px;
-		}
-
-		button:hover {
-		  background-color: #ebebeb;
-		}
-		/* End of used CSS */
-
-		.descr{
-			margin-inline-start: 1em;
-			-moz-box-align: center;
-			font-size: 0.85em;
-			/* font-size: 1.25rem; */
-			color: gray;
-		}
-
-		.hr{
-			border-bottom: 1px solid #bbb
-		}
-
-		/* CSS used from https://davidwalsh.name/flexbox-column */
-		.flexbox-container {
-			display: -ms-flex;
-			display: -webkit-flex;
-			display: flex;
-		}
-
-		.flexbox-container > div {
-			width: 33%;
-			padding: 10px;
-		}
-
-		.flexbox-container > div:first-child {
-			margin-right: 20px;
-		}
-		/* End of used CSS */
-
-		button::-moz-focus-inner {
-			border: 0;
-		}
-		/*.labelbox{
-			min-width: 350px;
-		}*/
-	</style>
-
 	<div class="refreshOptions">
 		Refresh this page (F5) to see the options of Neat URL
 	</div>
     <form id="optionsform" style="display: none">
-		<div class="hr"></div>
+		<div class="hr firsthr"></div>
+		
+		<div class="flexbox-container description">
+			<div>Remove garbage from URLs.</div>
+		</div>
 		
 		<div class="flexbox-container">
 			<div class="labelbox">
@@ -233,6 +148,7 @@
         <button type="submit"><span id="savepreferences" data-i18n="savepreferences">Save preferences</span></button>
     </form>
 
+	<script src="browser-polyfill.min.js"></script>
     <script src="options.js" defer></script>
   </body>
 </html>

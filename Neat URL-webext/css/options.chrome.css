@@ -1,0 +1,18 @@
+body {
+	min-width: 1200px;
+	max-width: 100%;
+	padding: 50px;
+}
+
+#optionsform{
+	margin-top: -50px;
+}
+
+.flexbox-container > div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.firsthr{
+	display: none;
+}

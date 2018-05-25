@@ -21,7 +21,7 @@ let globalTabId = -1;
 
 /// Badge and browserAction (the variable version is also used for upgrades)
 let badge=[]; // Hold the badge counts
-const version = browser.runtime.getManifest().version;
+let version = browser.runtime.getManifest().version;
 
 /// Preferences
 let neat_url_blacklist; // this is an array
