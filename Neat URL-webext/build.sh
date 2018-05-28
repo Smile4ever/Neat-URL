@@ -41,6 +41,7 @@ rename zip chrome.zip *.zip
 cd ../..
 yes | cp build/web-ext-artifacts/* web-ext-artifacts/
 
+rm -rf build/web-ext-artifacts
 rm -rf build
 
 # Build ZIP - Firefox

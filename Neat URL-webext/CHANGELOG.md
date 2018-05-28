@@ -1,3 +1,7 @@
+4.1.5
+=====
+* Fix for item@jd.com
+
 4.1.4
 =====
 * Port to Chrome

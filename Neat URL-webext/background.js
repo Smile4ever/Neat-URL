@@ -10,6 +10,7 @@
 let defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_*@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source, source@sourceforge.net, position@sourceforge.net, callback@bilibili.com, elqTrackId, elqTrack, assetType, assetId, recipientId, campaignId, siteId, tag@amazon.*, ref_@amazon.*, pf_rd_*@amazon.*, spm@*.aliexpress.com, scm@*.aliexpress.com, aff_platform, aff_trace_key, terminal_id, _hsmi";
 let defaultRequestTypes = "main_frame";
 let defaultBlacklist = ""; // google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
+let suffixList = new Array();
 
 /// Runtime setting
 let enabled = true;
@@ -109,6 +110,12 @@ function init(){
 
 		upgradeParametersIfNeeded();
 	}).catch(console.error);
+	
+	fetch('publicsuffix-ccSLD.txt').then(function(response) {
+		return response.text();		
+	}).then(function(text){
+		suffixList = text.split("\n");
+	});
 	
 	initContextMenus();
 }
@@ -415,13 +422,28 @@ function getRootDomain(domain) {
 	let splitArr = domain.split('.'),
 		arrLen = splitArr.length;
 
+	// grep -e '^[a-zA-Z]\{2,3\}\.[a-zA-Z]\{2,3\}$' publicsuffix.txt > publicsuffix-ccSLD.txt
+	
 	// Extract the root domain
 	//http://publicsuffix.org/list/
 	if (arrLen > 2) {
+		// Checking for double domains with 3 or less characters using publicsuffix-ccSLD.txt. Fixes support *.jd.com for https://item.jd.com
 		if(splitArr[arrLen - 2].length <= 3){
-			// oops.. this is becoming an invalid URL
-			// Example URLs that trigger this code path are https://images.google.co.uk and https://google.co.uk
-			domain = splitArr[arrLen - 3] + '.' + splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+			var toCheck = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1]; // co.uk (found) or item.jd.com (not found)
+			
+			if(neat_url_logging) console.log("Probably not desired: " + toCheck);
+			if(neat_url_logging) console.log("Probably more desired: " + splitArr[arrLen - 3] + '.' + splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1]);
+			
+			if(suffixList.indexOf(toCheck) > -1){
+				// Example URLs that trigger this code path are https://images.google.co.uk and https://google.co.uk
+				if(neat_url_logging) console.log(toCheck + " found in the list!");
+
+				domain = splitArr[arrLen - 3] + '.' + splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+			}else{
+				if(neat_url_logging) console.log(toCheck + " not found in the list!");
+				domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
+			}
+		
 		}else{
 			domain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
 		}
