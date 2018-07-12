@@ -4,7 +4,11 @@ Neat URL cleans URLs, removing parameters such as Google Analytics' utm paramete
 
 ## Blocked Parameters
 
+<<<<<<< HEAD
 utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_r@amazon.&ast;, pd_rd_w@amazon.&ast;, pd_rd_wg@amazon.&ast;, _encoding@amazon.&ast;, psc@amazon.&ast;, ved@google.&ast;, ei@google.&ast;, sei@google.&ast;, gws_rd@google.&ast;, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.&ast, _hsenc, mkt_tok, hmb_campaign, hmb_source, hmb_medium;
+=======
+utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map
+>>>>>>> 2729b1a... Neat URL-webext 1.0.0:
 
 ## Example
 
@@ -22,6 +26,7 @@ Do you want to see neater URLs?
 
 Neat URL is just what you're looking for!
 
+<<<<<<< HEAD
 ## Parameter rules
 A parameter is something that starts with ?. You can add your own parameter in the options of Neat URL. The ? is ommitted in the options, so a ?ved parameter becomes "ved". There are a few exceptions to this rule (see below)
 
@@ -87,6 +92,8 @@ tt_medium, tt_content
 Other parameters you can consider:
 _hsmi, algo_expid, algo_pvid, aqs, bav, bih, biw, btsid, bvm, cn, cp, csi, dpr, dq, ech, forward, gs_gbg, gs_mss, gs_rn, iact, icid, iid, ijn, mc_cid, mc_eid, ncid, ndsp, nid, nr_email_referer, oq, pbx, pf, pf_rd_i, pf_rd_m, pf_rd_p, pf_rd_r, pf_rd_s, pf_rd_t, pq, prmd, psi, ref_, refsrc, sa, sclient, scroll, sr_share, stick, tbnid, vero_conv, vero_id, vet, ws_ab_test, yv
 
+=======
+>>>>>>> 2729b1a... Neat URL-webext 1.0.0:
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
 
@@ -95,5 +102,8 @@ Neat URL contains a few improvements:
 * fixed for recent Firefox versions
 * a nice animation in the toolbar (can be changed or disabled)
 * domain-specific blocked parameters (to reach feature parity with Pure URL)
+<<<<<<< HEAD
 * wildcard domain-specific blocked parameters
 * wildcard at the end of blocked parameters (general or domain-specific)
+=======
+>>>>>>> 2729b1a... Neat URL-webext 1.0.0:
