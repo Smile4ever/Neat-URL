@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 4.1.5
 =====
 * Fix for item@jd.com
@@ -151,8 +150,6 @@
 =====
 - Added utm_userid as default parameter
 
-=======
->>>>>>> 2729b1a... Neat URL-webext 1.0.0:
 1.0.0
 =====
 - Fork of Lean URL, with features from Pure URL

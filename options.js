@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
@@ -190,7 +189,7 @@ function useCorrectStylesheet(){
 window.addEventListener("DOMContentLoaded", init, { passive: true });
 document.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); saveOptions(); }, { passive: false });
 window.addEventListener("resize", render);
-=======
+
 const PREFS = {
 	"neat_url_blocked_params": {
 		"type": "value",
@@ -257,4 +256,3 @@ function render(){
 window.addEventListener("DOMContentLoaded", init, { passive: true });
 document.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); saveOptions(); }, { passive: false });
 window.addEventListener("resize", render);
->>>>>>> 2729b1a... Neat URL-webext 1.0.0:

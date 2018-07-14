@@ -1,5 +1,4 @@
 #!/bin/bash
-<<<<<<< HEAD
 NEATURLVERSION=$(jq -r '.version' manifest.json)
 echo "Building Neat URL $NEATURLVERSION"
 echo "Requirements:"
@@ -69,6 +68,3 @@ rm -rf build
 echo ""
 echo "Done building Neat URL $NEATURLVERSION:"
 find web-ext-artifacts -mmin -1 -type f -print
-=======
-web-ext build --ignore-files build.sh images *.md
->>>>>>> 2729b1a... Neat URL-webext 1.0.0:
