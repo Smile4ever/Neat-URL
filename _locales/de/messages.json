@@ -1,0 +1,122 @@
+{
+  "extensionDescription": {
+    "message": "Müll von URLs entfernen.",
+    "description": "Beschreibung der Erweiterung."
+  },
+  "blocked_params": {
+    "message": "Blockierte Parameter",
+    "description": ""
+  },
+  "blocked_params_descr": {
+    "message": "Parameter (Groß-/Kleinschreibung wird beachtet), die von der URL entfernt werden. Benutze parameter@domain.com um domainspezifische blockierte Parameter zu verwenden. Benutze ein Komma als Trennzeichen zwischen blockierter Parameter.",
+    "description": ""
+  },
+  "icon_animation": {
+    "message": "Icon-Animation",
+    "description": ""
+  },
+  "icon_animation_descr": {
+    "message": "Zu verwendende Animation, wenn Neat URL die URL säubert.",
+    "description": ""
+  },
+  "icon_animation_none": {
+	"message": "Keine Animation",
+    "description": ""
+  },
+  "icon_animation_missing_underscore": {
+	"message": "Fehlender Unterstrich",
+    "description": ""
+  },
+  "icon_animation_rotate": {
+	"message": "Icon drehen",
+    "description": ""
+  },
+  "icon_animation_surprise_me": {
+	"message": "Überrasch mich",
+    "description": ""
+  },
+  "icon_theme": {
+	"message": "Icon-Theme",
+    "description": ""
+  },
+  "icon_theme_descr": {
+	"message": "Dunkle Icons werden standardmäßig verwenden. Du kannst diese Einstellungen ändern, um helle Icons zu verwenden.",
+    "description": ""
+  },
+  "icon_theme_dark": {
+	"message": "Immer dunkle Icons verwenden",
+    "description": ""
+  },
+  "icon_theme_light": {
+	"message": "Immer helle Icons verwenden",
+    "description": ""
+  },
+  "icon_theme_dark_notiflight": {
+	"message": "Überall bis auf in Benachrichtigungen dunkle Icons verwenden",
+    "description": ""
+  },
+  "icon_theme_light_notifdark": {
+	"message": "Überall bis auf in Benachrichtigungen helle Icons verwenden",
+    "description": ""
+  },
+  "show_counter": {
+	"message": "Zähler anzeigen",
+    "description": ""
+  },
+  "show_counter_descr": {
+	"message": "Einen Zähler anzeigen, der die Anzahl umgeschriebener URLS zeigt.",
+    "description": ""
+  },
+  "counter_background_color": {
+	"message": "Zähler-Hintergrundfarbe",
+    "description": ""
+  },
+  "counter_background_color_descr": {
+	"message": "Die vom Zähler verwendete Hintergrundfarbe.",
+    "description": ""
+  },
+  "enable_logging": {
+    "message": "Logging aktivieren",
+    "description": ""
+  },
+  "enable_logging_descr": {
+    "message": "URL-Veränderungen in die Browserkonsole loggen.",
+    "description": ""
+  },
+  "advanced": {
+	"message": "Erweitert",
+	"description": ""
+  },
+  "advanced_descr": {
+    "message": "Diese Optionen können beißen.",
+	"description": ""
+  },
+  "blacklist": {
+    "message": "Domain-Sperrliste",
+    "description": ""
+  },
+  "blacklist_descr": {
+    "message": "Durch Komma getrennte Liste an Domains. Neat URL wird auf diesen Webseiten nicht arbeiten.",
+    "description": ""
+  },
+  "url_request_types": {
+    "message": "URL-Anfrage-Typen",
+    "description": ""
+  },
+  "url_request_types_descr": {
+    "message": "Standardwert: main_frame. Diese Liste ist kommasepariert. Gültige Werte können in der <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>Liste von Ressourcen-Typen</a> gefunden werden.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
+  "counter_default_color": {
+	"message": "Die standardmäßige Zähler-Farbe verwenden",
+	"description": ""
+  },
+  "savepreferences": {
+    "message": "Einstellungen speichern",
+    "description": ""
+  },
+  "notify_preferences_saved": {
+	"message": "Einstellungen gespeichert",
+    "description": ""
+  }
+}
