@@ -1,4 +1,10 @@
 #!/bin/bash
+shopt -s extglob  # to enable extglob
+build_fill() {
+	mkdir build
+	cp -r !(build*) build/
+}
+
 NEATURLVERSION=$(jq -r '.version' manifest.json)
 echo "Building Neat URL $NEATURLVERSION"
 echo "Requirements:"
@@ -22,10 +28,7 @@ fi
 rm -rf build 2>/dev/null
 
 # Build ZIP - Chrome
-mkdir build
-shopt -s extglob  # to enable extglob
-cp -r !(build*) build/
-
+build_fill
 cd build
 rm -rf web-ext-artifacts
 jq -r 'del(.applications) | del(.browser_action.browser_style) | del(.options_ui.browser_style)' manifest.json > manifest-chrome.json #Chrome
@@ -45,10 +48,7 @@ rm -rf build/web-ext-artifacts
 rm -rf build
 
 # Build ZIP - Firefox
-mkdir build
-shopt -s extglob  # to enable extglob
-cp -r !(build*) build/
-
+build_fill
 cd build
 rm -rf web-ext-artifacts
 rm browser-polyfill.min.js
