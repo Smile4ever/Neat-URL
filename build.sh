@@ -2,7 +2,11 @@
 shopt -s extglob  # to enable extglob
 build_fill() {
 	mkdir build
-	cp -r !(build*) build/
+	cp -r !(build*|background.js|options.js) build/
+	filters="$(grep '## Blocked Parameters' -A2 README.md | sed -e 's/&ast;/*/g' | tail -1)"
+	for i in background.js options.js; do
+		sed -e "s|__FILTERS__|$filters|" < $i > build/$i
+	done
 }
 
 NEATURLVERSION=$(jq -r '.version' manifest.json)
