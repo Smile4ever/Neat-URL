@@ -1,26 +1,26 @@
 {
   "extensionDescription": {
-    "message": "Remove garbage from URLs.",
+    "message": "URL’lerdeki çöpü kaldırın.",
     "description": "Description of the extension."
   },
   "blocked_params": {
-    "message": "Blocked parameters",
+    "message": "Engellenen parametreler",
     "description": ""
   },
   "blocked_params_descr": {
-    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.",
+    "message": "URL'den kaldırılacak harfe duyarlı parametreler. Etki alanına özgü engellenen parametreleri kullanmak için param@domain.com adresini kullanın. Engellenen parametreler arasına ayırıcı olarak virgül kullanın.",
     "description": ""
   },
   "icon_animation": {
-    "message": "Icon animation",
+    "message": "Simge animasyonu",
     "description": ""
   },
   "icon_animation_descr": {
-    "message": "Animation to use when Neat URL is cleaning up the URL.",
+    "message": "Neat URL'nin, URL'yi temizlerken kullanacağı animasyon.",
     "description": ""
   },
   "icon_animation_none": {
-	"message": "No animation",
+	"message": "Animasyon yok",
     "description": ""
   },
   "icon_animation_missing_underscore": {
@@ -28,63 +28,63 @@
     "description": ""
   },
   "icon_animation_rotate": {
-	"message": "Rotate icon",
+	"message": "Simgeyi döndür",
     "description": ""
   },
   "icon_animation_surprise_me": {
-	"message": "Surprise me",
+	"message": "Şaşırt beni",
     "description": ""
   },
   "icon_theme": {
-	"message": "Icon theme",
+	"message": "Simge teması",
     "description": ""
   },
   "icon_theme_descr": {
-	"message": "Dark icons are used by default. You can change this option to use light icons.",
+	"message": "Koyu simgeler varsayılan olarak kullanılır. Açık simgeleri kullanmak için bu seçeneği değiştirebilirsiniz.",
     "description": ""
   },
   "icon_theme_dark": {
-	"message": "Always use dark icons",
+	"message": "Her zaman karanlık simgeler kullan",
     "description": ""
   },
   "icon_theme_light": {
-	"message": "Always use light icons",
+	"message": "Her zaman açık simgeler kullan",
     "description": ""
   },
   "icon_theme_dark_notiflight": {
-	"message": "Use dark icons except for notifications",
+	"message": "Bildirimler dışında karanlık simgeler kullan",
     "description": ""
   },
   "icon_theme_light_notifdark": {
-	"message": "Use light icons except for notifications",
+	"message": "Bildirimler dışında açık simgeler kullan",
     "description": ""
   },
   "show_counter": {
-	"message": "Show counter",
+	"message": "Sayacı göster",
     "description": ""
   },
   "show_counter_descr": {
-	"message": "Show a counter which displays the number of rewritten URLs.",
+	"message": "Yeniden yazılmış URL'lerin sayısını gösteren bir sayaç göster.",
     "description": ""
   },
   "counter_background_color": {
-	"message": "Counter background color",
+	"message": "Sayaç arka plan rengi",
     "description": ""
   },
   "counter_background_color_descr": {
-	"message": "The background color used by the counter.",
+	"message": "Sayaç tarafından kullanılan arka plan rengi.",
     "description": ""
   },
   "enable_logging": {
-    "message": "Enable logging",
+    "message": "Günlüğü etkinleştir",
     "description": ""
   },
   "enable_logging_descr": {
-    "message": "Log URL changes to the browser console.",
+    "message": "Günlük URL'si tarayıcı konsolunda değişiklik yapar.",
     "description": ""
   },
   "advanced": {
-	"message": "Advanced",
+	"message": "Gelişmiş",
 	"description": ""
   },
   "advanced_descr": {
@@ -92,31 +92,31 @@
 	"description": ""
   },
   "blacklist": {
-    "message": "Domain blacklist",
+    "message": "Alan adı kara listesi.",
     "description": ""
   },
   "blacklist_descr": {
-    "message": "Comma separated list of domains. Neat URL will not work on these websites.",
+    "message": "Alan adlarının virgülle ayrılmış listesi. Neat URL bu web sitelerinde çalışmaz.",
     "description": ""
   },
   "url_request_types": {
-    "message": "URL request types",
+    "message": "URL istek türleri",
     "description": ""
   },
   "url_request_types_descr": {
-    "message": "Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
+    "message": "Varsayılan değer: main_frame. Bu liste virgülle ayrılmış. Geçerli değerler <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'> kaynak türleri listesinde bulunabilir</a>.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
-	"message": "Use the default counter color",
+	"message": "Varsayılan sayaç rengini kullan",
 	"description": ""
   },
   "savepreferences": {
-    "message": "Save preferences",
+    "message": "Tercihleri kaydet",
     "description": ""
   },
   "notify_preferences_saved": {
-	"message": "Saved preferences",
+	"message": "Tercihler kaydedildi",
     "description": ""
   }
 }
