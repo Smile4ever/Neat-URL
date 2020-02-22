@@ -1,6 +1,6 @@
 # Neat URL
 
-Neat URL cleans URLs, removing parameters such as Google Analytics' utm parameters.
+Neat URL is a Chrome Extension that cleans URLs, removing parameters such as Google Analytics' utm parameters.
 
 ## Blocked Parameters
 
