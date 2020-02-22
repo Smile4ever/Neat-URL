@@ -1,6 +1,6 @@
 # Neat URL
 
-Neat URL is a browser extension for [Firefox][] and [Chrome][], that cleans URLs, removing parameters such as Google Analytics' utm parameters.
+Neat URL is a browser extension that cleans URLs, removing parameters such as Google Analytics' utm parameters. Use with [Firefox][] and [Chrome][].
 
 [Firefox]: https://addons.mozilla.org/en-US/firefox/addon/neat-url/
 [Chrome]: https://chrome.google.com/webstore/detail/neat-url/jchobbjgibcahbheicfocecmhocglkco
