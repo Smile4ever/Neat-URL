@@ -285,7 +285,7 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 	}
 
 	// Workaround for https://github.com/Smile4ever/firefoxaddons/issues/76
-	if (gbp == "gws_rd@google.*" && rootDomain == "google.com" && detailsUrl.contains("gws_rd=cr")){
+	if (gbp == "gws_rd@google.*" && rootDomain == "google.com" && detailsUrl.searchParams.get("gws_rd") == "cr"){
 		return;
 	}
 
