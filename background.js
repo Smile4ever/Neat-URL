@@ -60,7 +60,8 @@ function init(){
 		"neat_url_logging",
 		"neat_url_blacklist",
 		"neat_url_types",
-		"neat_url_counter_default_color"
+		"neat_url_counter_default_color",
+		"neat_url_version"
 	]).then((storageLocalResult) => {
 		neat_url_override_default_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_override_default_blocked_params, []);
 		neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
@@ -72,7 +73,8 @@ function init(){
 		neat_url_blacklist = valueOrDefaultArray(storageLocalResult.neat_url_blacklist, defaultBlacklist);
 		neat_url_types = valueOrDefaultArray(storageLocalResult.neat_url_types, defaultRequestTypes);
 		neat_url_counter_default_color = valueOrDefault(storageLocalResult.neat_url_counter_default_color, true); // true as default
-
+		neat_url_version = valueOrDefault(storageLocalResult.neat_url_version, "0.1.0");
+		
 		// Upgrade configuration from old releases
 		if(neat_url_counter_default_color == null && neat_url_counter_color == "#eeeeee"){
 			// Update counter_color to null
@@ -101,6 +103,7 @@ function init(){
 	
 		initBrowserAction(); // needs neat_url_icon_theme
 		initCounter(); // needs neat_url_show_counter
+		deleteDefaultParametersFromBlockedParameters(); // needs neat_url_icon_theme and neat_url_blocked_params
 
 		return storageLocalResult;
 	})
@@ -113,14 +116,6 @@ function init(){
 		neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
 	});
 
-	browser.storage.local.get([
-		"neat_url_version"
-	]).then((result) => {
-		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
-
-		deleteDefaultParametersFromBlockedParameters();
-	}).catch(console.error);
-	
 	fetch('data/publicsuffix-ccSLD.txt').then((response) => {
 		return response.text();		
 	}).then((text) => {
@@ -200,12 +195,23 @@ function deleteDefaultParametersFromBlockedParameters(){
 	let oldVersion = neat_url_version;
 	let newVersion = browser.runtime.getManifest().version;
 	// Upgrade value in browser.storage.local if oldVersion != newVersion
-	
+	oldVersion = "1.0.0";
 	if(oldVersion != newVersion){
 		let changes = false;
-		let defaultParams = defaultGlobalBlockedParams;
+		let defaultParams = neat_url_default_blocked_params;
 		
 		for(let defaultParam of defaultParams){
+			if(defaultParam.endsWith("_*")){
+				let paramToFind = defaultParam.replace("_*", "_");
+				let lengthBefore = neat_url_blocked_params.length;
+				neat_url_blocked_params = neat_url_blocked_params.filter((blocked) => !blocked.startsWith(paramToFind));
+				let lengthAfter = neat_url_blocked_params.length;
+
+				if(lengthAfter != lengthBefore){
+					changes = true;
+				}
+			}
+
 			if(neat_url_blocked_params.includes(defaultParam)){
 				neat_url_blocked_params = removeFromArray(neat_url_blocked_params, defaultParam);
 				changes = true;
