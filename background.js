@@ -7,9 +7,8 @@
 // * https://github.com/Smile4ever/firefoxaddons/issues/43
 
 /// Static variables
-let defaultGlobalBlockedParams = "utm_source, utm_medium, utm_term, utm_content, utm_campaign, utm_reader, utm_place, utm_userid, utm_cid, utm_name, utm_pubreferrer, utm_swu, utm_viz_id, ga_source, ga_medium, ga_term, ga_content, ga_campaign, ga_place, yclid, _openstat, fb_action_ids, fb_action_types, fb_ref, fb_source, action_object_map, action_type_map, action_ref_map, gs_l, pd_rd_*@amazon.*, _encoding@amazon.*, psc@amazon.*, ved@google.*, ei@google.*, sei@google.*, gws_rd@google.*, cvid@bing.com, form@bing.com, sk@bing.com, sp@bing.com, sc@bing.com, qs@bing.com, pq@bing.com, feature@youtube.com, gclid@youtube.com, kw@youtube.com, $/ref@amazon.*, _hsenc, mkt_tok, hmb_campaign, hmb_medium, hmb_source, source@sourceforge.net, position@sourceforge.net, callback@bilibili.com, elqTrackId, elqTrack, assetType, assetId, recipientId, campaignId, siteId, tag@amazon.*, ref_@amazon.*, pf_rd_*@amazon.*, spm@*.aliexpress.com, scm@*.aliexpress.com, aff_platform, aff_trace_key, terminal_id, _hsmi, fbclid, spReportId, spJobID, spUserID, spMailingID, utm_mailing, utm_brand, CNDID, mbid, trk, trkCampaign, sc_campaign, sc_channel, sc_content, sc_medium, sc_outcome, sc_geo, sc_country, wt_zmc";
-let defaultRequestTypes = "main_frame";
-let defaultBlacklist = ""; // google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
+let defaultRequestTypes = ["main_frame"];
+let defaultBlacklist = []; // google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
 let suffixList = new Array();
 
 /// Runtime setting
@@ -21,11 +20,14 @@ let globalCurrentURL = "";
 let globalTabId = -1;
 
 /// Badge and browserAction (the variable version is also used for upgrades)
-let badge=[]; // Hold the badge counts
+let badge = []; // Hold the badge counts
 let version = browser.runtime.getManifest().version;
 
 /// Preferences
-let neat_url_blacklist; // this is an array
+let neat_url_default_blocked_params; // Exception: this is not editable and doesn't come out of storage local!
+let neat_url_override_default_blocked_params;
+let neat_url_blocked_params;
+let neat_url_blacklist;
 let neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
 let neat_url_icon_theme;
 let neat_url_show_counter;
@@ -34,23 +36,22 @@ let neat_url_logging;
 let neat_url_types;
 
 // Used for upgrading purposes:
-let neat_url_hidden_params; // this is an array
 let neat_url_version; // previous version when upgrading, after upgrading the current version
 
 function init(){
 	let valueOrDefault = function(value, defaultValue){
-		if(value == undefined)
-			return defaultValue;
+		if(value == undefined) return defaultValue;
 		return value;
 	}
 	
 	let valueOrDefaultArray = function(value, defaultValue){
-		let calcValue = valueOrDefault(value, defaultValue);
-		if(calcValue == "") return [];
-		return calcValue.split(" ").join("").split(",");
+		if(value == undefined || value == "") return defaultValue;
+
+		return value.split(" ").join("").split(",");
 	}
 	
 	browser.storage.local.get([
+		"neat_url_override_default_blocked_params",
 		"neat_url_blocked_params",
 		"neat_url_icon_animation",
 		"neat_url_icon_theme",
@@ -60,16 +61,17 @@ function init(){
 		"neat_url_blacklist",
 		"neat_url_types",
 		"neat_url_counter_default_color"
-	]).then((result) => {
-		neat_url_blocked_params = valueOrDefaultArray(result.neat_url_blocked_params, defaultGlobalBlockedParams);
-		neat_url_icon_animation = valueOrDefault(result.neat_url_icon_animation, "missing_underscore");
-		neat_url_icon_theme = valueOrDefault(result.neat_url_icon_theme, "dark");
-		neat_url_show_counter = valueOrDefault(result.neat_url_show_counter, true);
-		neat_url_counter_color = valueOrDefault(result.neat_url_counter_color, "#000000");
-		neat_url_logging = valueOrDefault(result.neat_url_logging, false);
-		neat_url_blacklist = valueOrDefaultArray(result.neat_url_blacklist, defaultBlacklist);
-		neat_url_types = valueOrDefaultArray(result.neat_url_types, defaultRequestTypes);
-		neat_url_counter_default_color = valueOrDefault(result.neat_url_counter_default_color, true); // true as default
+	]).then((storageLocalResult) => {
+		neat_url_override_default_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_override_default_blocked_params, []);
+		neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
+		neat_url_icon_animation = valueOrDefault(storageLocalResult.neat_url_icon_animation, "missing_underscore");
+		neat_url_icon_theme = valueOrDefault(storageLocalResult.neat_url_icon_theme, "dark");
+		neat_url_show_counter = valueOrDefault(storageLocalResult.neat_url_show_counter, true);
+		neat_url_counter_color = valueOrDefault(storageLocalResult.neat_url_counter_color, "#000000");
+		neat_url_logging = valueOrDefault(storageLocalResult.neat_url_logging, false);
+		neat_url_blacklist = valueOrDefaultArray(storageLocalResult.neat_url_blacklist, defaultBlacklist);
+		neat_url_types = valueOrDefaultArray(storageLocalResult.neat_url_types, defaultRequestTypes);
+		neat_url_counter_default_color = valueOrDefault(storageLocalResult.neat_url_counter_default_color, true); // true as default
 
 		// Upgrade configuration from old releases
 		if(neat_url_counter_default_color == null && neat_url_counter_color == "#eeeeee"){
@@ -96,27 +98,35 @@ function init(){
 				["blocking"]
 			);
 		}
-
+	
 		initBrowserAction(); // needs neat_url_icon_theme
 		initCounter(); // needs neat_url_show_counter
-	}).catch(console.error);
+
+		return storageLocalResult;
+	})
+	// Retrieve default parameters from JSON file and set neat_url_blocked_params
+	.catch(console.error);
 	
+	fetch('data/default-params-by-category.json').then((response) => {
+		return response.json();
+	}).then((jsonParams) => {
+		neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
+	});
+
 	browser.storage.local.get([
-		"neat_url_hidden_params",
 		"neat_url_version"
 	]).then((result) => {
-		neat_url_hidden_params = valueOrDefaultArray(result.neat_url_hidden_params, "");
 		neat_url_version = valueOrDefault(result.neat_url_version, "0.1.0");
 
-		upgradeParametersIfNeeded();
+		deleteDefaultParametersFromBlockedParameters();
 	}).catch(console.error);
 	
-	fetch('publicsuffix-ccSLD.txt').then(function(response) {
+	fetch('data/publicsuffix-ccSLD.txt').then((response) => {
 		return response.text();		
-	}).then(function(text){
+	}).then((text) => {
 		suffixList = text.split("\n");
 	});
-	
+
 	initContextMenus();
 }
 init();
@@ -157,7 +167,6 @@ function initBrowserAction(){
 }
 
 /// Context menus
-/// Translate Now / Neat URL code
 function initContextMenus(){
 	browser.contextMenus.onClicked.removeListener(listener);
 	browser.contextMenus.removeAll().catch(null);
@@ -166,69 +175,47 @@ function initContextMenus(){
 	browser.contextMenus.onClicked.addListener(listener);
 }
 
-/// Translate Now code
 function createContextMenu(id, title, contexts){
 	browser.contextMenus.create({
 		id: id,
 		title: title,
 		contexts: contexts
-	}, onCreated);
-
-	function onCreated(n) {
-		//console.log(`[Neat URL]: Error: ${browser.runtime.lastError}`);
-	}
-}
-
-/// Get Archive code
-function openPreferences(){
-	browser.runtime.openOptionsPage();
+	});
 }
 
 /// Translate Now / Lean URL code
-function listener(info,tab){
+function listener(info, tab){
 	if(info.menuItemId == "neaturl-tb-preferences"){
-		openPreferences();
+		browser.runtime.openOptionsPage();
 		return;
 	}
 }
 
 /// Neat URL code
-function upgradeParametersIfNeeded(){
+function deleteDefaultParametersFromBlockedParameters(){
+// Delete all parameters from the user storage that are already contained in the default parameters
+// The default parameters will be editable, but only the offset will be saved
+// That makes future updates easier
+
 	let oldVersion = neat_url_version;
 	let newVersion = browser.runtime.getManifest().version;
-	
-	//console.log("[Neat URL]: upgradeParametersIfNeeded - " + oldVersion + " => " + newVersion);
+	// Upgrade value in browser.storage.local if oldVersion != newVersion
 	
 	if(oldVersion != newVersion){
 		let changes = false;
-		let defaultParams = defaultGlobalBlockedParams.split(", ");
+		let defaultParams = defaultGlobalBlockedParams;
 		
 		for(let defaultParam of defaultParams){
-			if(neat_url_blocked_params.indexOf(defaultParam) == -1){
-				if(neat_url_hidden_params.indexOf(defaultParam) == -1){
-					//console.log("[Neat URL]: Adding parameter " + defaultParam + " during upgrade.");
-					if(defaultParam == "pd_rd_*@amazon.*"){
-						neat_url_blocked_params = removeFromArray(neat_url_blocked_params, "pd_rd_r@amazon.*");
-						neat_url_blocked_params = removeFromArray(neat_url_blocked_params, "pd_rd_w@amazon.*");
-						neat_url_blocked_params = removeFromArray(neat_url_blocked_params, "pd_rd_wg@amazon.*");
-					}
-					
-					neat_url_blocked_params.push(defaultParam);
-					changes = true;
-				}
+			if(neat_url_blocked_params.includes(defaultParam)){
+				neat_url_blocked_params = removeFromArray(neat_url_blocked_params, defaultParam);
+				changes = true;
 			}
-		}
-
-		if(newVersion == "4.1.2"){
-			neat_url_blocked_params = removeFromArray(neat_url_blocked_params, "ref");
-			changes = true;
 		}
 
 		if(changes){
 			browser.storage.local.set({"neat_url_blocked_params": neat_url_blocked_params.join(', ')})
 		}
-		
-		// Upgrade value in browser.storage.local if oldVersion != newVersion
+
 		browser.storage.local.set({"neat_url_version": newVersion});
 	}
 }
@@ -238,19 +225,19 @@ function removeFromArray(array, item){
 	if (index > -1) {
 		array.splice(index, 1);
 	}
+
 	return array;
 }
 
 /// Neat URL code
-function removeEndings(leanURL, blockedParams){
+function removeEndings(leanURL, endingParams){
 	let isSearch = leanURL.search == "" ? false : true ;
 	let path = leanURL.pathname;
 
-	for(let gbp of blockedParams){
-		if(gbp.startsWith('$')){
-			path = applyMatch(gbp, isSearch, path);
-		}
+	for(let endingParam of endingParams){
+		path = applyMatch(endingParam, isSearch, path);
 	}
+
 	if(leanURL.pathname != path){
 		leanURL.pathname = path;
 		leanURL.search = "";//should be empty before or removed right now by $$
@@ -263,7 +250,7 @@ function applyMatch(match2, isSearch, leanURL){
 	let startIndexAsEnd = -1;
 
 	// /dp/ is for Amazon product pages
-	if(!isSearch || secondChar == "$" || leanURL.indexOf("/dp/") > -1){
+	if(!isSearch || secondChar == "$" || leanURL.includes("/dp/")){
 		// Check it twice
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
 		if(match2.indexOf("$") == 0) match2 = match2.substring(1);
@@ -279,22 +266,22 @@ function applyMatch(match2, isSearch, leanURL){
 	return leanURL;
 }
 
-function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
-	if (gbp.indexOf("@") == -1) {
+function getParameterForDomainUrl(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
+	if (!gbp.includes("@")) {
 		return gbp;
 	}
 
 	// Workaround for https://github.com/Smile4ever/firefoxaddons/issues/76
 	if (gbp == "gws_rd@google.*" && rootDomain == "google.com" && detailsUrl.searchParams.get("gws_rd") == "cr"){
-		return;
+		return "";
 	}
 
 	let keyValue, keyDomain, index;
 	index = gbp.indexOf('@');
 	[keyValue, keyDomain] = [gbp.slice(0,index), gbp.slice(index+1)];
 
+	// Root wildcard domain, so compare with root domain
 	if(keyDomain.startsWith("*.")){
-		// we have a wildcard domain, so compare with root domain please.
 		keyDomain = keyDomain.replace("*.", "");
 		if ( rootDomain == keyDomain ) {
 			//console.log("[Neat URL]: matching to root domain");
@@ -302,12 +289,23 @@ function getMatch(gbp, domain, rootDomain, domainMinusSuffix, detailsUrl){
 		}
 	}
 
+	// Suffix wildcard domain
 	if(keyDomain.endsWith(".*")){
 		//console.log("[Neat URL]: keyDomain " + keyDomain + " ends with .* - domainMinusSuffix is " + domainMinusSuffix);
 		keyDomain = keyDomain.replace(".*", "");
 
 		if (domainMinusSuffix == keyDomain) {
 			//console.log("[Neat URL]: matching to wildcard domain");
+			return keyValue;
+		}
+	}
+
+	// Double wildcards
+	if(keyDomain.startsWith("*.") && keyDomain.endsWith(".*")){
+		keyDomain = keyDomain.replace("*.", "");
+		keyDomain = keyDomain.replace(".*", "");
+		if ( rootDomain == keyDomain && domainMinusSuffix == keyDomain) {
+			//console.log("[Neat URL]: matching to root wildcard and suffix wildcard domain");
 			return keyValue;
 		}
 	}
@@ -329,8 +327,6 @@ function buildURL(url, blockedParams, hashParams) {
 
 	/// Process wildcards parameters
 	for(let blockedParam of blockedParams){
-		if(blockedParam.startsWith('$')) continue;//another feature -> removeEndings()
-
 		// Wildcard support :)
 		// utm_*
 		let wildcardParam = getWildcardParam(blockedParam);
@@ -346,9 +342,9 @@ function buildURL(url, blockedParams, hashParams) {
 
 	for(let hashParam of hashParams){
 		//this will remove one, exact, hashParam
-		if(hashParam == "#" + hashUrl.search){
-			hashUrl.search = "";
-			break;
+		if(hashParam == url.hash || hashParam == "#*" || hashParam == "#?*"){
+			url.hash = "";
+			return url;
 		}
 
 		/// Do something special!
@@ -372,7 +368,7 @@ function buildURL(url, blockedParams, hashParams) {
 	// Stringify from URL object adds = to the other parameters without value, sadly.
 	// In most cases this won't be a problem, if it is there will be bugs about it
 	// Workaround to above encoding issue: only use the new value if the length is less now
-	if(new URL(searchParamsBefore).length > new URL(hashUrl.href).length){
+	if(searchParamsBefore.length > hashUrl.href.length){
 		const newHash = hashUrl.search.replace('?', '');
 		url.hash = newHash ? `#${newHash}` : '';
 	}
@@ -404,6 +400,16 @@ function deleteWildcardParam(wildcardParam, url){
 }
 
 function getDomainMinusSuffix(domain){
+	// Single or double domain
+	let substringDomainExtension = domain.substring(domain.indexOf(".") + 1);
+	let substringBeforeDomainExtension = domain.substring(0, domain.indexOf("."));
+
+	if(suffixList.includes(substringDomainExtension))
+	{
+		return substringBeforeDomainExtension;
+	}
+	
+	// Fallback scenario
 	let lastIndex = domain.lastIndexOf(".");
 	let previousLastIndex = domain.lastIndexOf(".", lastIndex - 1);
 
@@ -434,7 +440,7 @@ function getRootDomain(domain) {
 			if(neat_url_logging) console.log("Probably not desired: " + toCheck);
 			if(neat_url_logging) console.log("Probably more desired: " + splitArr[arrLen - 3] + '.' + splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1]);
 			
-			if(suffixList.indexOf(toCheck) > -1){
+			if(suffixList.includes(toCheck)){
 				// Example URLs that trigger this code path are https://images.google.co.uk and https://google.co.uk
 				if(neat_url_logging) console.log(toCheck + " found in the list!");
 
@@ -468,23 +474,6 @@ function cleanURL(details) {
 		}
 	}
 
-	if ("" === url.search && "" === url.hash){
-		let hasEndingParams = false;
-
-		for (let gbp of neat_url_blocked_params) {
-			let gbp_clean = gbp.replace("$$", "").replace("$", "").split("@")[0];
-			if(url.href.indexOf(gbp_clean) > -1){
-				if(neat_url_logging) console.log(`[Neat URL]: We have an ending parameter`);
-				hasEndingParams = true;
-			}
-		}
-
-		if(!hasEndingParams){
-			if(neat_url_logging) console.log(`[Neat URL]: no params for '${url.href}'`);
-			return;
-		}
-	}
-
 	domain = domain.replace(/^www\./i, '');//getDomain() -> //leave www out of this discussion. I don't consider this a subdomain
 	let rootDomain = getRootDomain(domain);
 	let domainMinusSuffix = getDomainMinusSuffix(domain);
@@ -495,20 +484,33 @@ function cleanURL(details) {
 
 	let blockedParams = [];
 	let hashParams = [];
+	let endingParams = []
 	let excludeParams = [];
 
-	for (let gbp of neat_url_blocked_params) {
-		let match = getMatch(gbp, domain, rootDomain, domainMinusSuffix, url);
-		if(match == "" || match == null) continue;
+	let defaultBlockedParamsWithoutOverrides = neat_url_default_blocked_params.filter((defaultBlockedParam) => !neat_url_override_default_blocked_params.includes(defaultBlockedParam));
+	let allBlockedParams = defaultBlockedParamsWithoutOverrides.concat(neat_url_blocked_params);
 
+	for (let gbp of allBlockedParams) {
+		let match = getParameterForDomainUrl(gbp, domain, rootDomain, domainMinusSuffix, url);
+		if(match === "") continue;
+
+		// Hash params
 		if(match.startsWith("#")){
-			if(neat_url_logging) console.log(`[Neat URL]: hash param '${match}' matches`);
+			if(neat_url_logging) console.log(`[Neat URL]: hash param '${match}' matches (for domain)`);
 			hashParams.push(match);
 			continue;
 		}
 		
+		// Ending params
+		if(match.startsWith("$")){
+			if(neat_url_logging) console.log(`[Neat URL]: ending param '${match}' matches (for domain)`);
+			endingParams.push(match);
+			continue;
+		}
+
 		// Excludes
 		if(match.startsWith("!")){
+			if(neat_url_logging) console.log(`[Neat URL]: exclude param '${match}' matches (for domain)`);
 			excludeParams.push(match);
 			continue;
 		}
@@ -535,14 +537,12 @@ function cleanURL(details) {
 	// https://github.com/Smile4ever/firefoxaddons/issues/30 should no longer occur with the new buildURL function
 	// https://github.com/Smile4ever/firefoxaddons/issues/47 should be solved as well
 	leanURL = buildURL(url, blockedParams, hashParams);
-	leanURL = removeEndings(leanURL, blockedParams);
+	leanURL = removeEndings(leanURL, endingParams);
 
 	// Is the URL changed?
 	if(new URL(originalDetailsUrl).href == leanURL.href) return;
 
-	if(neat_url_logging){
-		console.log(`[Neat URL]: (type ${details.type}): '${originalDetailsUrl}' has been changed to '${leanURL}'`);
-	}
+	if(neat_url_logging) console.log(`[Neat URL]: (type ${details.type}): '${originalDetailsUrl}' has been changed to '${leanURL}'`);
 
 	const applyAfter = 1000;
 
@@ -560,7 +560,7 @@ function cleanURL(details) {
 		globalTabId = details.tabId;
 
 		setTimeout(function(){
-			browser.tabs.query({url: globalCurrentURL}).then(function logTabs(tabs) {
+			browser.tabs.query({url: globalCurrentURL}).then((tabs) => {
 				if(globalNeatURL == null || globalNeatURL == "") return;
 
 				if(tabs.length == 0){
@@ -569,16 +569,14 @@ function cleanURL(details) {
 					//console.log(`[Neat URL]: It was opened in a new tab, update that tab to '${globalNeatURL}'`);
 
 					for (tab of tabs) {
-						if(neat_url_logging){
-							console.log(`[Neat URL]: really updating '${tab.url}' to '${globalNeatURL}'`);
-						}
-						browser.tabs.update(tab.id, {url: globalNeatURL});//May be fired more than once?
+						if(neat_url_logging) console.log(`[Neat URL]: really updating '${tab.url}' to '${globalNeatURL}'`);
+						browser.tabs.update(tab.id, { url: globalNeatURL });//May be fired more than once?
 						animateToolbarIcon();
 						if(neat_url_show_counter) incrementBadgeValue(globalTabId);
 					}
 				}
 
-				setTimeout(function(){
+				setTimeout(() => {
 					globalNeatURL = "";
 					globalCurrentURL = "";
 				}, applyAfter);

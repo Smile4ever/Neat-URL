@@ -1,3 +1,46 @@
+5.0.0 (2020-04-26)
+=====
+* Fix #144 (XTOR): hash parameters work again
+* Fix #161 (Ebay): add Ebay parameter hash@ebay.*
+* Fix #167 (fbclid): add Facebook parameter fbclid
+* Fix #176 (Google Analytics): add Google Analytics parameters gclid, gclsrc
+* Fix #177 (merge commits) by updating this extension
+* Fix #200 (double domains) by using publicsuffix-ccSLD
+* Fix #204 (roadmap): consider this changelog to be the roadmap
+* Fix #205 (block all placeholders using #*): add support for #* and #?*
+* Fix #206 (Yandex parameters): added by default
+* Fix #207 (hash): hash parameters work again
+* Fix #216 (Matomo): add pk_*
+* Fix #217 (outdated) by updating this extension
+* Fix: mixing a root wild card domain with a suffix wildcard domain is now supported
+
+* Adding default blocking parameters in new versions results in all users receiving the new parameters
+    * Existing default parameters included in the custom blocked parameters, will be deleted from the custom blocked parameters list
+* Organised default blocking parameters into categories and into a JSON file
+    * This removes the need to have the default blocking list multiple times in the code base (options.js, background.js)
+
+* Added Twitch.tv parameters tt_medium, tt_content
+* Added MailChimp parameters mc_cid, mc_eid
+* Added Google parameters gs_gbg@google.*, gs_mss@google.*, gs_rn@google.*, gs_lcp@google.*
+* Added Google Analytics parameters gclid, gclsrc
+* Added Amazon parameter pf@amazon.*
+* Added AliExpress parameters algo_expid, algo_pvid, btsid, ws_ab_test
+* Added Omniture tracking parameter s_cid
+* Added Facebook parameters refsrc@facebook.com, hrc@facebook.com
+* Added Yandex parameters lr@yandex.*, redircnt@yandex.*
+* Added Ebay parameter hash@ebay.*
+* Removed terminal_id, CNDID since the use is unknown
+* Removed $/ref@amazon.* from the defaults due to suspected issues
+
+* Options page: Add parameter rules URL
+* Options page: Show default blocking parameters in a more organized way
+* Options page: slightly adapt CSS styles
+
+* README: update to the new default blocking parameters and use the new JSON format
+* README: root wildcard domain and suffix wildcard domain can be combined; added an example
+* README: organised "recommended parameters"
+* README: added an explanation about addons.mozilla.org (related to #198)
+
 4.1.5
 =====
 * Fix for item@jd.com

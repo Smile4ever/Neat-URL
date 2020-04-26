@@ -55,10 +55,10 @@ function resolveIconURL(file){
 }
 
 function resolveIconUrlNotif(file){
-	if(neat_url_icon_theme.indexOf("_notiflight") > -1){
+	if(neat_url_icon_theme.includes("_notiflight")){
 		return resolveIconByTheme(file, "light");
 	}
-	if(neat_url_icon_theme.indexOf("_notifdark") > -1){
+	if(neat_url_icon_theme.includes("_notifdark")){
 		return resolveIconByTheme(file, "dark");
 	}
 	return resolveIconByTheme(file, neat_url_icon_theme);

@@ -3,120 +3,105 @@
     "message": "Remove garbage from URLs.",
     "description": "Description of the extension."
   },
+  "default_blocked_params": {
+    "message": "Default blocked parameters"
+  },
+  "default_blocked_params_descr": {
+    "message": "These are the default parameters that Neat URL will remove from the URL."
+  },
+  "override_default_blocked_params": {
+    "message": "Override list for default blocked parameters"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+  },
   "blocked_params": {
     "message": "Blocked parameters",
     "description": ""
   },
   "blocked_params_descr": {
-    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.",
-    "description": ""
+    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
   },
   "icon_animation": {
-    "message": "Icon animation",
-    "description": ""
+    "message": "Icon animation"
   },
   "icon_animation_descr": {
-    "message": "Animation to use when Neat URL is cleaning up the URL.",
-    "description": ""
+    "message": "Animation to use when Neat URL is cleaning up the URL."
   },
   "icon_animation_none": {
-	"message": "No animation",
-    "description": ""
+  	"message": "No animation"
   },
   "icon_animation_missing_underscore": {
-	"message": "Missing underscore",
-    "description": ""
+	  "message": "Missing underscore"
   },
   "icon_animation_rotate": {
-	"message": "Rotate icon",
-    "description": ""
+  	"message": "Rotate icon"
   },
   "icon_animation_surprise_me": {
-	"message": "Surprise me",
-    "description": ""
+	  "message": "Surprise me"
   },
   "icon_theme": {
-	"message": "Icon theme",
-    "description": ""
+	  "message": "Icon theme"
   },
   "icon_theme_descr": {
-	"message": "Dark icons are used by default. You can change this option to use light icons.",
-    "description": ""
+	  "message": "Dark icons are used by default. You can change this option to use light icons."
   },
   "icon_theme_dark": {
-	"message": "Always use dark icons",
-    "description": ""
+	  "message": "Always use dark icons"
   },
   "icon_theme_light": {
-	"message": "Always use light icons",
-    "description": ""
+	  "message": "Always use light icons"
   },
   "icon_theme_dark_notiflight": {
-	"message": "Use dark icons except for notifications",
-    "description": ""
+	  "message": "Use dark icons except for notifications"
   },
   "icon_theme_light_notifdark": {
-	"message": "Use light icons except for notifications",
-    "description": ""
+	  "message": "Use light icons except for notifications"
   },
   "show_counter": {
-	"message": "Show counter",
-    "description": ""
+	  "message": "Show counter"
   },
   "show_counter_descr": {
-	"message": "Show a counter which displays the number of rewritten URLs.",
-    "description": ""
+	  "message": "Show a counter which displays the number of rewritten URLs."
   },
   "counter_background_color": {
-	"message": "Counter background color",
-    "description": ""
+	  "message": "Counter background color"
   },
   "counter_background_color_descr": {
-	"message": "The background color used by the counter.",
-    "description": ""
+	  "message": "The background color used by the counter."
   },
   "enable_logging": {
-    "message": "Enable logging",
-    "description": ""
+    "message": "Enable logging"
   },
   "enable_logging_descr": {
-    "message": "Log URL changes to the browser console.",
-    "description": ""
+    "message": "Log URL changes to the browser console."
   },
   "advanced": {
-	"message": "Advanced",
-	"description": ""
+	  "message": "Advanced"
   },
   "advanced_descr": {
-    "message": "These options may bite.",
-	"description": ""
+    "message": "These options may bite."
   },
   "blacklist": {
-    "message": "Domain blacklist",
-    "description": ""
+    "message": "Domain blacklist"
   },
   "blacklist_descr": {
-    "message": "Comma separated list of domains. Neat URL will not work on these websites.",
-    "description": ""
+    "message": "Comma separated list of domains. Neat URL will not work on these websites."
   },
   "url_request_types": {
-    "message": "URL request types",
-    "description": ""
+    "message": "URL request types"
   },
   "url_request_types_descr": {
     "message": "Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
-	"message": "Use the default counter color",
-	"description": ""
+	  "message": "Use the default counter color"
   },
   "savepreferences": {
-    "message": "Save preferences",
-    "description": ""
+    "message": "Save preferences"
   },
   "notify_preferences_saved": {
-	"message": "Saved preferences",
-    "description": ""
+	  "message": "Saved preferences"
   }
 }

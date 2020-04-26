@@ -28,8 +28,8 @@ body{
 
 /* CSS used from https://github.com/kainsavage/HistoryBlock/blob/web-extension/options/options.css */
 body, button, input, textarea {
-  font-family: Segoe UI, sans-serif;
-  font-size: 15px;
+  /*font-family: Segoe UI, sans-serif;*/
+  font-size: 14px;
 }
 
 body, button{

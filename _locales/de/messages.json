@@ -3,120 +3,105 @@
     "message": "Müll von URLs entfernen.",
     "description": "Beschreibung der Erweiterung."
   },
+  "default_blocked_params": {
+    "message": "Default blocked parameters"
+  },
+  "default_blocked_params_descr": {
+    "message": "These are the default parameters that Neat URL will remove from the URL."
+  },
+  "override_default_blocked_params": {
+    "message": "Override list for default blocked parameters"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+  },
   "blocked_params": {
-    "message": "Blockierte Parameter",
-    "description": ""
+    "message": "Blockierte Parameter"
   },
   "blocked_params_descr": {
-    "message": "Parameter (Groß-/Kleinschreibung wird beachtet), die von der URL entfernt werden. Benutze parameter@domain.com um domainspezifische blockierte Parameter zu verwenden. Benutze ein Komma als Trennzeichen zwischen blockierter Parameter.",
-    "description": ""
+    "message": "Parameter (Groß-/Kleinschreibung wird beachtet), die von der URL entfernt werden. Benutze parameter@domain.com um domainspezifische blockierte Parameter zu verwenden. Benutze ein Komma als Trennzeichen zwischen blockierter Parameter.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
   },
   "icon_animation": {
-    "message": "Icon-Animation",
-    "description": ""
+    "message": "Icon-Animation"
   },
   "icon_animation_descr": {
-    "message": "Zu verwendende Animation, wenn Neat URL die URL säubert.",
-    "description": ""
+    "message": "Zu verwendende Animation, wenn Neat URL die URL säubert."
   },
   "icon_animation_none": {
-	"message": "Keine Animation",
-    "description": ""
+	  "message": "Keine Animation"
   },
   "icon_animation_missing_underscore": {
-	"message": "Fehlender Unterstrich",
-    "description": ""
+	  "message": "Fehlender Unterstrich"
   },
   "icon_animation_rotate": {
-	"message": "Icon drehen",
-    "description": ""
+	  "message": "Icon drehen"
   },
   "icon_animation_surprise_me": {
-	"message": "Überrasch mich",
-    "description": ""
+	  "message": "Überrasch mich"
   },
   "icon_theme": {
-	"message": "Icon-Theme",
-    "description": ""
+	  "message": "Icon-Theme"
   },
   "icon_theme_descr": {
-	"message": "Dunkle Icons werden standardmäßig verwenden. Du kannst diese Einstellungen ändern, um helle Icons zu verwenden.",
-    "description": ""
+	  "message": "Dunkle Icons werden standardmäßig verwenden. Du kannst diese Einstellungen ändern, um helle Icons zu verwenden."
   },
   "icon_theme_dark": {
-	"message": "Immer dunkle Icons verwenden",
-    "description": ""
+	  "message": "Immer dunkle Icons verwenden"
   },
   "icon_theme_light": {
-	"message": "Immer helle Icons verwenden",
-    "description": ""
+	  "message": "Immer helle Icons verwenden"
   },
   "icon_theme_dark_notiflight": {
-	"message": "Überall bis auf in Benachrichtigungen dunkle Icons verwenden",
+  	"message": "Überall bis auf in Benachrichtigungen dunkle Icons verwenden",
     "description": ""
   },
   "icon_theme_light_notifdark": {
-	"message": "Überall bis auf in Benachrichtigungen helle Icons verwenden",
-    "description": ""
+	  "message": "Überall bis auf in Benachrichtigungen helle Icons verwenden"
   },
   "show_counter": {
-	"message": "Zähler anzeigen",
-    "description": ""
+	  "message": "Zähler anzeigen"
   },
   "show_counter_descr": {
-	"message": "Einen Zähler anzeigen, der die Anzahl umgeschriebener URLS zeigt.",
-    "description": ""
+	  "message": "Einen Zähler anzeigen, der die Anzahl umgeschriebener URLS zeigt."
   },
   "counter_background_color": {
-	"message": "Zähler-Hintergrundfarbe",
-    "description": ""
+	  "message": "Zähler-Hintergrundfarbe"
   },
   "counter_background_color_descr": {
-	"message": "Die vom Zähler verwendete Hintergrundfarbe.",
-    "description": ""
+	  "message": "Die vom Zähler verwendete Hintergrundfarbe."
   },
   "enable_logging": {
-    "message": "Logging aktivieren",
-    "description": ""
+    "message": "Logging aktivieren"
   },
   "enable_logging_descr": {
-    "message": "URL-Veränderungen in die Browserkonsole loggen.",
-    "description": ""
+    "message": "URL-Veränderungen in die Browserkonsole loggen."
   },
   "advanced": {
-	"message": "Erweitert",
-	"description": ""
+	  "message": "Erweitert"
   },
   "advanced_descr": {
-    "message": "Diese Optionen können beißen.",
-	"description": ""
+    "message": "Diese Optionen können beißen."
   },
   "blacklist": {
-    "message": "Domain-Sperrliste",
-    "description": ""
+    "message": "Domain-Sperrliste"
   },
   "blacklist_descr": {
-    "message": "Durch Komma getrennte Liste an Domains. Neat URL wird auf diesen Webseiten nicht arbeiten.",
-    "description": ""
+    "message": "Durch Komma getrennte Liste an Domains. Neat URL wird auf diesen Webseiten nicht arbeiten."
   },
   "url_request_types": {
-    "message": "URL-Anfrage-Typen",
-    "description": ""
+    "message": "URL-Anfrage-Typen"
   },
   "url_request_types_descr": {
     "message": "Standardwert: main_frame. Diese Liste ist kommasepariert. Gültige Werte können in der <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>Liste von Ressourcen-Typen</a> gefunden werden.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
-	"message": "Die standardmäßige Zähler-Farbe verwenden",
-	"description": ""
+	  "message": "Die standardmäßige Zähler-Farbe verwenden"
   },
   "savepreferences": {
-    "message": "Einstellungen speichern",
-    "description": ""
+    "message": "Einstellungen speichern"
   },
   "notify_preferences_saved": {
-	"message": "Einstellungen gespeichert",
-    "description": ""
+	  "message": "Einstellungen gespeichert"
   }
 }

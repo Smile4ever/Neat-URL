@@ -3,12 +3,24 @@
     "message": "Удаляет мусор из URL.",
     "description": "Description of the extension."
   },
+  "default_blocked_params": {
+    "message": "Default blocked parameters (EN)"
+  },
+  "default_blocked_params_descr": {
+    "message": "These are the default parameters that Neat URL will remove from the URL. (EN)"
+  },
+  "override_default_blocked_params": {
+    "message": "Override list for default blocked parameters"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+  },
   "blocked_params": {
     "message": "Заблокированные параметры URL-адресов.",
     "description": ""
   },
   "blocked_params_descr": {
-    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.",
+    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>",
     "description": ""
   },
   "icon_animation": {

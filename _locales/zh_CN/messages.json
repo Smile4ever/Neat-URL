@@ -3,120 +3,105 @@
     "message": "移除网址中的无用段。",
     "description": "Description of the extension."
   },
+  "default_blocked_params": {
+    "message": "Default blocked parameters (EN)"
+  },
+  "default_blocked_params_descr": {
+    "message": "These are the default parameters that Neat URL will remove from the URL. (EN)"
+  },
+  "override_default_blocked_params": {
+    "message": "Override list for default blocked parameters"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+  },
   "blocked_params": {
     "message": "拦截参数",
     "description": ""
   },
   "blocked_params_descr": {
-    "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。使用逗号分隔多个参数。",
-    "description": ""
+    "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。使用逗号分隔多个参数。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
   },
   "icon_animation": {
-    "message": "图标动画",
-    "description": ""
+    "message": "图标动画"
   },
   "icon_animation_descr": {
-    "message": "Neat URL 清理网址时呈现的动画。",
-    "description": ""
+    "message": "Neat URL 清理网址时呈现的动画。"
   },
   "icon_animation_none": {
-	"message": "无动画",
-    "description": ""
+	  "message": "无动画"
   },
   "icon_animation_missing_underscore": {
-	"message": "下划线消失",
-    "description": ""
+	  "message": "下划线消失"
   },
   "icon_animation_rotate": {
-	"message": "图标旋转",
-    "description": ""
+	  "message": "图标旋转"
   },
   "icon_animation_surprise_me": {
-	"message": "随机动画",
-    "description": ""
+	  "message": "随机动画"
   },
   "icon_theme": {
-	"message": "图标主题",
-    "description": ""
+	  "message": "图标主题"
   },
   "icon_theme_descr": {
-	"message": "默认使用暗色图标。您可以更改此选项以使用明亮图标。",
-    "description": ""
+	  "message": "默认使用暗色图标。您可以更改此选项以使用明亮图标。"
   },
   "icon_theme_dark": {
-	"message": "始终使用暗色图标",
-    "description": ""
+	  "message": "始终使用暗色图标"
   },
   "icon_theme_light": {
-	"message": "始终使用明亮图标",
-    "description": ""
+	  "message": "始终使用明亮图标"
   },
   "icon_theme_dark_notiflight": {
-	"message": "使用暗色图标（通知除外）",
-    "description": ""
+	  "message": "使用暗色图标（通知除外）"
   },
   "icon_theme_light_notifdark": {
-	"message": "使用明亮图标（通知除外）",
-    "description": ""
+	  "message": "使用明亮图标（通知除外）"
   },
   "show_counter": {
-	"message": "Show counter",
-    "description": ""
+	  "message": "Show counter"
   },
   "show_counter_descr": {
-	"message": "Show a counter which displays the number of rewritten URLs.",
-    "description": ""
+	  "message": "Show a counter which displays the number of rewritten URLs."
   },
   "counter_background_color": {
-	"message": "Counter background color",
-    "description": ""
+	  "message": "Counter background color"
   },
   "counter_background_color_descr": {
-	"message": "The background color used by the counter.",
-    "description": ""
+	  "message": "The background color used by the counter."
   },
   "enable_logging": {
-    "message": "启用日志",
-    "description": ""
+    "message": "启用日志"
   },
   "enable_logging_descr": {
-    "message": "将网址变更记录到浏览器控制台。",
-    "description": ""
+    "message": "将网址变更记录到浏览器控制台。"
   },
   "advanced": {
-	"message": "高级",
-	"description": ""
+	  "message": "高级"
   },
   "advanced_descr": {
-    "message": "慎重修改，以防故障。",
-	"description": ""
+    "message": "慎重修改，以防故障。"
   },
   "blacklist": {
-	"message": "Domain blacklist",
-	"description": ""
+	  "message": "Domain blacklist"
   },
   "blacklist_descr": {
-	"message": "Comma separated list of domains. Neat URL will not work on these websites.",
-	"description": ""
+  	"message": "Comma separated list of domains. Neat URL will not work on these websites."
   },
   "url_request_types": {
-    "message": "网址请求类型",
-    "description": ""
+    "message": "网址请求类型"
   },
   "url_request_types_descr": {
     "message": "默认值：main_frame。此列表以逗号分隔。有效值见<a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>资源类型列表</a>。",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
-	"message": "Use the default counter color",
-	"description": ""
+	  "message": "Use the default counter color"
   },
   "savepreferences": {
-    "message": "保存设置",
-    "description": ""
+    "message": "保存设置"
   },
   "notify_preferences_saved": {
-	"message": "设置已保存",
-    "description": ""
+	  "message": "设置已保存"
   }
 }

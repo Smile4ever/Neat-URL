@@ -3,12 +3,24 @@
     "message": "Verwijder rommel van URLs.",
     "description": "Description of the extension."
   },
+  "default_blocked_params": {
+    "message": "Standaard geblokkeerde parameters"
+  },
+  "default_blocked_params_descr": {
+    "message": "These are the default parameters that Neat URL will remove from the URL."
+  },
+  "override_default_blocked_params": {
+    "message": "Override list for default blocked parameters"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+  },
   "blocked_params": {
     "message": "Geblokkeerde parameters",
     "description": ""
   },
   "blocked_params_descr": {
-    "message": "Hoofdlettergevoelige parameters die uit de URL verwijderd zullen worden. Gebruik parameter@domein.com om domeinspecifieke geblokkeerde parameters te gebruiken. Gebruik een komma als scheidingsteken tussen geblokkeerde parameters.",
+    "message": "Hoofdlettergevoelige parameters die uit de URL verwijderd zullen worden. Gebruik parameter@domein.com om domeinspecifieke geblokkeerde parameters te gebruiken. Gebruik een komma als scheidingsteken tussen geblokkeerde parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>",
     "description": ""
   },
   "icon_animation": {
