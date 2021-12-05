@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:neat-url": "cd \"Neat URL-webext\"; web-ext build --overwrite-dest --ignore-files build.sh images *.md"
+    "build:neat-url": "web-ext build --overwrite-dest --ignore-files build.sh images *.md"
   },
   "repository": {
     "type": "git",
