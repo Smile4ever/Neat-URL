@@ -81,6 +81,12 @@
   "advanced_descr": {
     "message": "Це параметри для досвідченого користувача."
   },
+  "theme": {
+	  "message": "Theme"
+  },
+  "theme_descr": {
+    "message": "Icon and notification theme options."
+  },
   "blacklist": {
   	"message": "Чорний список доменів"
   },
@@ -102,5 +108,11 @@
   },
   "notify_preferences_saved": {
 	  "message": "Налаштування збережено"
+  },
+  "change_links_in_page": {
+    "message": "Change links in page"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remove blocked parameters from all links when loading a page"
   }
 }

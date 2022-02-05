@@ -82,6 +82,12 @@
   "advanced_descr": {
     "message": "Diese Optionen können beißen."
   },
+  "theme": {
+	  "message": "Thema"
+  },
+  "theme_descr": {
+    "message": "Themenoptionen für Symbole und Benachrichtigungen."
+  },
   "blacklist": {
     "message": "Domain-Sperrliste"
   },
@@ -103,5 +109,11 @@
   },
   "notify_preferences_saved": {
 	  "message": "Einstellungen gespeichert"
+  },
+  "change_links_in_page": {
+    "message": "Change links in page"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remove blocked parameters from all links when loading a page"
   }
 }

@@ -1,7 +1,6 @@
 {
   "extensionDescription": {
-    "message": "移除网址中的无用段。",
-    "description": "Description of the extension."
+    "message": "移除网址中的无用段。"
   },
   "default_blocked_params": {
     "message": "Default blocked parameters (EN)"
@@ -16,8 +15,7 @@
     "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
   },
   "blocked_params": {
-    "message": "拦截参数",
-    "description": ""
+    "message": "拦截参数"
   },
   "blocked_params_descr": {
     "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。使用逗号分隔多个参数。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
@@ -82,6 +80,12 @@
   "advanced_descr": {
     "message": "慎重修改，以防故障。"
   },
+  "theme": {
+	  "message": "Theme"
+  },
+  "theme_descr": {
+    "message": "Icon and notification theme options."
+  },
   "blacklist": {
 	  "message": "Domain blacklist"
   },
@@ -103,5 +107,11 @@
   },
   "notify_preferences_saved": {
 	  "message": "设置已保存"
+  },
+  "change_links_in_page": {
+    "message": "Change links in page"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remove blocked parameters from all links when loading a page"
   }
 }

@@ -16,8 +16,8 @@ Neat URL is a browser extension that cleans URLs, removing parameters such as Go
 {
     "categories": [
         { "name": "Action Map", "params": ["action_object_map", "action_type_map", "action_ref_map"]},
-        { "name": "AliExpress.com", "params": ["spm@*.aliexpress.com", "scm@*.aliexpress.com", "aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.*", "btsid", "ws_ab_test"]},
-        { "name": "Amazon", "params": ["pd_rd_*@amazon.*", "_encoding@amazon.*", "psc@amazon.*", "tag@amazon.*", "ref_@amazon.*", "pf_rd_*@amazon.*", "pf@amazon.*"]},
+        { "name": "AliExpress.com", "params": ["spm@*.aliexpress.com", "scm_id@*.aliexpress.com", "aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.com", "btsid@*.aliexpress.com", "ws_ab_test*.aliexpress.com", "initiative_id@*.aliexpress.com", "expid@*.aliexpress.com"]},
+        { "name": "Amazon", "params": ["pd_rd_*@amazon.*", "_encoding@amazon.*", "psc@amazon.*", "tag@amazon.*", "ref_@amazon.*", "pf_rd_*@amazon.*", "pf@amazon.*", "ascsubtag@amazon.*"]},
         { "name": "Bilibili.com", "params": ["callback@bilibili.com"]},
         { "name": "Bing", "params": ["cvid@bing.com", "form@bing.com", "sk@bing.com", "sp@bing.com", "sc@bing.com", "qs@bing.com", "pq@bing.com"]},
         { "name": "Caseking.de", "params": ["sPartner@caseking.de", "campaign@caseking.de"]},

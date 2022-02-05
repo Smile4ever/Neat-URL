@@ -1,7 +1,6 @@
 {
   "extensionDescription": {
-    "message": "Remove garbage from URLs.",
-    "description": "Description of the extension."
+    "message": "Remove garbage from URLs."
   },
   "default_blocked_params": {
     "message": "Default blocked parameters"
@@ -16,8 +15,7 @@
     "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
   },
   "blocked_params": {
-    "message": "Blocked parameters",
-    "description": ""
+    "message": "Blocked parameters"
   },
   "blocked_params_descr": {
     "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
@@ -82,6 +80,12 @@
   "advanced_descr": {
     "message": "These options may bite."
   },
+  "theme": {
+	  "message": "Theme"
+  },
+  "theme_descr": {
+    "message": "Icon and notification theme options."
+  },
   "blacklist": {
     "message": "Domain blacklist"
   },
@@ -103,5 +107,11 @@
   },
   "notify_preferences_saved": {
 	  "message": "Saved preferences"
+  },
+  "change_links_in_page": {
+    "message": "Change links in page"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remove blocked parameters from all links when loading a page"
   }
 }

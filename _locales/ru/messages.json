@@ -1,7 +1,6 @@
 {
   "extensionDescription": {
-    "message": "Удаляет мусор из URL.",
-    "description": "Description of the extension."
+    "message": "Удаляет мусор из URL."
   },
   "default_blocked_params": {
     "message": "Default blocked parameters (EN)"
@@ -16,119 +15,104 @@
     "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
   },
   "blocked_params": {
-    "message": "Заблокированные параметры URL-адресов.",
-    "description": ""
+    "message": "Заблокированные параметры URL-адресов."
   },
   "blocked_params_descr": {
-    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>",
-    "description": ""
+    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
   },
   "icon_animation": {
-    "message": "Анимация значка",
-    "description": ""
+    "message": "Анимация значка"
   },
   "icon_animation_descr": {
-    "message": "Анимация, которую нужно использовать, когда Neat URL очищает URL-адрес.",
-    "description": ""
+    "message": "Анимация, которую нужно использовать, когда Neat URL очищает URL-адрес."
   },
   "icon_animation_none": {
-	"message": "Без анимации",
-    "description": ""
+	  "message": "Без анимации"
   },
   "icon_animation_missing_underscore": {
-	"message": "Мигающий знак подчёркивания",
-    "description": ""
+	  "message": "Мигающий знак подчёркивания"
   },
   "icon_animation_rotate": {
-	"message": "Вращение значка",
-    "description": ""
+  	"message": "Вращение значка"
   },
   "icon_animation_surprise_me": {
-	"message": "Удивите меня",
-    "description": ""
+	  "message": "Удивите меня"
   },
   "icon_theme": {
-	"message": "Тема значка",
-    "description": ""
+	  "message": "Тема значка"
   },
   "icon_theme_descr": {
-	"message": "Тёмные значки используются по умолчанию. Вы можете изменить этот параметр, чтобы использовать светлые значки.",
-    "description": ""
+	  "message": "Тёмные значки используются по умолчанию. Вы можете изменить этот параметр, чтобы использовать светлые значки."
   },
   "icon_theme_dark": {
-	"message": "Всегда использовать тёмные значки",
-    "description": ""
+	  "message": "Всегда использовать тёмные значки"
   },
   "icon_theme_light": {
-	"message": "Всегда использовать светлые значки",
-    "description": ""
+	  "message": "Всегда использовать светлые значки"
   },
   "icon_theme_dark_notiflight": {
-	"message": "Использовать тёмные значки, кроме уведомлений",
-    "description": ""
+	  "message": "Использовать тёмные значки, кроме уведомлений"
   },
   "icon_theme_light_notifdark": {
-	"message": "Использовать светлые значки, кроме уведомлений",
-    "description": ""
+	  "message": "Использовать светлые значки, кроме уведомлений"
   },
   "show_counter": {
-	"message": "Показывать счетчик",
-    "description": ""
+	  "message": "Показывать счетчик"
   },
   "show_counter_descr": {
-	"message": "Показывать счетчик, отображающий количество исправленных url-адресов.",
-    "description": ""
+	  "message": "Показывать счетчик, отображающий количество исправленных url-адресов."
   },
   "counter_background_color": {
-	"message": "Цвет фона счетчика",
-    "description": ""
+	  "message": "Цвет фона счетчика"
   },
   "counter_background_color_descr": {
-	"message": "Цвет фона, используемый счетчиком.",
-    "description": ""
+	  "message": "Цвет фона, используемый счетчиком."
   },
   "enable_logging": {
     "message": "Включить журналирование",
     "description": ""
   },
   "enable_logging_descr": {
-    "message": "Записывать изменения URL-адресов в консоль браузера",
-    "description": ""
+    "message": "Записывать изменения URL-адресов в консоль браузера"
   },
   "advanced": {
-	"message": "Дополнительно",
-	"description": ""
+	  "message": "Дополнительно"
   },
   "advanced_descr": {
-    "message": "Это параметры для опытного пользователя.",
-	"description": ""
+    "message": "Это параметры для опытного пользователя."
+  },
+  "theme": {
+	  "message": "Theme"
+  },
+  "theme_descr": {
+    "message": "Icon and notification theme options."
   },
   "blacklist": {
-	"message": "Черный список доменов",
-	"description": ""
+	  "message": "Черный список доменов"
   },
   "blacklist_descr": {
-	"message": "Список доменов, разделённый запятыми. Neat URL не будет срабатывать на этих сайтах.",
-	"description": ""
+	  "message": "Список доменов, разделённый запятыми. Neat URL не будет срабатывать на этих сайтах."
   },
   "url_request_types": {
-    "message": "Типы URL-запросов",
-    "description": ""
+    "message": "Типы URL-запросов"
   },
   "url_request_types_descr": {
     "message": "Значение по умолчанию: main_frame. Этот список разделен запятыми. Допустимые значения можно найти здесь: <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
     "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
-	"message": "Use the default counter color",
-	"description": ""
+	  "message": "Use the default counter color"
   },
   "savepreferences": {
-    "message": "Сохранить настройки",
-    "description": ""
+    "message": "Сохранить настройки"
   },
   "notify_preferences_saved": {
-	"message": "Настройки сохранены",
-    "description": ""
+  	"message": "Настройки сохранены"
+  },
+  "change_links_in_page": {
+    "message": "Change links in page"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remove blocked parameters from all links when loading a page"
   }
 }

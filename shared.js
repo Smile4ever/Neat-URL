@@ -2,6 +2,7 @@
 let defaultRequestResourceTypes = ["main_frame"];
 let defaultBlacklist = []; // google-analytics.com, sb.scorecardresearch.com, doubleclick.net, beacon.krxd.net"
 let suffixList = new Array();
+let loadedPromise = null;
 
 /// Preferences
 let neat_url_logging = false;
@@ -9,6 +10,7 @@ let neat_url_show_counter = true;
 let neat_url_override_default_blocked_params;
 let neat_url_blocked_params;
 let neat_url_blacklist = [];
+let neat_url_change_links_in_page = false;
 
 let enabled_2 = true;
 
@@ -55,40 +57,50 @@ let valueOrDefaultArray = function(value, defaultValue){
 	return value.split(" ").join("").split(",");
 }
 
-function initOptions(){
-	browser.storage.local.get([
+async function init(){
+	let promise1 = initFiles();
+	let promise2 = initOptions();
+
+	loadedPromise = Promise.all([promise1, promise2])
+	await loadedPromise;
+	loadedPromise = null;
+}
+
+async function initOptions(){
+	let storageLocalResult = await browser.storage.local.get([
 		"neat_url_logging",
 		"neat_url_show_counter",
 		"neat_url_override_default_blocked_params",
 		"neat_url_blocked_params",
 		"neat_url_blacklist",
-	]).then((storageLocalResult ) => {
-		neat_url_logging = valueOrDefault(storageLocalResult.neat_url_logging, false);
-		neat_url_show_counter = valueOrDefault(storageLocalResult.neat_url_show_counter, true);
+		"neat_url_change_links_in_page"
+	]).catch(console.error);
 
-		neat_url_override_default_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_override_default_blocked_params, []);
-		neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
-		neat_url_blacklist = valueOrDefaultArray(storageLocalResult.neat_url_blacklist, defaultBlacklist);
-	}).catch(console.error);
+	neat_url_logging = valueOrDefault(storageLocalResult.neat_url_logging, false);
+	neat_url_show_counter = valueOrDefault(storageLocalResult.neat_url_show_counter, true);
+
+	neat_url_override_default_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_override_default_blocked_params, []);
+	neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
+	neat_url_blacklist = valueOrDefaultArray(storageLocalResult.neat_url_blacklist, defaultBlacklist);
+	neat_url_change_links_in_page = valueOrDefault(storageLocalResult.neat_url_change_links_in_page, false);
 }
 
-function initFiles(){
+async function initFiles(){
 	var jsonUrl = browser.runtime.getURL('data/default-params-by-category.json');
-	fetch(jsonUrl).then((response) => {
-		return response.json();
-	}).then((jsonParams) => {
-		neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
-	});
-
 	var txtUrl = browser.runtime.getURL('data/publicsuffix-ccSLD.txt');
-	fetch(txtUrl).then((response) => {
-		return response.text();		
-	}).then((text) => {
-		suffixList = text.split("\n");
-	});
+
+	return fetch(jsonUrl)
+		.then(async (response) => {
+			let jsonParams = await response.json();
+			neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
+		})
+		.then(async () => {
+			let response = await fetch(txtUrl);
+			let text = await response.text();
+			suffixList = text.split("\n");
+		}).catch(console.error);
 }
-initOptions();
-initFiles();
+init();
 
 String.prototype.replaceAll = function(search, replacement) {
 	let target = this;

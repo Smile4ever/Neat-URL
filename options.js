@@ -38,6 +38,10 @@ const PREFS = {
 	"neat_url_counter_default_color": {
 		"type": "checked",
 		"default": true
+	},
+	"neat_url_change_links_in_page": {
+		"type": "checked",
+		"default": false
 	}
 };
 var lastWidth = 0;
@@ -69,28 +73,40 @@ async function saveOptions() {
 }
 
 async function restoreOptions() {
-	fetch('data/default-params-by-category.json').then((response) => {
-		return response.json();
-	}).then((jsonParams) => {
-		let categories = jsonParams.categories;
-		let lines = categories.map(cat => cat.name + ":\n" + cat.params.join(', '));
-		document.getElementById("neat_url_default_blocked_params")["value"] = lines.join("\n\n");
-	});
-
-	browser.storage.local.get(Object.keys(PREFS)).then((result) => {
-		let val;
-		for(let p in PREFS) {
-			if(p in result) {
-				val = result[p];
-			}
-			else {
-				val = PREFS[p].default;
-			}
-
-			//console.log("options.js val restored for " + p + " is", val);
-			document.getElementById(p)[PREFS[p].type] = val;
+	// Default blocked parameters
+	let response = await fetch('data/default-params-by-category.json').catch(console.error);
+	let jsonParams = await response.json();
+	let categories = jsonParams.categories;
+	let lines = categories.map(cat => cat.name + ":\n" + cat.params.join(', '));
+	document.getElementById("neat_url_default_blocked_params")["value"] = lines.join("\n\n");
+	
+	// Restore preferences
+	let result = await browser.storage.local.get(Object.keys(PREFS)).catch(console.error);
+	let val;
+	for(let p in PREFS) {
+		if(p in result) {
+			val = result[p];
 		}
-	}).catch(console.error);
+		else {
+			val = PREFS[p].default;
+		}
+
+		//console.log("options.js val restored for " + p + " is", val);
+		document.getElementById(p)[PREFS[p].type] = val;
+	}
+
+	hideOrShow();
+}
+
+document.querySelector("#neat_url_counter_default_color").addEventListener("change", function() {
+	hideOrShow();	
+});
+
+function hideOrShow(){
+	let checked = document.querySelector("#neat_url_counter_default_color").checked;
+
+	if(checked) document.querySelector("#counter_color_element").style.display = "none";
+	else document.querySelector("#counter_color_element").style.display = "unset";
 }
 
 function i18n() {

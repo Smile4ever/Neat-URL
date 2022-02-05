@@ -1,8 +1,8 @@
 {
     "categories": [
         { "name": "Action Map", "params": ["action_object_map", "action_type_map", "action_ref_map"]},
-        { "name": "AliExpress.com", "params": ["spm@*.aliexpress.com", "scm@*.aliexpress.com", "aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.*", "btsid", "ws_ab_test"]},
-        { "name": "Amazon", "params": ["pd_rd_*@amazon.*", "_encoding@amazon.*", "psc@amazon.*", "tag@amazon.*", "ref_@amazon.*", "pf_rd_*@amazon.*", "pf@amazon.*"]},
+        { "name": "AliExpress.com", "params": ["spm@*.aliexpress.com", "scm_id@*.aliexpress.com", "aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.com", "btsid@*.aliexpress.com", "ws_ab_test*.aliexpress.com", "initiative_id@*.aliexpress.com", "expid@*.aliexpress.com"]},
+        { "name": "Amazon", "params": ["pd_rd_*@amazon.*", "_encoding@amazon.*", "psc@amazon.*", "tag@amazon.*", "ref_@amazon.*", "pf_rd_*@amazon.*", "pf@amazon.*", "ascsubtag@amazon.*"]},
         { "name": "Bilibili.com", "params": ["callback@bilibili.com"]},
         { "name": "Bing", "params": ["cvid@bing.com", "form@bing.com", "sk@bing.com", "sp@bing.com", "sc@bing.com", "qs@bing.com", "pq@bing.com"]},
         { "name": "Caseking.de", "params": ["sPartner@caseking.de", "campaign@caseking.de"]},
@@ -31,6 +31,7 @@
         { "name": "Facebook", "params": ["fb_action_ids", "fb_action_types", "fb_ref", "fb_source", "fbclid", "refsrc@facebook.com", "hrc@facebook.com"]},
         { "name": "Google", "params": ["gs_l", "gs_lcp@google.*", "ved@google.*", "ei@google.*", "sei@google.*", "gws_rd@google.*", "gs_gbg@google.*", "gs_mss@google.*", "gs_rn@google.*"]},
         { "name": "Hubspot", "params": ["_hsenc", "_hsmi", "__hssc", "__hstc", "hsCtaTracking"]},
+        { "name": "IMDb", "params": ["pf_rd_*@imdb.com", "ref_@imdb.com"]},
         { "name": "LinkedIn", "params": ["lgTemp@linkedin.com", "eBP@linkedin.com", "lgCta@linkedin.com", "recommendedFlavor@linkedin.com", "refId@linkedin.com", "trackingId@linkedin.com", "midToken@linkedin.com", "midSig@linkedin.com", "trk@linkedin.com", "trkEmail@linkedin.com", "lipi@linkedin.com"]},
         { "name": "Medium", "params": ["source@medium.com", "_branch_match_id@medium.com"]},
         { "name": "SourceForge.net", "params": ["source@sourceforge.net", "position@sourceforge.net"]},
@@ -38,7 +39,7 @@
         { "name": "TikTok", "params": ["_d@tiktok.com", "checksum@tiktok.com", "is_from_webapp@tiktok.com", "is_copy_url@tiktok.com", "language@tiktok.com", "preview_pb@tiktok.com", "sec_user_id@tiktok.com", "sender_device@tiktok.com", "sender_web_id@tiktok.com", "share_app_id@tiktok.com", "share_link_id@tiktok.com", "share_item_id@tiktok.com", "source@tiktok.com", "timestamp@tiktok.com", "tt_from@tiktok.com", "u_code@tiktok.com", "user_id@tiktok.com"]},
         { "name": "Twitter", "params": ["t@twitter.com", "s@twitter.com", "ref_*@twitter.com", "cxt@twitter.com", "twclid"]},
         { "name": "Twitch.tv", "params": ["tt_medium", "tt_content"]},
-        { "name": "Yahoo", "params": ["soc_src", "soc_trk"]},
+        { "name": "Yahoo", "params": ["soc_src", "soc_trk", "guccounter@*.yahoo.com"]},
         { "name": "Yandex", "params": ["lr@yandex.*", "redircnt@yandex.*"]},
         { "name": "YouTube.com", "params": ["feature@youtube.com", "kw@youtube.com"]},
         { "name": "Zeit.de", "params": ["wt_zmc", "wt_mc"]},

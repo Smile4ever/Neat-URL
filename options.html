@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		
-		<div class="hr"></div>
+		<h2 data-i18n="theme">theme</h2>
 		
 		<div class="flexbox-container">
 			<div class="labelbox">
@@ -105,13 +105,24 @@
 			</div>
 			<div>
 				<div><input type="checkbox" id="neat_url_counter_default_color"><label for="neat_url_counter_default_color"><span data-i18n="counter_default_color">Use the default counter color</span></label></div>
-				<div><input type="color" id="neat_url_counter_color"><label for="neat_url_logging"><span data-i18n="counter_background_color">Counter background color</span></label></div>
+				<div id="counter_color_element"><input type="color" id="neat_url_counter_color"><label for="neat_url_logging"><span data-i18n="counter_background_color">Counter background color</span></label></div>
 			</div>
 		</div>
 
 		<h2 data-i18n="advanced">Advanced</h2>
 		<div style="margin-bottom: 20px" data-i18n="advanced_descr">These options may bite.</div>
 				
+		<div class="flexbox-container">
+			<div class="labelbox">
+				<label><span data-i18n="change_links_in_page">Change links in page</span></label><div class="descr" data-i18n="change_links_in_page_descr">Remove blocked parameters from all links when loading a page.</div>
+			</div>
+			<div>
+				<div><input type="checkbox" id="neat_url_change_links_in_page"><label for="neat_url_change_links_in_page"><span data-i18n="change_links_in_page">Change links in page</span></label></div>
+			</div>
+		</div>
+
+		<div class="hr"></div>
+
 		<div class="flexbox-container">
 			<div class="labelbox">
 				<label><span data-i18n="enable_logging">Enable logging</span></label><div class="descr" data-i18n="enable_logging_descr">Log URL changes to the browser console.</div>
