@@ -1,3 +1,22 @@
+6.0.0 (2022-02-XX)
+=====
+* Inspired by #225 (investigate new parameters): added some rules
+* Fix #235 (TikTok rules): added rules
+* Fix #237 by #263 (add parameter ref_*@twitter.com)
+* Fix #241 (Linkedin email URLs): added numerous LinkedIn rules
+* Fix #246 (remove stm parameter): added parameter stm_*
+* Fix #250 (more parameters including at): added numerous parameters
+* Fix #253 (clean 1Password littering of URLs): syntax KEY{length} added
+* Fix #256 (remove all parameters): wildcard parameter * is now supported
+* Fix #258 (one letter parameter sometimes not blocked): this works as expected
+* Fix #262 (URL rewriting in DOM): new functionality rewrites URLs before you click on them
+* Remove cid parameter, fixes #219, #226, #245, #251 and circumvents #248
+* Added dpg_* used by DPG Media
+* Fix #155 (add GNU license)
+* Add parameter sc_cid (Adobe Analytics) (#230) 
+
+Special thanks to the contributors who made this version possible.
+
 5.0.0 (2020-04-26)
 =====
 * Fix #144 (XTOR): hash parameters work again
