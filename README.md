@@ -41,6 +41,7 @@ Neat URL is a browser extension that cleans URLs, removing parameters such as Go
         { "name": "Google", "params": ["gs_l", "gs_lcp@google.*", "ved@google.*", "ei@google.*", "sei@google.*", "gws_rd@google.*", "gs_gbg@google.*", "gs_mss@google.*", "gs_rn@google.*"]},
         { "name": "Hubspot", "params": ["_hsenc", "_hsmi", "__hssc", "__hstc", "hsCtaTracking"]},
         { "name": "SourceForge.net", "params": ["source@sourceforge.net", "position@sourceforge.net"]},
+        { "name": "Spotify", "params": ["si@open.spotify.com", "context@open.spotify.com"]},
         { "name": "Twitter", "params": ["t@twitter.com", "s@twitter.com", "ref_*@twitter.com"]},
         { "name": "Twitch.tv", "params": ["tt_medium", "tt_content"]},
         { "name": "Yandex", "params": ["lr@yandex.*", "redircnt@yandex.*"]},
