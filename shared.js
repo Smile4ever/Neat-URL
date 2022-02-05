@@ -236,7 +236,7 @@ function buildURL(url, blockedParams, hashParams) {
 		/// Do something special!
 		// https://github.com/Smile4ever/firefoxaddons/issues/83
 		// #?utm_source
-		// Example URL: http://www.cuisineactuelle.fr/recettes/mini-burgers-au-foie-gras-331523#utm_source=Facebook&utm_medium=social&utm_campaign=PassionApero
+		// Example URL: https://www.cuisineactuelle.fr/recettes/mini-burgers-au-foie-gras-331523#utm_source=Facebook&utm_medium=social&utm_campaign=PassionApero
 		if (hashParam.startsWith('#?')) {
 			let specialHashParam = hashParam.replace('#?', '');
 			if(neat_url_logging) console.log("[Neat URL]: buildURL - found hash parameter " + hashParam);
@@ -326,7 +326,7 @@ function getRootDomain(domain) {
 	// grep -e '^[a-zA-Z]\{2,3\}\.[a-zA-Z]\{2,3\}$' publicsuffix.txt > publicsuffix-ccSLD.txt
 	
 	// Extract the root domain
-	//http://publicsuffix.org/list/
+	//https://publicsuffix.org/list/
 	if (arrLen > 2) {
 		// Checking for double domains with 3 or less characters using publicsuffix-ccSLD.txt. Fixes support *.jd.com for https://item.jd.com
 		if(splitArr[arrLen - 2].length <= 3){
