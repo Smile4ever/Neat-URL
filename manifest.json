@@ -3,11 +3,22 @@
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "http://itsafeature.org",
 	"manifest_version": 2,
-	"version": "5.0.0",
+	"version": "6.0.0",
 	"default_locale": "en",
+	"web_accessible_resources": [
+		"data/publicsuffix-ccSLD.txt",
+		"data/default-params-by-category.json"
+	],
 	"background": {
-		"scripts": ["browser-polyfill.min.js", "background.js", "toolbaricon.js"]
+		"scripts": ["browser-polyfill.min.js", "shared.js", "toolbaricon.js", "background.js"]
 	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["shared.js", "neaturl.js"],
+			"run_at": "document_start"
+		}
+	],
 	"icons": {
 		"48": "icons/dark/neaturl-48.png",
 		"96": "icons/dark/neaturl-96-state0.png"
