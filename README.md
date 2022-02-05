@@ -174,7 +174,6 @@ src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.
 Other parameters you can consider (website unknown)
 * iid
 * ijn
-* ncid
 * nid
 * ref_
 
@@ -187,8 +186,10 @@ Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
 
 Neat URL contains a few improvements:
 * set your own URL parameters on the options page (to reach feature parity with Pure URL)
-* fixed for recent Firefox versions
-* a nice animation in the toolbar (can be changed or disabled)
+* fixed for recent Firefox versions and compatible with Chrome
+* a nice animation and counter in the toolbar (can be changed or disabled)
 * domain-specific blocked parameters (to reach feature parity with Pure URL)
 * wildcard domain-specific blocked parameters
 * wildcard at the end of blocked parameters (general or domain-specific)
+* absolute wildcard parameter (domain-specific))
+* expanded default blocked parameter offering
