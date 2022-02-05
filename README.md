@@ -122,7 +122,7 @@ Other valid parameters - ending parameters (exceptions to the ? rule):
 Other valid parameters - hash parameters (exceptions to the ? rule):
 
 	#xtor=RSS-8 (remove this parameter - be sure to include its value as well when you are using anchor tags)
-	#xtor=RSS-8@futura-sciences.com for example this URL http://www.futura-sciences.com/magazines/espace/infos/actu/d/astronautique-curiosity-franchi-succes-dune-dingo-gap-52289/#xtor=RSS-8
+	#xtor=RSS-8@futura-sciences.com for example this URL https://www.futura-sciences.com/magazines/espace/infos/actu/d/astronautique-curiosity-franchi-succes-dune-dingo-gap-52289/#xtor=RSS-8
 	#?pk_campaign (normal parameters that come after a hash sign, for example this URL https://vivaldi.com/blog/teamblog/vivaldi-1-13-adds-window-panel/#pk_campaign=newsletter&pk_kwd=community gets changed to https://vivaldi.com/blog/teamblog/vivaldi-1-13-adds-window-panel/#pk_kwd=community)
 	#?pk_campaign@vivaldi.com (same as above, but domain-matched instead of global)
 
@@ -162,8 +162,8 @@ Google (non tracking)
 * npa, sc, z (Disabling Advertising Personalization - https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters)
 
 Tracking
-* icid (http://www.kshb.com/livevideo?ICID=ref_fark)
-* sr_share (SimpleReach - http://web.archive.org/web/20190817204709/http://docs.simplereach.com/how-tos-1/setting-up-tracking-parameters-for-social-distribution)
+* icid (https://www.kshb.com/livevideo?ICID=ref_fark)
+* sr_share (SimpleReach - https://web.archive.org/web/20190817204709/http://docs.simplereach.com/how-tos-1/setting-up-tracking-parameters-for-social-distribution)
 
 For addons.mozilla.org:
 src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
