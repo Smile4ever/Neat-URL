@@ -49,7 +49,7 @@ Neat URL is a browser extension that cleans URLs, removing parameters such as Go
         { "name": "LinkedIn2", "params": ["lgTemp@linkedin.com", "eBP@linkedin.com", "lgCta@linkedin.com", "recommendedFlavor@linkedin.com", "refId@linkedin.com", "trackingId@linkedin.com", "midToken@linkedin.com", "midSig@linkedin.com", "trk@linkedin.com", "trkEmail@linkedin.com", "lipi@linkedin.com"]},
         { "name": "Medium", "params": ["source@medium.com", "_branch_match_id@medium.com"]},
         { "name": "SourceForge.net", "params": ["source@sourceforge.net", "position@sourceforge.net"]},
-        { "name": "TikTok2", "params": ["preview_pb@tiktok.com", "_d@tiktok.com", "share_item_id@tiktok.com", "timestamp@tiktok.com", "user_id@tiktok.com", "tt_from@tiktok.com", "source@tiktok.com"]},
+        { "name": "TikTok", "params": ["_d@tiktok.com", "checksum@tiktok.com", "is_from_webapp@tiktok.com", "is_copy_url@tiktok.com", "language@tiktok.com", "preview_pb@tiktok.com", "sec_user_id@tiktok.com", "sender_device@tiktok.com", "sender_web_id@tiktok.com", "share_app_id@tiktok.com", "share_link_id@tiktok.com", "share_item_id@tiktok.com", "source@tiktok.com", "timestamp@tiktok.com", "tt_from@tiktok.com", "u_code@tiktok.com", "user_id@tiktok.com"]},
         { "name": "Twitter", "params": ["t@twitter.com", "s@twitter.com", "ref_*@twitter.com", "twclid"]},
         { "name": "Twitch.tv", "params": ["tt_medium", "tt_content"]},
         { "name": "Yahoo", "params": ["soc_src", "soc_trk"]},
