@@ -18,7 +18,7 @@
         { "name": "Campaign tracking (Omniture)", "params": ["s_cid"], "docs": "https://moz.com/community/q/omniture-tracking-code-urls-creating-duplicate-content"},
         { "name": "Campaign tracking (Oracle Eloqua)", "params": ["elqTrackId", "elqTrack", "assetType", "assetId", "recipientId", "campaignId", "siteId"]},
         { "name": "Campaign tracking (MailChimp)", "params": ["mc_cid", "mc_eid"], "docs": "https://www.learndigitaladvertising.com/solved-why-how-to-remove-mc_cid-and-mc_eid-from-google-analytics/"},
-        { "name": "Campaign tracking (Matomo, pk)", "params": ["pk_*"]},
+        { "name": "Campaign tracking (Matomo/Piwik)", "params": ["mtm_*", "pk_*"]},
         { "name": "Campaign tracking (sc)", "params": ["sc_campaign", "sc_channel", "sc_content", "sc_medium", "sc_outcome", "sc_geo", "sc_country"]},
         { "name": "Campaign tracking (at)", "params": ["at_campaign", "at_custom*", "at_medium"]},
         { "name": "Campaign tracking (utm)", "params": ["utm_*", "nr_email_referer"]},

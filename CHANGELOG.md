@@ -18,6 +18,7 @@
     * Fix #181 (add Amazon ascsubtag parameter)
     * Fix #170 (add AliExpress parameters)
     * Added dpg_* used by DPG Media
+    * Add mtm_* used by Matomo/Piwik
 
 * Bugs fixed
     * Fix #258 (one letter parameter sometimes not blocked): this works as expected

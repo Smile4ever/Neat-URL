@@ -91,7 +91,7 @@ async function restoreOptions() {
 			val = PREFS[p].default;
 		}
 
-		//console.log("options.js val restored for " + p + " is", val);
+		console.log("options.js val restored for " + p + " is", val);
 		document.getElementById(p)[PREFS[p].type] = val;
 	}
 
