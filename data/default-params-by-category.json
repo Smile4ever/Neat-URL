@@ -27,7 +27,7 @@
         { "name": "Campaign tracking (Vero)", "params": ["vero_conv", "vero_id"], "docs": "https://help.getvero.com/articles/conversion-tracking.html"},
         { "name": "Campaign tracking (Yandex)", "params": ["yclid", "_openstat"], "docs": "https://yandex.com/support/direct/statistics/url-tags.html"},
         { "name": "Campaign tracking (others)", "params": ["ncid", "mbid", "cmpid", "c_id", "campaign_id", "Campaign"], "docs": "https://www.parse.ly/help/post/4843/campaign-data-tracking/"},
-        { "name": "Ebay", "params": ["hash@ebay.*"]},
+        { "name": "Ebay", "params": ["_trkparms@ebay.*", "_trksid@ebay.*", "amdata@ebay.*", "epid@ebay.*", "hash@ebay.*", "var@ebay.*"]},
         { "name": "Facebook", "params": ["fb_action_ids", "fb_action_types", "fb_ref", "fb_source", "fbclid", "refsrc@facebook.com", "hrc@facebook.com"]},
         { "name": "Google", "params": ["gs_l", "gs_lcp@google.*", "ved@google.*", "ei@google.*", "sei@google.*", "gws_rd@google.*", "gs_gbg@google.*", "gs_mss@google.*", "gs_rn@google.*"]},
         { "name": "Hubspot", "params": ["_hsenc", "_hsmi", "__hssc", "__hstc", "hsCtaTracking"]},
