@@ -26,6 +26,7 @@ let neat_url_icon_animation; // none, missing_underscore, rotate or surprise_me
 let neat_url_icon_theme;
 let neat_url_counter_color;
 let neat_url_counter_default_color;
+let neat_url_blocked_params;
 
 let neat_url_types; // Used to init the onBeforeRequest listener
 let neat_url_version; // Used for upgrading purposes: previous version when upgrading, after upgrading the current version
@@ -36,6 +37,7 @@ function init(){
 		"neat_url_icon_theme",
 		"neat_url_counter_color",
 		"neat_url_counter_default_color",
+		"neat_url_blocked_params",
 		"neat_url_types",
 		"neat_url_version"
 	]).then((storageLocalResult) => {
@@ -44,6 +46,7 @@ function init(){
 		neat_url_counter_color = valueOrDefault(storageLocalResult.neat_url_counter_color, "#000000");
 		neat_url_counter_default_color = valueOrDefault(storageLocalResult.neat_url_counter_default_color, true); // true as default
 
+		neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
 		neat_url_types = valueOrDefaultArray(storageLocalResult.neat_url_types, defaultRequestResourceTypes);
 		neat_url_version = valueOrDefault(storageLocalResult.neat_url_version, "0.1.0");
 		
@@ -114,18 +117,16 @@ function initBrowserAction(){
 	browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0.png")});
 	browser.browserAction.setTitle({title: "Neat URL " + version + " - enabled"});
 
-	browser.browserAction.onClicked.addListener((tab) => {
+	browser.browserAction.onClicked.addListener(async (tab) => {
 		enabled = !enabled;
-		sendMessage("setEnabled", enabled);
+		if(enabled) notify("Neat URL is now enabled", "state");
+		if(!enabled) notify("Neat URL is now disabled", "state");
 
-		if(enabled){
-			browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0.png")});
-			browser.browserAction.setTitle({title: "Neat URL " + version + " - enabled"});
-		}
-		else{
-			browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0_disabled.png")});
-			browser.browserAction.setTitle({title: "Neat URL " + version + " - disabled"});
-		}
+		await browser.storage.local.set({ enabled: enabled });
+		sendMessage("refresh-options", enabled);
+		enabled_2 = enabled; // shared.js loaded as background script
+
+		updateIcon();
 	});
 }
 
@@ -193,8 +194,9 @@ function deleteDefaultParametersFromBlockedParameters(){
 	}
 }
 
-function notify(message){
-	browser.notifications.create(message.substring(0, 20),
+function notify(message, id){
+	if(typeof id == undefined) id = message.substring(0, 20)
+	browser.notifications.create(id,
 	{
 		type: "basic",
 		iconUrl: browser.runtime.getURL(resolveIconUrlNotif("neaturl-96-state0.png")),

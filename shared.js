@@ -8,7 +8,7 @@ let loadedPromise = null;
 let neat_url_logging = false;
 let neat_url_show_counter = true;
 let neat_url_override_default_blocked_params;
-let neat_url_blocked_params;
+let neat_url_blocked_params_2;
 let neat_url_blacklist = [];
 let neat_url_change_links_in_page = false;
 
@@ -17,9 +17,6 @@ let enabled_2 = true;
 // Listen for messages from the content or background script
 browser.runtime.onMessage.addListener((message) => {
 	switch(message.action){
-		case "setEnabled": 
-			enabled = message.data;
-			break;
 		case "refresh-options":
 			initOptions();
 			break;
@@ -29,7 +26,9 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 function sendMessage(action, data){
-	browser.runtime.sendMessage({"action": action, "data": data});
+	browser.runtime.sendMessage({"action": action, "data": data}).catch((error) => {
+		console.error("Failed to send " + action + " with data " + data);
+	});
 }
 
 function animateToolbarIcon(){
@@ -60,7 +59,7 @@ let valueOrDefaultArray = function(value, defaultValue){
 async function init(){
 	let promise1 = initFiles();
 	let promise2 = initOptions();
-
+	
 	loadedPromise = Promise.all([promise1, promise2])
 	await loadedPromise;
 	loadedPromise = null;
@@ -68,6 +67,7 @@ async function init(){
 
 async function initOptions(){
 	let storageLocalResult = await browser.storage.local.get([
+		"enabled",
 		"neat_url_logging",
 		"neat_url_show_counter",
 		"neat_url_override_default_blocked_params",
@@ -80,9 +80,12 @@ async function initOptions(){
 	neat_url_show_counter = valueOrDefault(storageLocalResult.neat_url_show_counter, true);
 
 	neat_url_override_default_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_override_default_blocked_params, []);
-	neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
+	neat_url_blocked_params_2 = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
 	neat_url_blacklist = valueOrDefaultArray(storageLocalResult.neat_url_blacklist, defaultBlacklist);
 	neat_url_change_links_in_page = valueOrDefault(storageLocalResult.neat_url_change_links_in_page, false);
+
+	enabled_2 = valueOrDefault(storageLocalResult.enabled, true);
+	console.log("enabled is " + enabled_2);
 }
 
 async function initFiles(){
@@ -383,7 +386,7 @@ function cleanURL(details) {
 	let excludeParams = [];
 
 	let defaultBlockedParamsWithoutOverrides = neat_url_default_blocked_params.filter((defaultBlockedParam) => !neat_url_override_default_blocked_params.includes(defaultBlockedParam));
-	let allBlockedParams = defaultBlockedParamsWithoutOverrides.concat(neat_url_blocked_params);
+	let allBlockedParams = defaultBlockedParamsWithoutOverrides.concat(neat_url_blocked_params_2);
 
 	for (let gbp of allBlockedParams) {
 		let match = getParameterForDomainUrl(gbp, domain, rootDomain, domainMinusSuffix, url);

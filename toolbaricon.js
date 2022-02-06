@@ -1,4 +1,15 @@
 /// Neat URL code
+function updateIcon(){
+	if(enabled){
+		browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0.png")});
+		browser.browserAction.setTitle({title: "Neat URL " + version + " - enabled"});
+	}
+	else{
+		browser.browserAction.setIcon({path: resolveIconURL("neaturl-96-state0_disabled.png")});
+		browser.browserAction.setTitle({title: "Neat URL " + version + " - disabled"});
+	}
+}
+
 function animateToolbarIcon(){
 	if(neat_url_icon_animation == "none") return;
 
@@ -153,3 +164,8 @@ function onTabRemoved(tab){
 	// We're only resetting the count for the badge, so that if another tab gets the same id, we don't be using the badge count of that unrelated tab
 	badge[tab.id] = null;
 }
+
+// Keep enabled/disabled state synchronized between tabs
+browser.tabs.onActivated.addListener((activeInfo) => {
+	updateIcon();
+});
