@@ -1,4 +1,4 @@
-6.0.0 (2022-02-XX)
+6.0.0 (2022-02-07)
 =====
 * New feature: rewrite URLs before you click on them (change links in page), fixes #26 (copy clean URL) and #262 (URL rewriting in DOM)
     * This is disabled by default and can be enabled in the Options (under Advanced)
@@ -28,6 +28,7 @@
     * README: updated default parameters
     * Options page: hide colorpicker for counter when default counter color is checked
     * Make more use of async/await code
+    * Updated build script
 
 Special thanks to the contributors who made this version possible.
 
