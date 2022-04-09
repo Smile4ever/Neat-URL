@@ -1,0 +1,117 @@
+{
+  "extensionDescription": {
+    "message": "Remove rastreamento de URLs."
+  },
+  "default_blocked_params": {
+    "message": "Parâmetros bloqueados por padrão"
+  },
+  "default_blocked_params_descr": {
+    "message": "Parâmetros predefinidos que Neat URL removerá de URL."
+  },
+  "override_default_blocked_params": {
+    "message": "Lista a ser ignorada em parâmetros bloqueados por padrão"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "Para excluir parâmetros que fazem parte de parâmetros bloqueados por padrão, adicione-os aqui. Use uma vírgula como delimitador entre os parâmetros a serem removidos de bloqueados por padrão."
+  },
+  "blocked_params": {
+    "message": "Parâmetros bloqueados"
+  },
+  "blocked_params_descr": {
+    "message": "Parâmetros sensíveis a maiúsculas que serão removidos de URL. Use param@domain.com para utilizar parâmetros bloqueados específicos de domínio. Use uma vírgula como delimitador entre os parâmetros bloqueados.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Regras de parâmetros</a>"
+  },
+  "icon_animation": {
+    "message": "Animação do ícone"
+  },
+  "icon_animation_descr": {
+    "message": "Animação a ser usada quando Neat URL estiver limpando URL."
+  },
+  "icon_animation_none": {
+  	"message": "Nenhuma animação"
+  },
+  "icon_animation_missing_underscore": {
+	  "message": "Sublinho em falta"
+  },
+  "icon_animation_rotate": {
+  	"message": "Girar ícone"
+  },
+  "icon_animation_surprise_me": {
+	  "message": "Surpreenda-me"
+  },
+  "icon_theme": {
+	  "message": "Tema do ícone"
+  },
+  "icon_theme_descr": {
+	  "message": "Ícones escuros são usados por padrão. Você pode mudar esta opção e usar ícones claros."
+  },
+  "icon_theme_dark": {
+	  "message": "Usar sempre ícones escuros"
+  },
+  "icon_theme_light": {
+	  "message": "Usar sempre ícones claros"
+  },
+  "icon_theme_dark_notiflight": {
+	  "message": "Usar ícones escuros exceto para notificações"
+  },
+  "icon_theme_light_notifdark": {
+	  "message": "Usar ícones claros exceto para notificações"
+  },
+  "show_counter": {
+	  "message": "Mostrar contador"
+  },
+  "show_counter_descr": {
+	  "message": "Mostrar um contador que exibe o número de URLs refeitas."
+  },
+  "counter_background_color": {
+	  "message": "Cor de fundo do contador"
+  },
+  "counter_background_color_descr": {
+	  "message": "A cor de fundo usada pelo contador."
+  },
+  "enable_logging": {
+    "message": "Ativar registros"
+  },
+  "enable_logging_descr": {
+    "message": "Registrar mudanças de URL no console de navegador."
+  },
+  "advanced": {
+	  "message": "Avançado"
+  },
+  "advanced_descr": {
+    "message": "Estas opções podem morder."
+  },
+  "theme": {
+	  "message": "Tema"
+  },
+  "theme_descr": {
+    "message": "Opções de tema para ícone e notificação."
+  },
+  "blacklist": {
+    "message": "Lista de domínios proibidos"
+  },
+  "blacklist_descr": {
+    "message": "Lista de domínios separada por vírgula. O Neat URL não funcionará nestes sites."
+  },
+  "url_request_types": {
+    "message": "Tipos de solicitação de URL"
+  },
+  "url_request_types_descr": {
+    "message": "Valor padrão: main_frame. Esta lista é separada por vírgulas. Os valores válidos podem ser encontrados na <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>lista de tipos de recursos</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
+  },
+  "counter_default_color": {
+	  "message": "Use a cor padrão do contador"
+  },
+  "savepreferences": {
+    "message": "Salvar preferências"
+  },
+  "notify_preferences_saved": {
+	  "message": "Preferências salvas"
+  },
+  "change_links_in_page": {
+    "message": "Alterar links no site"
+  },
+  "change_links_in_page_descr": {
+    "message": "Remover parâmetros bloqueados de todos os links ao carregar um site"
+  }
+}
