@@ -32,7 +32,6 @@ function sendMessage(action, data){
 }
 
 function animateToolbarIcon(){
-	console.log("trying animateToolbarIcon");
 	sendMessage({
 		action: "animateToolbarIcon"
 	});
@@ -85,23 +84,19 @@ async function initOptions(){
 	neat_url_change_links_in_page = valueOrDefault(storageLocalResult.neat_url_change_links_in_page, false);
 
 	enabled_2 = valueOrDefault(storageLocalResult.enabled, true);
-	console.log("enabled is " + enabled_2);
 }
 
 async function initFiles(){
 	var jsonUrl = browser.runtime.getURL('data/default-params-by-category.json');
 	var txtUrl = browser.runtime.getURL('data/publicsuffix-ccSLD.txt');
 
-	return fetch(jsonUrl)
-		.then(async (response) => {
-			let jsonParams = await response.json();
-			neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
-		})
-		.then(async () => {
-			let response = await fetch(txtUrl);
-			let text = await response.text();
-			suffixList = text.split("\n");
-		}).catch(console.error);
+	let response = await fetch(jsonUrl);
+	let jsonParams = await response.json();
+	neat_url_default_blocked_params = jsonParams.categories.flatMap(cat => cat.params);
+	
+	let response2 = await fetch(txtUrl);
+	let text = await response2.text();
+	suffixList = text.split("\n");
 }
 init();
 
@@ -357,7 +352,7 @@ function getRootDomain(domain) {
 }
 
 /// Lean URL / Neat URL code
-function cleanURL(details) {
+async function cleanURL(details) {
 	if(!enabled_2) return;
 
 	let url = new URL(details.url);
@@ -430,7 +425,6 @@ function cleanURL(details) {
 
 	for (let entry of forparams.searchParams) {
 		var key = entry[0];
-		// console.log(`[Neat URL]: if includes(${key})`)
 		if (blockedParams.includes(key)) {
 			if(neat_url_logging) console.log(`[Neat URL]: delete(${key})`)
 			url.searchParams.delete(key);
@@ -477,28 +471,27 @@ function cleanURL(details) {
 		globalCurrentURL = originalDetailsUrl;
 		globalTabId = details.tabId;
 
-		setTimeout(function(){
-			browser.tabs.query({url: globalCurrentURL}).then((tabs) => {
-				if(globalNeatURL == null || globalNeatURL == "") return;
+		setTimeout(async function(){
+			let tabs = await browser.tabs.query({url: globalCurrentURL});
+			if(globalNeatURL == null || globalNeatURL == "") return;
 
-				if(tabs.length == 0){
-					//console.log(`[Neat URL]: the query for '${globalCurrentURL}' returned nothing. Attempting '${globalNeatURL}'`);
-				}else{
-					//console.log(`[Neat URL]: It was opened in a new tab, update that tab to '${globalNeatURL}'`);
+			if(tabs.length == 0){
+				//console.log(`[Neat URL]: the query for '${globalCurrentURL}' returned nothing. Attempting '${globalNeatURL}'`);
+			}else{
+				//console.log(`[Neat URL]: It was opened in a new tab, update that tab to '${globalNeatURL}'`);
 
-					for (tab of tabs) {
-						if(neat_url_logging) console.log(`[Neat URL]: really updating '${tab.url}' to '${globalNeatURL}'`);
-						browser.tabs.update(tab.id, { url: globalNeatURL });//May be fired more than once?
-						animateToolbarIcon();
-						if(neat_url_show_counter) incrementBadgeValue(globalTabId);
-					}
+				for (tab of tabs) {
+					if(neat_url_logging) console.log(`[Neat URL]: really updating '${tab.url}' to '${globalNeatURL}'`);
+					browser.tabs.update(tab.id, { url: globalNeatURL });//May be fired more than once?
+					animateToolbarIcon();
+					if(neat_url_show_counter) incrementBadgeValue(globalTabId);
 				}
+			}
 
-				setTimeout(() => {
-					globalNeatURL = "";
-					globalCurrentURL = "";
-				}, applyAfter);
-			}, null);
+			setTimeout(() => {
+				globalNeatURL = "";
+				globalCurrentURL = "";
+			}, applyAfter);
 		}, applyAfter);
 	}
 

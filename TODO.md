@@ -1,11 +1,12 @@
 TODO
 ====
 
-Not done for Neat URL 6.0.0 currently, but on the roadmap for future versions.
+Not done currently, but on the roadmap for future versions.
 
 Browser support
 ====
 
+* Migrate to Manifest V3 (to keep supporting Chrome)
 * Support for Microsoft Edge
 * Support for Android
     * Support for Firefox

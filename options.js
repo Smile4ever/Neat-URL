@@ -63,13 +63,12 @@ async function saveOptions() {
 		values[p] = document.querySelector("#"+p)[PREFS[p].type];
 	}
 
-	browser.storage.local.set(values).then(() => {
-		browser.runtime.sendMessage({action: "refresh-options"});
+	await browser.storage.local.set(values);
+	browser.runtime.sendMessage({action: "refresh-options"});
 
-		setTimeout(function(){
-			browser.runtime.sendMessage({action: "notify", data: browser.i18n.getMessage("notify_preferences_saved")});
-		}, 10);
-	});
+	setTimeout(function(){
+		browser.runtime.sendMessage({action: "notify", data: browser.i18n.getMessage("notify_preferences_saved")});
+	}, 10);
 }
 
 async function restoreOptions() {

@@ -10,7 +10,7 @@ echo "- npm"
 #Execute this in a sudo or administrator terminal
 #npm install --global web-ext
 
-if [[ ! -f "browser-polyfill.min.js" ]]; then
+if [ ! -f "browser-polyfill.min.js" ] || [ $(find "browser-polyfill.min.js" -mtime +0) ]; then
 	echo "Downloading browser-polyfill.min.js"
 	git clone https://github.com/mozilla/webextension-polyfill polyfill
 	cd polyfill
@@ -47,7 +47,6 @@ web-ext build --ignore-files build.sh images *.md *.txt .gitignore --filename "{
 cd ..
 yes | cp build/web-ext-artifacts/* web-ext-artifacts/
 
-#rm -rf build/web-ext-artifacts
 rm -rf build
 
 # Build ZIP - Firefox

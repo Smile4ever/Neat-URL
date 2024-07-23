@@ -1,9 +1,9 @@
 {
 	"name": "Neat URL",
 	"description": "__MSG_extensionDescription__",
-	"homepage_url": "http://itsafeature.org",
+	"homepage_url": "https://github.com/Smile4ever/Neat-URL",
 	"manifest_version": 2,
-	"version": "6.0.0",
+	"version": "6.1.0",
 	"default_locale": "en",
 	"web_accessible_resources": [
 		"data/publicsuffix-ccSLD.txt",
@@ -31,11 +31,9 @@
 	},
 	"permissions": ["storage", "notifications", "contextMenus", "webRequest", "webRequestBlocking", "tabs", "<all_urls>"],
 	"options_ui": {
-		"page": "options.html",
-		"browser_style": true
+		"page": "options.html"
 	},
-	"browser_action": {
-		"default_icon": "icons/dark/neaturl-96-state0.png",
-		"browser_style": true
+	"action": {
+		"default_icon": "icons/dark/neaturl-96-state0.png"
 	}	
 }

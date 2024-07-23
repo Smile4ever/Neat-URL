@@ -31,8 +31,8 @@ let neat_url_blocked_params;
 let neat_url_types; // Used to init the onBeforeRequest listener
 let neat_url_version; // Used for upgrading purposes: previous version when upgrading, after upgrading the current version
 
-function init(){	
-	browser.storage.local.get([
+async function init(){	
+	let storageLocalResult = await browser.storage.local.get([
 		"neat_url_icon_animation",
 		"neat_url_icon_theme",
 		"neat_url_counter_color",
@@ -40,51 +40,47 @@ function init(){
 		"neat_url_blocked_params",
 		"neat_url_types",
 		"neat_url_version"
-	]).then((storageLocalResult) => {
-		neat_url_icon_animation = valueOrDefault(storageLocalResult.neat_url_icon_animation, "missing_underscore");
-		neat_url_icon_theme = valueOrDefault(storageLocalResult.neat_url_icon_theme, "dark");
-		neat_url_counter_color = valueOrDefault(storageLocalResult.neat_url_counter_color, "#000000");
-		neat_url_counter_default_color = valueOrDefault(storageLocalResult.neat_url_counter_default_color, true); // true as default
+	]);
 
-		neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
-		neat_url_types = valueOrDefaultArray(storageLocalResult.neat_url_types, defaultRequestResourceTypes);
-		neat_url_version = valueOrDefault(storageLocalResult.neat_url_version, "0.1.0");
-		
-		// Upgrade configuration from old releases
-		if(neat_url_counter_default_color == null && neat_url_counter_color == "#eeeeee"){
-			// Update counter_color to null
-			browser.storage.local.set({ neat_url_counter_color: null });
+	neat_url_icon_animation = valueOrDefault(storageLocalResult.neat_url_icon_animation, "missing_underscore");
+	neat_url_icon_theme = valueOrDefault(storageLocalResult.neat_url_icon_theme, "dark");
+	neat_url_counter_color = valueOrDefault(storageLocalResult.neat_url_counter_color, "#000000");
+	neat_url_counter_default_color = valueOrDefault(storageLocalResult.neat_url_counter_default_color, true); // true as default
 
-			// Update counter_default_color to true
-			browser.storage.local.set({ neat_url_counter_default_color: true }); // not strictly needed, but this shouldn't hurt either
-
-			// Do not use any color
-			neat_url_counter_default_color = true;
-		}
-
-		if(!neat_url_counter_default_color)
-			browser.browserAction.setBadgeBackgroundColor({color: neat_url_counter_color});
-
-		// Re-initialise listener, hopefully fixes https://github.com/Smile4ever/firefoxaddons/issues/92
-		browser.webRequest.onBeforeRequest.removeListener(cleanURL);
-		if(neat_url_types.length != 0){
-			/// Register for types specified in neat_url_types
-			browser.webRequest.onBeforeRequest.addListener(
-				cleanURL,
-				{urls: ["<all_urls>"], types: neat_url_types},
-				["blocking"]
-			);
-		}
+	neat_url_blocked_params = valueOrDefaultArray(storageLocalResult.neat_url_blocked_params, []);
+	neat_url_types = valueOrDefaultArray(storageLocalResult.neat_url_types, defaultRequestResourceTypes);
+	neat_url_version = valueOrDefault(storageLocalResult.neat_url_version, "0.1.0");
 	
-		initBrowserAction(); // needs neat_url_icon_theme
-		initCounter(); // needs neat_url_show_counter
-		deleteDefaultParametersFromBlockedParameters(); // needs neat_url_icon_theme / neat_url_blocked_params / neat_url_override_default_blocked_params
+	// Upgrade configuration from old releases
+	if(neat_url_counter_default_color == null && neat_url_counter_color == "#eeeeee"){
+		// Update counter_color to null
+		browser.storage.local.set({ neat_url_counter_color: null });
 
-		return storageLocalResult;
-	})
-	// Retrieve default parameters from JSON file and set neat_url_blocked_params
-	.catch(console.error);
-	
+		// Update counter_default_color to true
+		browser.storage.local.set({ neat_url_counter_default_color: true }); // not strictly needed, but this shouldn't hurt either
+
+		// Do not use any color
+		neat_url_counter_default_color = true;
+	}
+
+	if(!neat_url_counter_default_color)
+		browser.browserAction.setBadgeBackgroundColor({color: neat_url_counter_color});
+
+	// Re-initialise listener, hopefully fixes https://github.com/Smile4ever/firefoxaddons/issues/92
+	browser.webRequest.onBeforeRequest.removeListener(cleanURL);
+	if(neat_url_types.length != 0){
+		/// Register for types specified in neat_url_types
+		browser.webRequest.onBeforeRequest.addListener(
+			cleanURL,
+			{urls: ["<all_urls>"], types: neat_url_types},
+			["blocking"]
+		);
+	}
+
+	initBrowserAction(); // needs neat_url_icon_theme
+	initCounter(); // needs neat_url_show_counter
+	deleteDefaultParametersFromBlockedParameters(); // needs neat_url_icon_theme / neat_url_blocked_params / neat_url_override_default_blocked_params
+
 	initContextMenus();
 }
 init();
@@ -103,7 +99,6 @@ browser.runtime.onMessage.addListener((message) => {
 			incrementBadgeValue(message.data);
 			break;
 		case "animateToolbarIcon":
-			console.log("received animateToolbarIcon");
 			animateToolbarIcon();
 			break;
 		default:
@@ -204,4 +199,3 @@ function notify(message, id){
 		message: message
 	});
 }
-

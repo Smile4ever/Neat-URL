@@ -1,3 +1,11 @@
+6.1.0 (2024-09-?)
+==================
+* Since 6.0.0 was never officially released, this contains all changes from 6.0.0 and more
+* Changes
+    * Replace Promises by async/await code
+    * Updated build script
+    * Change homepage URL
+
 6.0.0 (2022-02-07)
 =====
 * New feature: rewrite URLs before you click on them (change links in page), fixes #26 (copy clean URL) and #262 (URL rewriting in DOM)
