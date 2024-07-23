@@ -1,0 +1,117 @@
+{
+  "extensionDescription": {
+    "message": "URLからごみを除去するします。"
+  },
+  "default_blocked_params": {
+    "message": "既定でブロックされるパラメーター"
+  },
+  "default_blocked_params_descr": {
+    "message": "Neat URLがURLから削除する、既定のパラメータです。"
+  },
+  "override_default_blocked_params": {
+    "message": "既定でブロックされるパラメーターの上書きリスト"
+  },
+  "override_default_blocked_params_descr": {
+    "message": "既定でブロックされるパラメーターのうち、無効にしたいものをカンマで区切って書いて下さい。"
+  },
+  "blocked_params": {
+    "message": "ブロックされるパラメーター"
+  },
+  "blocked_params_descr": {
+    "message": "URLから削除したいパラメーターを、カンマで区切って書いて下さい。大文字と小文字は区別されます。ドメインを指定してブロックしたパラメーターを設定する場合は、param@domain.comの書式を使用してください。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>パラメーターの規則</a>"
+  },
+  "icon_animation": {
+    "message": "アイコンのアニメーション"
+  },
+  "icon_animation_descr": {
+    "message": "Neat URLがURLをクリーンアップするときに使用するアニメーションです。"
+  },
+  "icon_animation_none": {
+  	"message": "アニメーションなし"
+  },
+  "icon_animation_missing_underscore": {
+	  "message": "アンダースコアを消す"
+  },
+  "icon_animation_rotate": {
+  	"message": "アイコンを回転する"
+  },
+  "icon_animation_surprise_me": {
+	  "message": "おまかせ"
+  },
+  "icon_theme": {
+	  "message": "アイコンのテーマ"
+  },
+  "icon_theme_descr": {
+	  "message": "既定では暗いアイコンが使用されます。明るいアイコンに変更することができます。"
+  },
+  "icon_theme_dark": {
+	  "message": "常に暗いアイコンを使用する"
+  },
+  "icon_theme_light": {
+	  "message": "常に明るいアイコンを使用する"
+  },
+  "icon_theme_dark_notiflight": {
+	  "message": "通知を除いて、暗いアイコンを使用する"
+  },
+  "icon_theme_light_notifdark": {
+	  "message": "通知を除いて、明るいアイコンを使用する"
+  },
+  "show_counter": {
+	  "message": "カウンターを表示"
+  },
+  "show_counter_descr": {
+	  "message": "書き換えたURLの数を示すカウンターを表示します。"
+  },
+  "counter_background_color": {
+	  "message": "カウンターの背景色"
+  },
+  "counter_background_color_descr": {
+	  "message": "カウンターが使用する背景色です。"
+  },
+  "enable_logging": {
+    "message": "ログを有効にする"
+  },
+  "enable_logging_descr": {
+    "message": "URLの変更をブラウザのコンソールにログ出力します。"
+  },
+  "advanced": {
+	  "message": "高度な設定"
+  },
+  "advanced_descr": {
+    "message": "これらのオプションは悪い影響を及ぼすかもしれません。"
+  },
+  "theme": {
+	  "message": "テーマ"
+  },
+  "theme_descr": {
+    "message": "アイコンと通知のテーマに関するオプションです。"
+  },
+  "blacklist": {
+    "message": "ドメインのブロックリスト"
+  },
+  "blacklist_descr": {
+    "message": "カンマで区切られたドメインのリストです。Neat URLは、これらのウェブサイトでは作動しません。"
+  },
+  "url_request_types": {
+    "message": "URLのリクエスト型"
+  },
+  "url_request_types_descr": {
+    "message": "既定値: main_frame. このリストはカンマで区切られています。有効な値は、<a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types (en-US)</a>で確認することができます。",
+    "description": "リンクはそのままにしておいてください。通常のテキストと 'the list of resource types' というテキストを翻訳することができます。リンクは変更しないでください。main_frameもそのままにしてください。"
+  },
+  "counter_default_color": {
+	  "message": "既定のカウンター色を使用する"
+  },
+  "savepreferences": {
+    "message": "設定を保存します"
+  },
+  "notify_preferences_saved": {
+	  "message": "設定を保存しました"
+  },
+  "change_links_in_page": {
+    "message": "ページ内リンクを変更する"
+  },
+  "change_links_in_page_descr": {
+    "message": "ページを読み込む時に、ブロックされたパラメータを全てのリンクから削除します"
+  }
+}

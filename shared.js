@@ -52,7 +52,7 @@ let valueOrDefault = function(value, defaultValue){
 let valueOrDefaultArray = function(value, defaultValue){
 	if(value == undefined || value == "") return defaultValue;
 
-	return value.split(" ").join("").split(",");
+	return value.split("\n").filter(x => !x.includes(":")).join(",").split(" ").join("").split(",").filter(x => x);
 }
 
 async function init(){
