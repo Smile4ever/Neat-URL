@@ -14,6 +14,10 @@ Browser support
 * Support for Vivaldi
 * Support for Thunderbird
 
+Bugs
+====
+* wt_zmc for https://advise.zeit.de/wp-content/uploads/2023/02/ZEITReisetraeume2023-2.pdf?wt_zmc=nl.int.zonaudev.77556405706_414236646305.nl_ref.
+
 New functionality
 ====
 
