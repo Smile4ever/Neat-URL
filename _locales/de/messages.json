@@ -151,5 +151,32 @@
   },
   "import_failed": {
     "message": "Diese Datei enthält keine Einstellungen von Neat URL."
+  },
+  "show_log": {
+    "message": "Protokoll"
+  },
+  "show_log_link": {
+    "message": "Protokoll der bereinigten URLs anzeigen"
+  },
+  "log_descr": {
+    "message": "Die letzten URLs, die Neat URL bereinigt hat. Das Protokoll wird nur im Arbeitsspeicher gehalten und ist nach einem Neustart des Browsers leer."
+  },
+  "log_filter": {
+    "message": "Filtern"
+  },
+  "log_clear": {
+    "message": "Leeren"
+  },
+  "log_empty": {
+    "message": "Es wurden noch keine URLs bereinigt."
+  },
+  "log_column_time": {
+    "message": "Zeit"
+  },
+  "log_column_type": {
+    "message": "Typ"
+  },
+  "log_column_url": {
+    "message": "URL"
   }
 }

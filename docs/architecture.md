@@ -17,6 +17,7 @@ src/background/
   chrome-sw.js                service worker entry point (importScripts)
 src/content/
   links.js                    option "Change links in page"
+log.html, log.js              log page
 manifest.json                 works in both browsers; scripts/build.js makes one per browser
 options.html, options.js      options page (shared)
 data/                         default parameters, public suffixes
@@ -82,6 +83,10 @@ A regex can't skip one specific parameter. If an exclusion overlaps a wildcard, 
 ### What the rules can't do
 
 Rules can't decode and encode a parameter value (option "Clean URLs inside parameters"), and some rules are unsupported (see above). A non-blocking `webRequest.onBeforeRequest` listener for main frames handles these navigations: when `cleanUrl(url)` differs from `cleanUrl(url, config, { nested: false })`, or when `needsFallback()` finds an unsupported rule for the domain, it updates the tab with the fully cleaned URL. The rules don't change that URL any more, so there is no loop. The request after a redirect by the rules is ignored, so the tab is updated once.
+
+## Log
+
+`reportCleaned()` in `common.js` adds every cleaned URL to a list of the last 500 in `storage.session`. That storage is kept in memory only, so the log is empty after a browser restart, and it survives a suspended background. `log.html` reads the list and follows changes with `storage.onChanged`. In Chrome only the first internal redirect of a navigation is reported, so the log shows the result of `cleanUrl()`, which is where the chain of rules ends.
 
 ## Change links in page
 

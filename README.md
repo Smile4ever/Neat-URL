@@ -164,7 +164,7 @@ Other parameters you can consider (website unknown)
 * WebExtensions (like Neat URL) aren't allow to work on several Mozilla domains. This is a security feature. To allow all WebExtensions to work on these websites, you need to edit extensions.webextensions.restrictedDomains in about:config.
 * A website doesn't work any more? Add the parameter to the override list (for a default parameter), add an exclusion like `!param@example.com`, or add the domain to the domain blacklist.
 * Firefox: check that Neat URL has access to all websites (Add-ons → Neat URL → Permissions). The options page shows a button when access is missing.
-* Enable logging in the options to see which URLs are changed. In Chrome the log is in the console of the service worker (chrome://extensions → Neat URL → service worker).
+* Open the log (right-click the toolbar button → Log, or the link on the options page) to see which URLs were changed and which parameters were removed. With "Enable logging" the changes are also written to the browser console; in Chrome that is the console of the service worker (chrome://extensions → Neat URL → service worker).
 * A hash that changes without loading a page (for example a link to #section on the same page) can't be cleaned. See [Browser support](docs/browser-support.md).
 
 ## History

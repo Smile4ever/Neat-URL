@@ -150,5 +150,32 @@
   },
   "import_failed": {
     "message": "Этот файл не содержит настроек Neat URL."
+  },
+  "show_log": {
+    "message": "Журнал"
+  },
+  "show_log_link": {
+    "message": "Показать журнал очищенных URL-адресов"
+  },
+  "log_descr": {
+    "message": "Последние URL-адреса, очищенные Neat URL. Журнал хранится только в памяти и очищается после перезапуска браузера."
+  },
+  "log_filter": {
+    "message": "Фильтр"
+  },
+  "log_clear": {
+    "message": "Очистить"
+  },
+  "log_empty": {
+    "message": "URL-адреса ещё не очищались."
+  },
+  "log_column_time": {
+    "message": "Время"
+  },
+  "log_column_type": {
+    "message": "Тип"
+  },
+  "log_column_url": {
+    "message": "URL"
   }
 }

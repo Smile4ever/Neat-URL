@@ -11,6 +11,7 @@
 * New feature: clean URLs inside parameters, up to three levels deep (?url=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dx). Off by default.
 * New feature: parameters with a value, for example ref=share@amazon.com, fixes #183
 * New feature: import and export of the preferences, fixes #175 and #301
+* New feature: a log page with the last 500 cleaned URLs and the removed parameters (right-click the toolbar button → Log). Kept in memory only.
 * New feature: wildcards in the domain blacklist (archive.*, *.archive.*), fixes #286
 * New feature: header lines ("Name:") in the parameter lists, fixes #285
 * Change links in page: also cleans links that the page adds later, when they are used

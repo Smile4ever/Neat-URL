@@ -16,9 +16,11 @@ test("every locale has every message of the default locale", () => {
 	}
 });
 
-test("every data-i18n id in the options page exists", () => {
-	let html = fs.readFileSync(path.join(ROOT, "options.html"), "utf8");
+test("every data-i18n id in the pages exists", () => {
 	let english = read("en");
-	let ids = Array.from(html.matchAll(/data-i18n="([^"]+)"/g), (match) => match[1]);
-	assert.deepStrictEqual(ids.filter((id) => !(id in english)), []);
+	for(let page of ["options.html", "log.html"]){
+		let html = fs.readFileSync(path.join(ROOT, page), "utf8");
+		let ids = Array.from(html.matchAll(/data-i18n(?:-placeholder)?="([^"]+)"/g), (match) => match[1]);
+		assert.deepStrictEqual(ids.filter((id) => !(id in english)), [], page);
+	}
 });

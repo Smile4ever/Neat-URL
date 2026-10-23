@@ -149,5 +149,32 @@
   },
   "import_failed": {
     "message": "このファイルには Neat URL の設定が含まれていません。"
+  },
+  "show_log": {
+    "message": "ログ"
+  },
+  "show_log_link": {
+    "message": "クリーンにした URL のログを表示"
+  },
+  "log_descr": {
+    "message": "Neat URL が最近クリーンにした URL です。ログはメモリーにのみ保存され、ブラウザーを再起動すると空になります。"
+  },
+  "log_filter": {
+    "message": "絞り込み"
+  },
+  "log_clear": {
+    "message": "消去"
+  },
+  "log_empty": {
+    "message": "まだクリーンにした URL はありません。"
+  },
+  "log_column_time": {
+    "message": "時刻"
+  },
+  "log_column_type": {
+    "message": "種類"
+  },
+  "log_column_url": {
+    "message": "URL"
   }
 }

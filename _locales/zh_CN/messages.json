@@ -149,5 +149,32 @@
   },
   "import_failed": {
     "message": "此文件不包含 Neat URL 的设置。"
+  },
+  "show_log": {
+    "message": "日志"
+  },
+  "show_log_link": {
+    "message": "显示已清理网址的日志"
+  },
+  "log_descr": {
+    "message": "Neat URL 最近清理的网址。日志只保存在内存中，重启浏览器后为空。"
+  },
+  "log_filter": {
+    "message": "筛选"
+  },
+  "log_clear": {
+    "message": "清除"
+  },
+  "log_empty": {
+    "message": "尚未清理任何网址。"
+  },
+  "log_column_time": {
+    "message": "时间"
+  },
+  "log_column_type": {
+    "message": "类型"
+  },
+  "log_column_url": {
+    "message": "网址"
   }
 }

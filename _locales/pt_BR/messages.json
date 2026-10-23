@@ -149,5 +149,32 @@
   },
   "import_failed": {
     "message": "Este arquivo não contém preferências do Neat URL."
+  },
+  "show_log": {
+    "message": "Registro"
+  },
+  "show_log_link": {
+    "message": "Mostrar o registro de URLs limpas"
+  },
+  "log_descr": {
+    "message": "As últimas URLs que o Neat URL limpou. O registro fica apenas na memória e fica vazio após reiniciar o navegador."
+  },
+  "log_filter": {
+    "message": "Filtrar"
+  },
+  "log_clear": {
+    "message": "Limpar"
+  },
+  "log_empty": {
+    "message": "Nenhuma URL foi limpa ainda."
+  },
+  "log_column_time": {
+    "message": "Hora"
+  },
+  "log_column_type": {
+    "message": "Tipo"
+  },
+  "log_column_url": {
+    "message": "URL"
   }
 }

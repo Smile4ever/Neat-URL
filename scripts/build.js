@@ -12,7 +12,7 @@ const zlib = require("zlib");
 const ROOT = path.join(__dirname, "..");
 
 const COMMON_FILES = [
-	"_locales", "css", "data", "icons", "options.html", "options.js",
+	"_locales", "css", "data", "icons", "options.html", "options.js", "log.html", "log.js",
 	"src/core/defaults.js", "src/core/domain.js", "src/core/params.js", "src/core/clean.js", "src/core/migrate.js",
 	"src/background/common.js", "src/content/links.js"
 ];

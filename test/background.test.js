@@ -42,6 +42,7 @@ function createBrowser(initialStorage, options){
 
 	return {
 		local: local,
+		sessionData: session,
 		runtime: { getManifest: () => ({ version: "5.0.0" }), getURL: (p) => p, onMessage: event(), onStartup: event(), onInstalled: event(), openOptionsPage: () => {} },
 		storage: { local: area(local, "local"), session: area(session, "session"), onChanged: onChanged },
 		action: { setIcon: () => {}, setTitle: () => {}, setBadgeText: () => {}, setBadgeBackgroundColor: () => {}, onClicked: event() },
@@ -137,4 +138,21 @@ test("the counter counts per tab", async () => {
 	listener(request("https://example.com/?fbclid=a"));
 	await wait(50);
 	assert.strictEqual(badge, "2");
+});
+
+test("cleaned URLs are kept in the log in storage.session", async () => {
+	let browser = createBrowser();
+	let context = loadBackground(browser);
+	await context.NeatURL.background.ensureState();
+	let listener = browser.webRequest.onBeforeRequest.listeners[0];
+	listener(request("https://www.paypal.com/paypalme/Smile4ever/10?utm_content=product-page-contribute&utm_medium=referral&utm_source=addons.mozilla.org"));
+	listener(request("https://example.com/?fbclid=a&x=1"));
+	await wait(50);
+
+	let log = browser.sessionData.neat_url_log;
+	assert.strictEqual(log.length, 2);
+	assert.strictEqual(log[0].cleaned, "https://www.paypal.com/paypalme/Smile4ever/10");
+	assert.strictEqual(log[1].url, "https://example.com/?fbclid=a&x=1");
+	assert.strictEqual(log[1].cleaned, "https://example.com/?x=1");
+	assert.strictEqual(log[1].type, "main_frame");
 });

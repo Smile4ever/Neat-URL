@@ -60,6 +60,21 @@ async function launchChrome(){
 		},
 		clearRedirects: () => worker.evaluate("e2eRedirects.length = 0"),
 		redirects: () => worker.evaluate("e2eRedirects"),
+		// The log page shows the cleaned URLs, with the removed parameters struck through
+		logPage: async () => {
+			let page = await browser.newPage();
+			let errors = [];
+			page.on("pageerror", (error) => errors.push(error.message));
+			await page.goto(`chrome-extension://${id}/log.html`);
+			await wait(500);
+			let result = await page.evaluate(`({
+				rows: document.querySelectorAll("#log tbody tr").length,
+				removed: document.querySelectorAll("#log del").length,
+				paypal: Array.from(document.querySelectorAll(".cleaned")).some((n) => n.textContent.endsWith("/paypalme/Smile4ever/10"))
+			})`);
+			await page.close();
+			return Object.assign(result, { errors });
+		},
 		counted: async () => {
 			let badge = await options.evaluate(`chrome.storage.session.get("neat_url_badge")`);
 			return Object.values(badge.neat_url_badge || {}).reduce((a, b) => a + b, 0);
@@ -177,6 +192,13 @@ async function run(name){
 		}
 
 		if("change links in page".includes(ONLY)) failures += await testLinksInPage(driver, page);
+
+		if(driver.logPage && ONLY == ""){
+			let log = await driver.logPage();
+			let ok = log.rows > 0 && log.removed > 0 && log.paypal && log.errors.length == 0;
+			if(!ok) failures++;
+			console.log(`${ok ? "ok  " : "FAIL"} log page: ${log.rows} URLs, ${log.removed} removed parameters marked${log.errors.length ? ", errors: " + log.errors.join("; ") : ""}`);
+		}
 
 		if(driver.optionsErrors && driver.optionsErrors.length > 0) failures++;
 		if(driver.counted){

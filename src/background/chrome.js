@@ -88,10 +88,12 @@
 		background.ensureState().then((state) => {
 			if(!state.enabled || !state.types.includes(details.type)) return;
 			// Internal redirects are also used by other extensions and HSTS: only count the ones Neat URL would do
-			if(NeatURL.clean.cleanUrl(details.url, state.config) == details.url) return;
+			let cleaned = NeatURL.clean.cleanUrl(details.url, state.config);
+			if(cleaned == details.url) return;
 			// Counted by the fallback in onBeforeRequest
 			if(details.type == "main_frame" && usesFallback(details.url, state)) return;
-			background.reportCleaned(details, details.redirectUrl);
+			// Only the first redirect of the chain is reported; the rules end with the same URL as cleanUrl
+			background.reportCleaned(details, cleaned);
 		});
 	}, { urls: ["<all_urls>"] });
 

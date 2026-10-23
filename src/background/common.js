@@ -10,6 +10,8 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	const PREF_KEYS = Object.keys(NeatURL.defaults.PREFS);
 	const ENABLED_KEY = "neat_url_enabled"; // runtime toggle of the toolbar button, reset on browser start
 	const BADGE_KEY = "neat_url_badge"; // counts per tab, in storage.session
+	const LOG_KEY = "neat_url_log"; // the last cleaned URLs for log.html, in storage.session (memory only)
+	const LOG_SIZE = 500;
 
 	let version = browser.runtime.getManifest().version;
 	let state = null; // { prefs, config, types, enabled }
@@ -174,8 +176,20 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	}
 
 	// Called by the platform code when a URL was cleaned
+	/// Log for log.html. storage.session is kept in memory and survives a suspended background.
+	let logQueue = Promise.resolve();
+
+	function addLogEntry(entry){
+		logQueue = logQueue.then(async () => {
+			let result = await browser.storage.session.get(LOG_KEY);
+			let entries = (result[LOG_KEY] || []).concat(entry).slice(-LOG_SIZE);
+			await browser.storage.session.set({ [LOG_KEY]: entries });
+		}).catch((error) => console.error("[Neat URL]: could not update the log", error));
+	}
+
 	function reportCleaned(details, newUrl){
 		log(`(type ${details.type}): '${details.url}' has been changed to '${newUrl}'`);
+		addLogEntry({ time: Date.now(), type: details.type, tabId: details.tabId, url: details.url, cleaned: newUrl });
 		animateToolbarIcon();
 		if(state.prefs.neat_url_show_counter) incrementBadgeValue(details.tabId);
 	}
@@ -209,11 +223,13 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	function createContextMenus(){
 		browser.contextMenus.removeAll().then(() => {
 			browser.contextMenus.create({ id: "neaturl-tb-preferences", title: "Preferences", contexts: ["action"] });
+			browser.contextMenus.create({ id: "neaturl-tb-log", title: browser.i18n.getMessage("show_log"), contexts: ["action"] });
 		});
 	}
 
 	browser.contextMenus.onClicked.addListener((info) => {
 		if(info.menuItemId == "neaturl-tb-preferences") browser.runtime.openOptionsPage();
+		if(info.menuItemId == "neaturl-tb-log") browser.tabs.create({ url: browser.runtime.getURL("log.html") });
 	});
 
 	/// Notifications

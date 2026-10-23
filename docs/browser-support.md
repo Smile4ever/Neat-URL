@@ -40,6 +40,7 @@ Neat URL 7 is a Manifest V3 extension for Firefox and Chrome. Both versions use 
 | Icon animation | ✅ | ✅ | |
 | Icon theme | ✅ | ✅ | |
 | Enable/disable with the toolbar button | ✅ | ✅ | Neat URL is enabled again after a browser restart. |
+| Log page (the last 500 cleaned URLs) | ✅ | ✅ | In the menu of the toolbar button and on the options page. Kept in memory only. |
 | Logging to the console | ✅ | ⚠️ | [5] |
 | Import and export of the preferences | ✅ | ✅ | |
 | Links to addons.mozilla.org | ⚠️ | — | [6] |
@@ -59,7 +60,7 @@ Neat URL 7 is a Manifest V3 extension for Firefox and Chrome. Both versions use 
 
 4. **URL request types in Chrome.** Chrome knows fewer request types. Firefox-only types are mapped: `imageset` → `image`, `beacon` → `ping`, `object_subrequest` → `object`, and `xslt`, `xml_dtd`, `web_manifest` → `other`. Unknown types are ignored. In Firefox, Neat URL checks the type itself.
 
-5. **Logging in Chrome.** The log is in the console of the service worker (`chrome://extensions` → Neat URL → "service worker"). It shows each cleaned navigation with the URL after the first internal redirect, plus the number of active rules after every change of the preferences.
+5. **Logging to the console in Chrome.** The log page works the same in both browsers. The console log is in the console of the service worker (`chrome://extensions` → Neat URL → "service worker"). It shows each cleaned navigation with the URL after the first internal redirect, plus the number of active rules after every change of the preferences.
 
 6. **Restricted sites.** Browsers don't let extensions change requests to their own add-on stores. In Firefox, Neat URL works around this for addons.mozilla.org: it updates the tab with the clean URL after the page has started loading. To clean other Mozilla domains, change `extensions.webextensions.restrictedDomains` in `about:config`. Chrome has no such workaround for the Chrome Web Store.
 

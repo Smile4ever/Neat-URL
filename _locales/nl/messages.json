@@ -149,5 +149,32 @@
   },
   "import_failed": {
     "message": "Dit bestand bevat geen voorkeuren van Neat URL."
+  },
+  "show_log": {
+    "message": "Log"
+  },
+  "show_log_link": {
+    "message": "Log van opgeschoonde URL's tonen"
+  },
+  "log_descr": {
+    "message": "De laatste URL's die Neat URL heeft opgeschoond. De log staat alleen in het geheugen en is leeg na een herstart van de browser."
+  },
+  "log_filter": {
+    "message": "Filter"
+  },
+  "log_clear": {
+    "message": "Wissen"
+  },
+  "log_empty": {
+    "message": "Er zijn nog geen URL's opgeschoond."
+  },
+  "log_column_time": {
+    "message": "Tijd"
+  },
+  "log_column_type": {
+    "message": "Type"
+  },
+  "log_column_url": {
+    "message": "URL"
   }
 }
