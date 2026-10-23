@@ -7,6 +7,15 @@ npm install --ignore-scripts                     # Puppeteer, only needed for th
 npx puppeteer browsers install chrome firefox    # Chrome for Testing and Firefox for the end-to-end tests
 ```
 
+## Load without a build
+
+`manifest.json` in the repository works in both browsers, so you can load the repository itself and reload it after every change:
+
+* Firefox: `about:debugging` → This Firefox → Load Temporary Add-on → `manifest.json` in the repository
+* Chrome: `chrome://extensions` → Developer mode → Load unpacked → the repository folder
+
+Each browser uses its own background (Firefox `background.scripts`, Chrome `background.service_worker`) and shows warnings for the keys and permissions of the other browser. That is expected; the builds for the stores don't have these warnings.
+
 ## Build
 
 ```sh
@@ -14,7 +23,7 @@ npm run build        # dist/firefox and dist/chrome
 npm run build:zip    # also web-ext-artifacts/neat_url-<version>.<browser>.zip
 ```
 
-The manifest is made from `manifests/base.json` plus `manifests/firefox.json` or `manifests/chrome.json`. Change the version in `manifests/base.json`.
+The build copies only the files that one browser needs, and removes the manifest keys and permissions of the other browser. The version is in `manifest.json`.
 
 To try a build:
 
@@ -59,7 +68,7 @@ Texts are in `_locales/<language>/messages.json`. English (`en`) is the default.
 
 ## Release checklist
 
-1. Update the version in `manifests/base.json` and `CHANGELOG.md`.
+1. Update the version in `manifest.json` and `CHANGELOG.md`.
 2. `npm test`, `npm run test:e2e` and `npm run lint:firefox` pass.
 3. Manual check in Firefox:
    * fresh install, then a link with `utm_source` and `fbclid`

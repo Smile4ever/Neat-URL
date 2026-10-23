@@ -17,7 +17,7 @@ src/background/
   chrome-sw.js                service worker entry point (importScripts)
 src/content/
   links.js                    option "Change links in page"
-manifests/                    base.json + firefox.json / chrome.json, merged by scripts/build.js
+manifest.json                 works in both browsers; scripts/build.js makes one per browser
 options.html, options.js      options page (shared)
 data/                         default parameters, public suffixes
 ```

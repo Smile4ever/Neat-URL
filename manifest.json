@@ -14,7 +14,9 @@
 		"notifications",
 		"contextMenus",
 		"tabs",
-		"webRequest"
+		"webRequest",
+		"webRequestBlocking",
+		"declarativeNetRequestWithHostAccess"
 	],
 	"host_permissions": [
 		"<all_urls>"
@@ -39,5 +41,29 @@
 			],
 			"run_at": "document_start"
 		}
-	]
+	],
+	"background": {
+		"scripts": [
+			"src/core/defaults.js",
+			"src/core/domain.js",
+			"src/core/params.js",
+			"src/core/clean.js",
+			"src/core/migrate.js",
+			"src/background/common.js",
+			"src/background/firefox.js"
+		],
+		"service_worker": "src/background/chrome-sw.js"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "neaturl@hugsmile.eu",
+			"strict_min_version": "140.0",
+			"data_collection_permissions": {
+				"required": [
+					"none"
+				]
+			}
+		}
+	},
+	"minimum_chrome_version": "121"
 }

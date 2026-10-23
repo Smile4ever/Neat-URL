@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: |
         npm run build:zip
-        echo "VERSION=$(node -p "require('./manifests/base.json').version")" >> "$GITHUB_ENV"
+        echo "VERSION=$(node -p "require('./manifest.json').version")" >> "$GITHUB_ENV"
     - name: Upload
       uses: actions/upload-artifact@v4
       with:

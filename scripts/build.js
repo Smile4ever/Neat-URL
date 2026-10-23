@@ -1,6 +1,9 @@
 // Builds Neat URL for Firefox and Chrome.
 // Usage: node scripts/build.js [firefox] [chrome] [--zip]
 // Output: dist/<target>/ (load this folder in the browser) and with --zip web-ext-artifacts/neat_url-<version>.<target>.zip
+//
+// manifest.json in the repository works in both browsers, so the repository can be loaded without a build.
+// A build only keeps the files and manifest keys that one browser needs.
 "use strict";
 const fs = require("fs");
 const path = require("path");
@@ -15,23 +18,26 @@ const COMMON_FILES = [
 ];
 
 const TARGETS = {
-	firefox: ["src/background/firefox.js"],
-	chrome: ["src/core/dnr.js", "src/background/chrome.js", "src/background/chrome-sw.js"]
+	firefox: {
+		files: ["src/background/firefox.js"],
+		manifest: (manifest) => {
+			delete manifest.background.service_worker;
+			delete manifest.minimum_chrome_version;
+			manifest.permissions = manifest.permissions.filter((permission) => permission != "declarativeNetRequestWithHostAccess");
+		}
+	},
+	chrome: {
+		files: ["src/core/dnr.js", "src/background/chrome.js", "src/background/chrome-sw.js"],
+		manifest: (manifest) => {
+			delete manifest.background.scripts;
+			delete manifest.browser_specific_settings;
+			manifest.permissions = manifest.permissions.filter((permission) => permission != "webRequestBlocking");
+		}
+	}
 };
 
 function readJson(file){
 	return JSON.parse(fs.readFileSync(path.join(ROOT, file), "utf8"));
-}
-
-// Objects are merged, arrays are concatenated
-function merge(base, extra){
-	let result = Object.assign({}, base);
-	for(let key of Object.keys(extra)){
-		if(Array.isArray(base[key]) && Array.isArray(extra[key])) result[key] = Array.from(new Set(base[key].concat(extra[key])));
-		else if(typeof base[key] == "object" && typeof extra[key] == "object") result[key] = merge(base[key], extra[key]);
-		else result[key] = extra[key];
-	}
-	return result;
 }
 
 function copy(relative, outDir){
@@ -126,9 +132,10 @@ function build(target, zip){
 	fs.rmSync(outDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
 	fs.mkdirSync(outDir, { recursive: true });
 
-	for(let file of COMMON_FILES.concat(TARGETS[target])) copy(file, outDir);
+	for(let file of COMMON_FILES.concat(TARGETS[target].files)) copy(file, outDir);
 
-	let manifest = merge(readJson("manifests/base.json"), readJson("manifests/" + target + ".json"));
+	let manifest = readJson("manifest.json");
+	TARGETS[target].manifest(manifest);
 	fs.writeFileSync(path.join(outDir, "manifest.json"), JSON.stringify(manifest, null, "\t") + "\n");
 
 	console.log("Built Neat URL " + manifest.version + " for " + target + ": " + path.relative(ROOT, outDir));

@@ -7,7 +7,7 @@ const path = require("path");
 const vm = require("vm");
 const { ROOT } = require("./helpers.js");
 
-const SCRIPTS = JSON.parse(fs.readFileSync(path.join(ROOT, "manifests/firefox.json"), "utf8")).background.scripts;
+const SCRIPTS = JSON.parse(fs.readFileSync(path.join(ROOT, "manifest.json"), "utf8")).background.scripts;
 
 function event(){
 	let listeners = [];
