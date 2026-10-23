@@ -11,18 +11,31 @@ function element(tag, className, text){
 	return node;
 }
 
-// "a=1&b=2" with the parts that are not in kept marked as removed
+// "?a=1&b=2" with everything that is not in kept marked as removed: the parameters,
+// the & between them, and the ? (or #) itself when no parameter is left
 function appendParts(parent, separator, original, kept){
 	let remaining = kept == "" ? [] : kept.split("&");
-	parent.appendChild(document.createTextNode(separator));
-	original.split("&").forEach((part, index) => {
-		if(index > 0) parent.appendChild(document.createTextNode("&"));
+	let parts = original.split("&");
+	let isKept = parts.map((part) => {
 		let found = remaining.indexOf(part);
-		if(found > -1){
-			remaining.splice(found, 1);
+		if(found < 0) return false;
+		remaining.splice(found, 1);
+		return true;
+	});
+
+	let anyKept = isKept.includes(true);
+	parent.appendChild(anyKept ? document.createTextNode(separator) : element("del", null, separator));
+
+	let keptSoFar = 0;
+	parts.forEach((part, index) => {
+		let ampersand = index > 0 ? "&" : "";
+		if(isKept[index]){
+			// The & before the first kept parameter belongs to the removed parameters before it
+			if(ampersand) parent.appendChild(keptSoFar > 0 ? document.createTextNode(ampersand) : element("del", null, ampersand));
 			parent.appendChild(document.createTextNode(part));
+			keptSoFar++;
 		}else{
-			parent.appendChild(element("del", null, part));
+			parent.appendChild(element("del", null, ampersand + part));
 		}
 	});
 }
