@@ -1,3 +1,49 @@
+7.0.0 (unreleased)
+=====
+* 6.0.0 and 6.1.0 were never officially released, so this contains all their changes (see below)
+* Manifest V3 for Firefox and Chrome, fixes #291 (Chrome MV3) and #303 (Chromium)
+    * Firefox 140 or newer: URLs are still cleaned with a blocking webRequest listener
+    * Chrome 121 or newer: URLs are cleaned with declarativeNetRequest rules
+    * Supported features per browser: see docs/browser-support.md
+    * Firefox: the options page shows a button when Neat URL has no access to all websites
+    * Tested with Firefox 140 ESR, 153 and 158 (#316) and Chrome 156
+* New feature: keep signed URLs (sig, hmac, ...signature), fixes #314 and #315. On by default.
+* New feature: clean URLs inside parameters, up to three levels deep (?url=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dx). Off by default.
+* New feature: parameters with a value, for example ref=share@amazon.com, fixes #183
+* New feature: import and export of the preferences, fixes #175 and #301
+* New feature: wildcards in the domain blacklist (archive.*, *.archive.*), fixes #286
+* New feature: header lines ("Name:") in the parameter lists, fixes #285
+* Change links in page: also cleans links that the page adds later, when they are used
+
+* Updated default parameters
+    * Removed assetId, assetType, campaignId, recipientId and siteId (Oracle Eloqua): too generic, fixes #299
+    * Fixed ws_ab_test@*.aliexpress.com (the @ was missing)
+    * cid was already removed in 6.0.0, which also fixes #307 and #308 (Google sign-in)
+    * wt_zmc is removed from PDF links too (from TODO.md)
+
+* Bugs fixed
+    * Wildcard parameters such as utm_* were only partly removed (every second parameter was skipped), fixes #223 and #297
+    * An exclusion (!sc_itemid) didn't work against a wildcard (sc_*), fixes #157
+    * *.L3-domain.example.com didn't match L4-domain.L3-domain.example.com, fixes #143
+    * t@www.youtube.com didn't work (a domain with www), fixes #262
+    * A parameter without a value got a trailing =, fixes #147
+    * The upgrade of the preferences ran on every start and removed custom parameters such as utm_source@example.com
+    * Requests right after the browser starts (restored tabs) could fail while the preferences were loading
+    * The toolbar button didn't work after saving the preferences
+    * A root and suffix wildcard domain (*.aliexpress.*) didn't match subdomains like nl.aliexpress.com
+    * Default parameters that were removed in Neat URL 4 no longer come back (they are added to the override list, or excluded if a wildcard covers them)
+    * Suffix wildcards on short domains (x.*) didn't match
+    * The domain blacklist matched parts of domain names (ample.com also excluded example.com)
+    * Other parameters keep their encoding
+    * Errors on the options page, and labels that pointed to the wrong option
+    * "browser is not defined" in the content script on Chromium browsers (#269)
+    * The upgrade from 5.0 or 6.x keeps the lines and headers of your parameter list
+
+* Changes
+    * Removed browser-polyfill and build.sh: build with npm run build, test with npm test and npm run test:e2e
+    * Documentation in docs/ (browser support, architecture, development)
+    * Translations for the new texts in all languages
+
 6.1.0 (2024-09-?)
 ==================
 * Since 6.0.0 was never officially released, this contains all changes from 6.0.0 and more

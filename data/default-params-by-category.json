@@ -1,7 +1,7 @@
 {
     "categories": [
         { "name": "Action Map", "params": ["action_object_map", "action_ref_map", "action_type_map"]},
-        { "name": "AliExpress.com", "params": ["aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.com", "btsid@*.aliexpress.com", "expid@*.aliexpress.com", "initiative_id@*.aliexpress.com", "scm_id@*.aliexpress.com", "spm@*.aliexpress.com", "ws_ab_test*.aliexpress.com"]},
+        { "name": "AliExpress.com", "params": ["aff_platform", "aff_trace_key", "algo_expid@*.aliexpress.*", "algo_pvid@*.aliexpress.com", "btsid@*.aliexpress.com", "expid@*.aliexpress.com", "initiative_id@*.aliexpress.com", "scm_id@*.aliexpress.com", "spm@*.aliexpress.com", "ws_ab_test@*.aliexpress.com"]},
         { "name": "Amazon", "params": ["_encoding@amazon.*", "ascsubtag@amazon.*", "pd_rd_*@amazon.*", "pf@amazon.*", "pf_rd_*@amazon.*", "psc@amazon.*", "ref_@amazon.*", "tag@amazon.*"]},
         { "name": "Bilibili.com", "params": ["callback@bilibili.com"]},
         { "name": "Bing", "params": ["cvid@bing.com", "form@bing.com", "pq@bing.com", "qs@bing.com", "sc@bing.com", "sk@bing.com", "sp@bing.com"]},
@@ -16,7 +16,7 @@
         { "name": "Campaign tracking (IBM Acoustic Campaign)", "params": ["spJobID", "spMailingID", "spReportId", "spUserID"]},
         { "name": "Campaign tracking (itm)", "params": ["itm_*"], "docs": "https://www.parse.ly/help/post/4843/campaign-data-tracking/"},
         { "name": "Campaign tracking (Omniture)", "params": ["s_cid"], "docs": "https://moz.com/community/q/omniture-tracking-code-urls-creating-duplicate-content"},
-        { "name": "Campaign tracking (Oracle Eloqua)", "params": ["assetId", "assetType", "campaignId", "elqTrack", "elqTrackId", "recipientId", "siteId"]},
+        { "name": "Campaign tracking (Oracle Eloqua)", "params": ["elqTrack", "elqTrackId"]},
         { "name": "Campaign tracking (MailChimp)", "params": ["mc_cid", "mc_eid"], "docs": "https://www.learndigitaladvertising.com/solved-why-how-to-remove-mc_cid-and-mc_eid-from-google-analytics/"},
         { "name": "Campaign tracking (Matomo/Piwik)", "params": ["mtm_*", "pk_*"]},
         { "name": "Campaign tracking (ns)", "params": ["ns_*"]},

@@ -113,5 +113,41 @@
   },
   "change_links_in_page_descr": {
     "message": "ページを読み込む時に、ブロックされたパラメータを全てのリンクから削除します"
+  },
+  "host_permission_missing": {
+    "message": "URL をクリーンにするには、Neat URL にすべてのウェブサイトへのアクセスを許可する必要があります。"
+  },
+  "host_permission_grant": {
+    "message": "アクセスを許可"
+  },
+  "clean_nested": {
+    "message": "パラメーター内の URL をクリーンにする"
+  },
+  "clean_nested_descr": {
+    "message": "パラメーターの値になっている URL もクリーンにします（例: ?url=https://example.com/?utm_source=x）。一部のウェブサイトはそのようなリンクが変更されていないか確認するため、既定ではオフです。"
+  },
+  "keep_signed_urls": {
+    "message": "署名付き URL を変更しない"
+  },
+  "keep_signed_urls_descr": {
+    "message": "署名パラメーター（sig、hmac、または signature で終わる名前）を含む URL は変更しません。変更するとダウンロードやリンクが使えなくなります。"
+  },
+  "import_export": {
+    "message": "インポートとエクスポート"
+  },
+  "import_export_descr": {
+    "message": "すべての設定をファイルに保存するか、ファイルから読み込みます。"
+  },
+  "export_settings": {
+    "message": "エクスポート"
+  },
+  "import_settings": {
+    "message": "インポート"
+  },
+  "import_done": {
+    "message": "設定をインポートしました。"
+  },
+  "import_failed": {
+    "message": "このファイルには Neat URL の設定が含まれていません。"
   }
 }

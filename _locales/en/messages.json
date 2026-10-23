@@ -113,5 +113,41 @@
   },
   "change_links_in_page_descr": {
     "message": "Remove blocked parameters from all links when loading a page"
+  },
+  "host_permission_missing": {
+    "message": "Neat URL needs access to all websites to clean URLs."
+  },
+  "host_permission_grant": {
+    "message": "Allow access"
+  },
+  "clean_nested": {
+    "message": "Clean URLs inside parameters"
+  },
+  "clean_nested_descr": {
+    "message": "Also clean a URL that is the value of a parameter, for example ?url=https://example.com/?utm_source=x. This is off by default, because some websites check that such a link was not changed."
+  },
+  "keep_signed_urls": {
+    "message": "Keep signed URLs"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Don't change URLs with a signature parameter (sig, hmac or a name that ends with signature). Changing them breaks downloads and links."
+  },
+  "import_export": {
+    "message": "Import and export"
+  },
+  "import_export_descr": {
+    "message": "Save all preferences to a file, or load them from a file."
+  },
+  "export_settings": {
+    "message": "Export"
+  },
+  "import_settings": {
+    "message": "Import"
+  },
+  "import_done": {
+    "message": "Preferences imported."
+  },
+  "import_failed": {
+    "message": "This file doesn't contain Neat URL preferences."
   }
 }

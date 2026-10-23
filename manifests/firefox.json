@@ -1,0 +1,23 @@
+{
+	"background": {
+		"scripts": [
+			"src/core/defaults.js",
+			"src/core/domain.js",
+			"src/core/params.js",
+			"src/core/clean.js",
+			"src/core/migrate.js",
+			"src/background/common.js",
+			"src/background/firefox.js"
+		]
+	},
+	"permissions": ["webRequestBlocking"],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "neaturl@hugsmile.eu",
+			"strict_min_version": "140.0",
+			"data_collection_permissions": {
+				"required": ["none"]
+			}
+		}
+	}
+}

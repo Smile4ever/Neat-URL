@@ -1,61 +1,7 @@
-const PREFS = {
-	"neat_url_override_default_blocked_params": {
-		"type": "value",
-		"default": ""
-	},
-	"neat_url_blocked_params": {
-		"type": "value",
-		"default": ""
-	},
-	"neat_url_icon_animation": {
-		"type": "value",
-		"default": "missing_underscore"
-	},
-	"neat_url_icon_theme": {
-		"type": "value",
-		"default": "dark"
-	},
-	"neat_url_show_counter": {
-		"type": "checked",
-		"default": true
-	},
-	"neat_url_counter_color": {
-		"type": "value",
-		"default": "#eeeeee"
-	},
-	"neat_url_logging": {
-		"type": "checked",
-		"default": false
-	},
-	"neat_url_blacklist": {
-		"type": "value",
-		"default": ""
-	},
-	"neat_url_types": {
-		"type": "value",
-		"default": "main_frame"
-	},
-	"neat_url_counter_default_color": {
-		"type": "checked",
-		"default": true
-	},
-	"neat_url_change_links_in_page": {
-		"type": "checked",
-		"default": false
-	}
-};
-var lastWidth = 0;
-var rendered = false;
+globalThis.browser = globalThis.browser || globalThis.chrome;
 
-function getClean(text){
-	let clean = text.split(",");
-
-	for(let i = 0; i < clean.length; i++){
-		clean[i] = clean[i].trim();
-	}
-
-	return clean;
-}
+const PREFS = NeatURL.defaults.PREFS;
+const ALL_URLS = { origins: ["<all_urls>"] };
 
 async function saveOptions() {
 	const values = {};
@@ -63,113 +9,117 @@ async function saveOptions() {
 		values[p] = document.querySelector("#"+p)[PREFS[p].type];
 	}
 
+	// The background reloads its state through storage.onChanged
 	await browser.storage.local.set(values);
-	browser.runtime.sendMessage({action: "refresh-options"});
+	browser.runtime.sendMessage({action: "notify", data: browser.i18n.getMessage("notify_preferences_saved")}).catch(() => {});
+}
 
-	setTimeout(function(){
-		browser.runtime.sendMessage({action: "notify", data: browser.i18n.getMessage("notify_preferences_saved")});
-	}, 10);
+async function getPreferences() {
+	let result = await browser.storage.local.get(Object.keys(PREFS));
+	let values = {};
+	for(let p in PREFS) {
+		values[p] = p in result ? result[p] : PREFS[p].default;
+	}
+	return values;
 }
 
 async function restoreOptions() {
 	// Default blocked parameters
-	let response = await fetch('data/default-params-by-category.json').catch(console.error);
+	let response = await fetch('data/default-params-by-category.json');
 	let jsonParams = await response.json();
 	let categories = jsonParams.categories;
 	let lines = categories.map(cat => cat.name + ":\n" + cat.params.join(', '));
 	document.getElementById("neat_url_default_blocked_params")["value"] = lines.join("\n\n");
-	
-	// Restore preferences
-	let result = await browser.storage.local.get(Object.keys(PREFS)).catch(console.error);
-	let val;
-	for(let p in PREFS) {
-		if(p in result) {
-			val = result[p];
-		}
-		else {
-			val = PREFS[p].default;
-		}
 
-		console.log("options.js val restored for " + p + " is", val);
-		document.getElementById(p)[PREFS[p].type] = val;
+	// Restore preferences
+	let values = await getPreferences();
+	for(let p in PREFS) {
+		document.getElementById(p)[PREFS[p].type] = values[p];
 	}
 
 	hideOrShow();
 }
 
-document.querySelector("#neat_url_counter_default_color").addEventListener("change", function() {
-	hideOrShow();	
-});
-
 function hideOrShow(){
 	let checked = document.querySelector("#neat_url_counter_default_color").checked;
+	document.querySelector("#counter_color_element").style.display = checked ? "none" : "unset";
+}
 
-	if(checked) document.querySelector("#counter_color_element").style.display = "none";
-	else document.querySelector("#counter_color_element").style.display = "unset";
+/// Import and export
+async function exportSettings() {
+	let data = {
+		"format": "neat-url-settings",
+		"version": browser.runtime.getManifest().version,
+		"preferences": await getPreferences()
+	};
+
+	let blob = new Blob([JSON.stringify(data, null, "\t")], { type: "application/json" });
+	let link = document.createElement("a");
+	link.href = URL.createObjectURL(blob);
+	link.download = "neat-url-settings.json";
+	link.click();
+	setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+// Only known preferences with the right type are imported
+function getImportValues(data) {
+	let preferences = data && data.preferences ? data.preferences : data;
+	if(preferences == null || typeof preferences != "object") return null;
+
+	let values = {};
+	for(let p in PREFS) {
+		if(!(p in preferences)) continue;
+		let expected = PREFS[p].type == "checked" ? "boolean" : "string";
+		if(typeof preferences[p] == expected) values[p] = preferences[p];
+	}
+	return Object.keys(values).length > 0 ? values : null;
+}
+
+async function importSettings(file) {
+	let status = document.querySelector("#import_status");
+	try{
+		let values = getImportValues(JSON.parse(await file.text()));
+		if(values == null) throw new Error("no preferences in " + file.name);
+
+		await browser.storage.local.set(values);
+		await restoreOptions();
+		status.textContent = browser.i18n.getMessage("import_done");
+	}catch(error){
+		console.error("[Neat URL]: import failed", error);
+		status.textContent = browser.i18n.getMessage("import_failed");
+	}
+}
+
+// Without access to all websites Neat URL can't clean URLs (in Firefox the user can revoke this)
+async function checkHostPermission() {
+	let banner = document.querySelector(".permissionBanner");
+	let granted = await browser.permissions.contains(ALL_URLS);
+	banner.style.display = granted ? "none" : "flex";
 }
 
 function i18n() {
-	let i18nElements = document.querySelectorAll('[data-i18n]');
+	for(let element of document.querySelectorAll('[data-i18n]')){
+		let id = element.getAttribute("data-i18n");
+		let message = browser.i18n.getMessage(id);
+		if(message == ""){
+			console.error("i18n id " + id + " not found");
+			continue;
+		}
 
-	for(let i in i18nElements){
-		try{
-			if(i18nElements[i].getAttribute == null)
-				continue;
-			i18n_attrib = i18nElements[i].getAttribute("data-i18n");
-			let message = browser.i18n.getMessage(i18n_attrib);
-			if(message.includes("<") && message.includes(">")){
-				i18nElements[i].innerHTML = message;
-			}else{
-				i18nElements[i].textContent = message;
-			}
-		}catch(ex){
-			console.error("i18n id " + IDS[id] + " not found");
+		if(message.includes("<") && message.includes(">")){
+			// Messages can contain links, parse them instead of assigning innerHTML
+			let parsed = new DOMParser().parseFromString(message, "text/html");
+			element.replaceChildren(...parsed.body.childNodes);
+		}else{
+			element.textContent = message;
 		}
 	}
-}
-
-async function init(){
-	render();
-	useCorrectStylesheet();
-	restoreOptions();
-	i18n();
-	document.querySelector("form").style.display = "block";
-	document.querySelector(".refreshOptions").style.display = "none";
-}
-
-function render(){
-	if(rendered === false){
-		return; // do not render again
-	}
-
-	rendered = true;
-
-	let sheet = document.styleSheets[0];
-
-	// https://stackoverflow.com/questions/29927992/remove-css-rules-by-javascript
-	if (sheet.cssRules) {
-		for (let i = 0; i < sheet.cssRules.length; i++) {
-			if (sheet.cssRules[i].selectorText === '.labelbox') {
-				sheet.deleteRule(i);
-			}
-		}
-	}
-
-	let cssRule = ".labelbox{ min-width: " + newWidth + "px;}";
-	sheet.insertRule(cssRule, 1);
-	lastWidth = newWidth;
 }
 
 function useCorrectStylesheet(){
 	let userAgent = navigator.userAgent;
-	let b = "";
-	if(userAgent.includes("Firefox")){
-		b = "firefox";
-	}
-	if(userAgent.includes("Chrome")){
-		b = "chrome";
-	}
-	
+	let b = userAgent.includes("Firefox") ? "firefox" : "chrome";
+
 	let styles = document.createElement('link');
 	styles.rel = "stylesheet";
 	styles.type = "text/css";
@@ -178,6 +128,25 @@ function useCorrectStylesheet(){
 	document.getElementsByTagName('head')[0].appendChild(styles);
 }
 
+function init(){
+	useCorrectStylesheet();
+	restoreOptions().catch(console.error);
+	i18n();
+	checkHostPermission();
+	document.querySelector("form").style.display = "block";
+	document.querySelector(".refreshOptions").style.display = "none";
+}
+
 window.addEventListener("DOMContentLoaded", init, { passive: true });
 document.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); saveOptions(); }, { passive: false });
-window.addEventListener("resize", render);
+document.querySelector("#neat_url_counter_default_color").addEventListener("change", hideOrShow);
+document.querySelector("#grant_host_permission").addEventListener("click", () => {
+	// Must be called directly from the click handler
+	browser.permissions.request(ALL_URLS).then(checkHostPermission);
+});
+document.querySelector("#export_settings").addEventListener("click", () => exportSettings().catch(console.error));
+document.querySelector("#import_settings").addEventListener("click", () => document.querySelector("#import_file").click());
+document.querySelector("#import_file").addEventListener("change", (e) => {
+	if(e.target.files.length > 0) importSettings(e.target.files[0]);
+	e.target.value = "";
+});

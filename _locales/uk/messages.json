@@ -114,5 +114,41 @@
   },
   "change_links_in_page_descr": {
     "message": "Remove blocked parameters from all links when loading a page"
+  },
+  "host_permission_missing": {
+    "message": "Neat URL потрібен доступ до всіх сайтів, щоб очищати URL-адреси."
+  },
+  "host_permission_grant": {
+    "message": "Дозволити доступ"
+  },
+  "clean_nested": {
+    "message": "Очищати URL-адреси всередині параметрів"
+  },
+  "clean_nested_descr": {
+    "message": "Також очищати URL-адресу, яка є значенням параметра, наприклад ?url=https://example.com/?utm_source=x. Типово вимкнено, бо деякі сайти перевіряють, чи таке посилання не змінено."
+  },
+  "keep_signed_urls": {
+    "message": "Не змінювати підписані URL-адреси"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Не змінювати URL-адреси з параметром підпису (sig, hmac або ім'я, що закінчується на signature). Зміна ламає завантаження та посилання."
+  },
+  "import_export": {
+    "message": "Імпорт і експорт"
+  },
+  "import_export_descr": {
+    "message": "Зберегти всі налаштування у файл або завантажити їх із файлу."
+  },
+  "export_settings": {
+    "message": "Експорт"
+  },
+  "import_settings": {
+    "message": "Імпорт"
+  },
+  "import_done": {
+    "message": "Налаштування імпортовано."
+  },
+  "import_failed": {
+    "message": "Цей файл не містить налаштувань Neat URL."
   }
 }

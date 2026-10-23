@@ -5,6 +5,14 @@ Neat URL is a browser extension that cleans URLs, removing parameters such as Go
 [Download for Firefox]: https://addons.mozilla.org/en-US/firefox/addon/neat-url/
 [Download for Chrome]: https://chrome.google.com/webstore/detail/neat-url/jchobbjgibcahbheicfocecmhocglkco
 
+Neat URL 7 requires Firefox 140 or newer, or Chrome 121 or newer. Almost every feature works in both browsers; see [Browser support](docs/browser-support.md) for the differences.
+
+## Documentation
+
+* [Browser support](docs/browser-support.md): which features work in Firefox and Chrome
+* [Architecture](docs/architecture.md): how Neat URL cleans URLs in each browser
+* [Development](docs/development.md): build, test and release
+
 ## Example
 
 Before:
@@ -59,7 +67,20 @@ Parameters can also apply globally (first rule), except for a (wildcard) domain 
 	ref
 	!ref@amazon.co.uk
 
-The excluded domain always takes precedence. Should you include "ref" and "!ref", "!ref" will apply.
+The excluded domain always takes precedence. Should you include "ref" and "!ref", "!ref" will apply. This also works against wildcards: `sc_*, !sc_itemid` removes every `sc_` parameter except `sc_itemid`.
+
+Parameters can be removed only when they have a certain value:
+
+    ref=share@amazon.com (removes ?ref=share, but keeps ?ref=other)
+
+All parameters with a name of a certain length can be removed (for example the random names 1Password adds):
+
+    KEY{11}@example.com
+
+The list can be split into groups with a header line that ends with a colon:
+
+    Tweakers:
+    nb@tweakers.net, u@tweakers.net
 
 Other valid parameters - ending parameters (exceptions to the ? rule):
 
@@ -84,6 +105,14 @@ Invalid parameters:
 | `\|ved` | this is some random string - not supported, it will not work |
 | `/ref@amazon.*$` | dollar sign should be at the beginning |
 | `ref@*` | domain cannot be a wildcard, use ref instead to apply globally |
+
+## Other options
+
+* **Domain blacklist**: Neat URL doesn't change URLs on these domains (and their subdomains). Wildcards work here too: `archive.*` for archive.org, archive.ph and so on, `*.archive.*` also for web.archive.org.
+* **Keep signed URLs** (on by default): URLs with a signature parameter (`sig`, `hmac` or a name that ends with `signature`, like `X-Amz-Signature`) are not changed, because the server rejects them after any change.
+* **Clean URLs inside parameters** (off by default): also clean a URL that is the value of a parameter, for example `https://example.com/?url=https%3A%2F%2Fexample.org%2F%3Futm_source%3Dx` becomes `https://example.com/?url=https%3A%2F%2Fexample.org%2F`. Some sites check that such a link was not changed (for example login redirects), so this is off by default.
+* **Change links in page** (off by default): also clean the links in a page, so a copied link is clean too.
+* **Import and export**: save all preferences to a file, or load them from a file.
 
 ## Recommended parameters
 Parameters meant for the general public are included as default blocked parameters. You can add your own parameters for specific websites that are not (yet) supported by default. Parameters with only one or two letters will never be included in Neat URL by default, unless they can be given a domain.
@@ -133,6 +162,10 @@ Other parameters you can consider (website unknown)
 ## Help, it does not work!
 * Have you checked that the syntax you are using is valid?
 * WebExtensions (like Neat URL) aren't allow to work on several Mozilla domains. This is a security feature. To allow all WebExtensions to work on these websites, you need to edit extensions.webextensions.restrictedDomains in about:config.
+* A website doesn't work any more? Add the parameter to the override list (for a default parameter), add an exclusion like `!param@example.com`, or add the domain to the domain blacklist.
+* Firefox: check that Neat URL has access to all websites (Add-ons → Neat URL → Permissions). The options page shows a button when access is missing.
+* Enable logging in the options to see which URLs are changed. In Chrome the log is in the console of the service worker (chrome://extensions → Neat URL → service worker).
+* A hash that changes without loading a page (for example a link to #section on the same page) can't be cleaned. See [Browser support](docs/browser-support.md).
 
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).

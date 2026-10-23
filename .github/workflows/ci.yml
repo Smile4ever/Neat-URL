@@ -12,16 +12,22 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: "lts/*"
+        cache: npm
+    - name: Install
+      run: npm ci --ignore-scripts
+    - name: Test
+      run: npm test
     - name: Build
       run: |
-        npm install web-ext
-        npm run build:neat-url
+        npm run build:zip
+        echo "VERSION=$(node -p "require('./manifests/base.json').version")" >> "$GITHUB_ENV"
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        path: web-ext-artifacts/neat_url-5.0.0.zip
+        name: neat-url-${{ env.VERSION }}
+        path: web-ext-artifacts/neat_url-${{ env.VERSION }}.*.zip

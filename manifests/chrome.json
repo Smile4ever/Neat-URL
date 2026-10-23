@@ -1,0 +1,7 @@
+{
+	"background": {
+		"service_worker": "src/background/chrome-sw.js"
+	},
+	"permissions": ["declarativeNetRequestWithHostAccess"],
+	"minimum_chrome_version": "121"
+}

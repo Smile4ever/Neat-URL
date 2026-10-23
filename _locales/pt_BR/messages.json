@@ -113,5 +113,41 @@
   },
   "change_links_in_page_descr": {
     "message": "Remover parâmetros bloqueados de todos os links ao carregar um site"
+  },
+  "host_permission_missing": {
+    "message": "O Neat URL precisa de acesso a todos os sites para limpar URLs."
+  },
+  "host_permission_grant": {
+    "message": "Permitir acesso"
+  },
+  "clean_nested": {
+    "message": "Limpar URLs dentro de parâmetros"
+  },
+  "clean_nested_descr": {
+    "message": "Também limpa uma URL que é o valor de um parâmetro, por exemplo ?url=https://example.com/?utm_source=x. Fica desativado por padrão, porque alguns sites verificam se esse link não foi alterado."
+  },
+  "keep_signed_urls": {
+    "message": "Manter URLs assinadas"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Não altera URLs com um parâmetro de assinatura (sig, hmac ou um nome que termina em signature). Alterá-las quebra downloads e links."
+  },
+  "import_export": {
+    "message": "Importar e exportar"
+  },
+  "import_export_descr": {
+    "message": "Salvar todas as preferências em um arquivo ou carregá-las de um arquivo."
+  },
+  "export_settings": {
+    "message": "Exportar"
+  },
+  "import_settings": {
+    "message": "Importar"
+  },
+  "import_done": {
+    "message": "Preferências importadas."
+  },
+  "import_failed": {
+    "message": "Este arquivo não contém preferências do Neat URL."
   }
 }

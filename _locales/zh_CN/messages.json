@@ -113,5 +113,41 @@
   },
   "change_links_in_page_descr": {
     "message": "Remove blocked parameters from all links when loading a page"
+  },
+  "host_permission_missing": {
+    "message": "Neat URL 需要访问所有网站的权限才能清理网址。"
+  },
+  "host_permission_grant": {
+    "message": "允许访问"
+  },
+  "clean_nested": {
+    "message": "清理参数中的网址"
+  },
+  "clean_nested_descr": {
+    "message": "同时清理作为参数值的网址，例如 ?url=https://example.com/?utm_source=x。默认关闭，因为有些网站会检查此类链接是否被更改。"
+  },
+  "keep_signed_urls": {
+    "message": "保留已签名的网址"
+  },
+  "keep_signed_urls_descr": {
+    "message": "不更改带有签名参数（sig、hmac 或以 signature 结尾的名称）的网址。更改它们会导致下载和链接失效。"
+  },
+  "import_export": {
+    "message": "导入和导出"
+  },
+  "import_export_descr": {
+    "message": "将所有设置保存到文件，或从文件加载设置。"
+  },
+  "export_settings": {
+    "message": "导出"
+  },
+  "import_settings": {
+    "message": "导入"
+  },
+  "import_done": {
+    "message": "设置已导入。"
+  },
+  "import_failed": {
+    "message": "此文件不包含 Neat URL 的设置。"
   }
 }

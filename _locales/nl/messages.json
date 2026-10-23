@@ -113,5 +113,41 @@
   },
   "change_links_in_page_descr": {
     "message": "Remove blocked parameters from all links when loading a page"
+  },
+  "host_permission_missing": {
+    "message": "Neat URL heeft toegang tot alle websites nodig om URL's op te schonen."
+  },
+  "host_permission_grant": {
+    "message": "Toegang verlenen"
+  },
+  "clean_nested": {
+    "message": "URL's in parameters opschonen"
+  },
+  "clean_nested_descr": {
+    "message": "Schoon ook een URL op die de waarde van een parameter is, bijvoorbeeld ?url=https://example.com/?utm_source=x. Dit staat standaard uit, omdat sommige websites controleren of zo'n link niet gewijzigd is."
+  },
+  "keep_signed_urls": {
+    "message": "Ondertekende URL's ongemoeid laten"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Wijzig geen URL's met een handtekeningparameter (sig, hmac of een naam die eindigt op signature). Een wijziging maakt downloads en links onbruikbaar."
+  },
+  "import_export": {
+    "message": "Importeren en exporteren"
+  },
+  "import_export_descr": {
+    "message": "Bewaar alle voorkeuren in een bestand, of laad ze uit een bestand."
+  },
+  "export_settings": {
+    "message": "Exporteren"
+  },
+  "import_settings": {
+    "message": "Importeren"
+  },
+  "import_done": {
+    "message": "Voorkeuren geïmporteerd."
+  },
+  "import_failed": {
+    "message": "Dit bestand bevat geen voorkeuren van Neat URL."
   }
 }
