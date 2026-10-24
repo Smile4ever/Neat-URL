@@ -29,34 +29,60 @@ The Chrome Web Store shows at most 5 screenshots: use 1 to 5. addons.mozilla.org
 
 ## Description for addons.mozilla.org
 
-AMO accepts a few HTML tags (`<b>`, `<i>`, `<code>`, `<a>`, `<ul>`, `<li>`); line breaks are kept.
+AMO uses a limited Markdown (bold, italic, `monospace`, links, lists, blockquotes, code blocks); HTML is shown as plain text. See [Styling your listing page on AMO with Markdown](https://blog.mozilla.org/addons/2025/03/03/markdown/). Put rules with `*` in backticks, otherwise AMO turns them into italic.
 
-```html
-Neat URL removes tracking parameters from the URLs you open, like Google Analytics' <code>utm_source</code>, Facebook's <code>fbclid</code> and Google Ads' <code>gclid</code>. The page loads without them, so the link you bookmark, copy or share is clean too.
+````markdown
+Neat URL removes tracking parameters from the URLs you open, like Google Analytics' `utm_source`, Facebook's `fbclid` and Google Ads' `gclid`. The page loads without them, so the link you bookmark, copy or share is clean too.
 
-<b>Example</b>
+**Example**
+
 Before: https://www.theverge.com/tech/review?utm_source=newsletter&utm_medium=email&utm_campaign=weekly
 After: https://www.theverge.com/tech/review
 
-<b>Features</b>
-<ul><li>170 default parameters, in categories per website and tracking service. Uncheck one to keep it.</li><li><b>Test a URL</b>: paste a URL to see what is removed and which rule removed it. For every parameter that is left, Neat URL suggests a rule; one click adds it.</li><li>Click the toolbar button to test the URL of the current tab.</li><li><b>Log</b>: the last 500 cleaned URLs, with the removed parameters struck through. It is kept in memory only.</li><li>Your own rules: for all websites or one website, with wildcards, exclusions and values (see below).</li><li>A domain blacklist for websites that Neat URL should leave alone.</li><li>Keeps signed URLs (like <code>X-Amz-Signature</code>) unchanged, so downloads keep working.</li><li>Optional: clean the links in a page, and clean URLs inside parameters.</li><li>A counter and an animation on the toolbar button. Right-click it to disable Neat URL until the browser restarts.</li><li>Import and export of your preferences.</li><li>Dark mode, and the options page in 16 languages.</li></ul>
-<b>Rules</b>
-<ul><li><code>utm_source</code>: on every website</li><li><code>nb@tweakers.net</code>: on one website (and <code>www.</code>)</li><li><code>param@*.wired.com</code>: also on every subdomain</li><li><code>param@google.*</code>: on google.com, google.co.uk and so on</li><li><code>utm_*</code>: every parameter that starts with <code>utm_</code></li><li><code>ref=share@amazon.com</code>: only with this value</li><li><code>!ref@amazon.co.uk</code>: keep this parameter on this website (an exclusion always wins)</li><li><code>#?pk_campaign</code>: a parameter after the <code>#</code></li><li><code>$/ref@amazon.*</code>: remove everything after <code>/ref</code> in the path</li></ul>
-Start a line with <code>Name:</code> to group your rules. All rules are explained on <a href="https://github.com/Smile4ever/Neat-URL#parameter-rules">GitHub</a>.
+**Features**
 
-<b>Privacy</b>
+- 170 default parameters, in categories per website and tracking service. Uncheck one to keep it.
+- **Test a URL**: paste a URL to see what is removed and which rule removed it. For every parameter that is left, Neat URL suggests a rule; one click adds it.
+- Click the toolbar button to test the URL of the current tab.
+- **Log**: the last 500 cleaned URLs, with the removed parameters struck through. It is kept in memory only.
+- Your own rules: for all websites or one website, with wildcards, exclusions and values (see below).
+- A domain blacklist for websites that Neat URL should leave alone.
+- Keeps signed URLs (like `X-Amz-Signature`) unchanged, so downloads keep working.
+- Optional: clean the links in a page, and clean URLs inside parameters.
+- A counter and an animation on the toolbar button. Right-click it to disable Neat URL until the browser restarts.
+- Import and export of your preferences.
+- Dark mode, and the options page in 16 languages.
+
+**Rules**
+
+- `utm_source`: on every website
+- `nb@tweakers.net`: on one website (and `www.`)
+- `param@*.wired.com`: also on every subdomain
+- `param@google.*`: on google.com, google.co.uk and so on
+- `utm_*`: every parameter that starts with `utm_`
+- `ref=share@amazon.com`: only with this value
+- `!ref@amazon.co.uk`: keep this parameter on this website (an exclusion always wins)
+- `#?pk_campaign`: a parameter after the `#`
+- `$/ref@amazon.*`: remove everything after `/ref` in the path
+
+Start a line with `Name:` to group your rules. All rules are explained on [GitHub](https://github.com/Smile4ever/Neat-URL#parameter-rules).
+
+**Privacy**
+
 Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs.
 
-<b>Requirements</b>
-Firefox 140 or newer.
+**Requirements**
 
-<b>Bug reports and feature requests</b>
-Open an issue on GitHub: https://github.com/Smile4ever/Neat-URL/issues/new
-On the Log tab, "Save log for a bug report" makes a file with the details that help to solve the problem.
+Firefox 140 or newer, on the desktop or on Android. On Android there is no menu on the toolbar button.
 
-<b>History</b>
+**Bug reports and feature requests**
+
+See the [open issues on GitHub](https://github.com/Smile4ever/Neat-URL/issues) first, or [open a new issue](https://github.com/Smile4ever/Neat-URL/issues/new). On the Log tab, "Save log for a bug report" makes a file with the details that help to solve the problem.
+
+**History**
+
 Neat URL is based on Lean URL.
-```
+````
 
 ## Description for the Chrome Web Store
 
@@ -104,7 +130,8 @@ REQUIREMENTS
 Chrome 121 or newer.
 
 BUG REPORTS AND FEATURE REQUESTS
-Open an issue on GitHub: https://github.com/Smile4ever/Neat-URL/issues/new
+See the open issues on GitHub first: https://github.com/Smile4ever/Neat-URL/issues
+Open a new issue: https://github.com/Smile4ever/Neat-URL/issues/new
 On the Log tab, "Save log for a bug report" makes a file with the details that help to solve the problem.
 
 HISTORY

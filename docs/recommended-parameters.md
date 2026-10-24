@@ -46,3 +46,32 @@ Other parameters you can consider (website unknown)
 * nid
 * ref_
 
+## Suggested in issues
+
+Parameters that people suggested in GitHub issues and that are not a default yet (checked against the defaults of 2026.10.24.1). Until they are, users can add the rule to Blocked parameters themselves.
+
+| Rule | Website | Issue | Note |
+| --- | --- | --- | --- |
+| `igsh@instagram.com` | Instagram | [#310](https://github.com/Smile4ever/Neat-URL/issues/310) | share link of a reel or post |
+| `pp@youtube.com` | YouTube | [#302](https://github.com/Smile4ever/Neat-URL/issues/302) | was used for notification clicks, now contains the search term (base64) |
+| `snr@steamcommunity.com` | Steam | [#309](https://github.com/Smile4ever/Neat-URL/issues/309) | |
+| `maca@dw.com` | DW | [#281](https://github.com/Smile4ever/Neat-URL/issues/281) | |
+| `visit_id@*.bilibili.com` | bilibili | [#296](https://github.com/Smile4ever/Neat-URL/issues/296) | |
+| `usp@*.google.com` | Google Docs, Colab | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | `?usp=sharing` on shared links |
+| `s@*.substack.com` | Substack | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | `?s=r` |
+| `srnd@bloomberg.com` | Bloomberg | [#277](https://github.com/Smile4ever/Neat-URL/issues/277), [#208](https://github.com/Smile4ever/Neat-URL/issues/208) | |
+| `lang@twitter.com`, `lang@x.com` | X (Twitter) | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | the language of the page, not tracking |
+| `hl@google.*` | Google | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | the language of Google, not tracking: not a good default |
+| `client@google.*` | Google | [#215](https://github.com/Smile4ever/Neat-URL/issues/215) | `client=firefox-b-d` is added by Firefox itself |
+| `CMP@theguardian.com` | The Guardian | [#208](https://github.com/Smile4ever/Neat-URL/issues/208) | |
+| `ocid` | MSN and other Microsoft websites | [#208](https://github.com/Smile4ever/Neat-URL/issues/208) | to investigate: which websites, and whether it needs a domain |
+| `gps-id@aliexpress.*`, `scm-url@aliexpress.*`, `pvid@aliexpress.*` | AliExpress | [#239](https://github.com/Smile4ever/Neat-URL/issues/239) | the reporter says AliExpress has changed its parameters since; `scm_id` is already a default |
+| `si@ebay.*`, `item@ebay.*` | eBay | [#135](https://github.com/Smile4ever/Neat-URL/issues/135) | to investigate: `item` may be needed by some pages; `_trksid`, `_trkparms` and `hash` are already defaults |
+| `#?ref@spiegel.de` | Der Spiegel | [#133](https://github.com/Smile4ever/Neat-URL/issues/133) | a parameter after the `#` |
+| `highlight@docs.python.org` | Sphinx documentation | [#279](https://github.com/Smile4ever/Neat-URL/issues/279) | the search term on a Sphinx search result; `highlight` on its own is too generic |
+
+Exclusions that were suggested:
+
+| Rule | Website | Issue | Note |
+| --- | --- | --- | --- |
+| `!campaign_id@paypal.com` | PayPal | [#305](https://github.com/Smile4ever/Neat-URL/issues/305) | `campaign_id` (a default) is needed for donation pages like https://www.paypal.com/donate?campaign_id=... |
