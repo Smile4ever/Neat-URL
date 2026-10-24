@@ -1,6 +1,6 @@
 # Development
 
-Requirements: Node.js 20 or newer. For the end-to-end tests also `openssl` (included with Git for Windows) and the Puppeteer browsers.
+Requirements: Node.js 24 or newer (the version of the CI). For the end-to-end tests also `openssl` (included with Git for Windows) and the Puppeteer browsers.
 
 ```sh
 npm install --ignore-scripts                     # Puppeteer, only needed for the end-to-end tests
