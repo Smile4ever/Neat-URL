@@ -4,6 +4,7 @@
 	const NeatURL = root.NeatURL = root.NeatURL || {};
 	const params = NeatURL.params || require("./params.js");
 	const defaults = NeatURL.defaults || require("./defaults.js");
+	const domain = NeatURL.domain || require("./domain.js");
 
 	function compareVersions(a, b){
 		let pa = String(a).split(".").map((n) => parseInt(n, 10) || 0);
@@ -15,24 +16,75 @@
 		return 0;
 	}
 
-	// Removes items from a comma separated list that may have several lines and header lines ("Name:")
+	// Removes items from a comma separated list that may have several lines, header lines ("Name:") and labels ("Name: a, b")
 	function removeFromListText(text, shouldRemove){
 		let changed = false;
 		let lines = String(text).split(/\r?\n/).map((line) => {
-			if(line.trim().endsWith(":")) return line;
-			let items = line.split(",").map((item) => item.trim()).filter((item) => item != "");
+			let { label, rules } = params.splitLabel(line);
+			let items = rules.split(",").map((item) => item.trim()).filter((item) => item != "");
 			let kept = items.filter((item) => !shouldRemove(item.replace(/\s+/g, "")));
 			if(kept.length == items.length) return line;
 			changed = true;
-			return kept.join(", ");
+			return label + kept.join(", ");
 		});
 		return changed ? lines.join("\n") : text;
 	}
 
+	// Linkumori was published as an update of Neat URL in the Chrome Web Store (same extension ID), so its data
+	// is still in storage.local when Neat URL 2026.10.24 replaces it. PurifyUrlsSettings only exists when Linkumori was installed.
+	const LINKUMORI_KEYS = ["PurifyUrlsSettings", "customRules", "whitelist", "stats", "theme", "firstInstalled",
+		"historyApiProtection", "blockHyperlinkAuditing", "updateBadgeOnOff", "PreventGoogleandyandexscript",
+		"exceptionRules", "exceptionDisabledRules", "disabledExceptionRules", "LinkumoriEngineStart", "updateHyperlinkAuditing"];
+	// A parameter name without the characters that have a meaning in Neat URL rules
+	const PLAIN_PARAM = /^[^\s,@!$#*={}]+$/;
+
+	// Adds items to a list on a new line, skipping items that are already in the list
+	function appendItems(text, items, skip){
+		let existing = params.parseList(text);
+		let added = items.filter((item, index) => !existing.includes(item) && !skip(item) && items.indexOf(item) == index);
+		if(added.length == 0) return text;
+		let before = text == undefined || String(text).trim() == "" ? "" : String(text).replace(/\s+$/, "") + "\n";
+		return before + added.join(", ");
+	}
+
+	// Linkumori rules ({ domain, param } or { domain, params }) and whitelisted domains apply to the domain and its
+	// subdomains (declarativeNetRequest requestDomains), which is *.domain in a parameter rule and a plain domain in the blacklist.
+	// blockedParams and blacklist are the current values. Returns { changes, remove }.
+	function importLinkumori(stored, blockedParams, blacklist, defaultParams){
+		if(stored.PurifyUrlsSettings == undefined) return { changes: {}, remove: [] };
+
+		let changes = {};
+		let isDomain = (value) => typeof value == "string" && domain.parsePattern("*." + value) != null;
+
+		let rules = [];
+		for(let rule of Array.isArray(stored.customRules) ? stored.customRules : []){
+			if(rule == null || !isDomain(rule.domain)) continue;
+			let names = Array.isArray(rule.params) ? rule.params : [rule.param];
+			for(let name of names){
+				if(typeof name == "string" && PLAIN_PARAM.test(name)) rules.push(name + "@*." + rule.domain.trim().toLowerCase());
+			}
+		}
+		let newBlocked = appendItems(blockedParams, rules, (rule) => defaultParams.includes(rule));
+		if(newBlocked != blockedParams) changes.neat_url_blocked_params = newBlocked;
+
+		let domains = (Array.isArray(stored.whitelist) ? stored.whitelist : []).filter(isDomain).map((d) => d.trim().toLowerCase());
+		let newBlacklist = appendItems(blacklist, domains, () => false);
+		if(newBlacklist != blacklist) changes.neat_url_blacklist = newBlacklist;
+
+		return { changes: changes, remove: LINKUMORI_KEYS.filter((key) => stored[key] !== undefined) };
+	}
+
 	// stored: the values from storage.local
 	// defaultParams: the current default blocked parameters (data/default-params-by-category.json)
-	// Returns { changes: {...} } - changes is empty if nothing needs to be stored
+	// Returns { changes: {...}, remove: [...] } - changes is empty if nothing needs to be stored, remove has the keys to remove
 	function migrate(stored, currentVersion, defaultParams){
+		let result = migrateVersion(stored, currentVersion, defaultParams);
+		let current = (key) => result.changes[key] !== undefined ? result.changes[key] : stored[key];
+		let linkumori = importLinkumori(stored, current("neat_url_blocked_params"), current("neat_url_blacklist"), defaultParams);
+		return { changes: Object.assign(result.changes, linkumori.changes), remove: linkumori.remove };
+	}
+
+	function migrateVersion(stored, currentVersion, defaultParams){
 		let changes = {};
 		let previousVersion = stored.neat_url_version;
 
@@ -88,10 +140,14 @@
 			changes.neat_url_counter_default_color = true;
 		}
 
+		// 2026.10.24 has no notifications anymore, so the themes "dark/light icons except for notifications" are just dark or light
+		if(stored.neat_url_icon_theme == "dark_notiflight") changes.neat_url_icon_theme = "dark";
+		if(stored.neat_url_icon_theme == "light_notifdark") changes.neat_url_icon_theme = "light";
+
 		changes.neat_url_version = currentVersion;
 		return { changes: changes };
 	}
 
-	NeatURL.migrate = { migrate, compareVersions };
+	NeatURL.migrate = { migrate, compareVersions, LINKUMORI_KEYS };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.migrate;
 })(globalThis);

@@ -1,6 +1,6 @@
 // Builds Neat URL for Firefox and Chrome.
-// Usage: node scripts/build.js [firefox] [chrome] [--zip]
-// Output: dist/<target>/ (load this folder in the browser) and with --zip web-ext-artifacts/neat_url-<version>.<target>.zip
+// Usage: node scripts/build.js [firefox] [chrome]
+// Output: web-ext-artifacts/neat_url-<version>.<target>.zip, built from dist/<target>/ (also used by the e2e test and web-ext lint)
 //
 // manifest.json in the repository works in both browsers, so the repository can be loaded without a build.
 // A build only keeps the files and manifest keys that one browser needs.
@@ -12,7 +12,7 @@ const zlib = require("zlib");
 const ROOT = path.join(__dirname, "..");
 
 const COMMON_FILES = [
-	"_locales", "css", "data", "icons", "options.html", "options.js", "log.html", "log.js",
+	"_locales", "css", "data", "icons", "options.html", "options.js", "log.js",
 	"src/core/defaults.js", "src/core/domain.js", "src/core/params.js", "src/core/clean.js", "src/core/migrate.js",
 	"src/background/common.js", "src/content/links.js"
 ];
@@ -126,7 +126,7 @@ function writeZip(dir, zipFile){
 	fs.writeFileSync(zipFile, Buffer.concat(localParts.concat(centralParts, [end])));
 }
 
-function build(target, zip){
+function build(target){
 	let outDir = path.join(ROOT, "dist", target);
 	// Retries: sync tools like Dropbox can briefly lock files
 	fs.rmSync(outDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
@@ -140,14 +140,12 @@ function build(target, zip){
 
 	console.log("Built Neat URL " + manifest.version + " for " + target + ": " + path.relative(ROOT, outDir));
 
-	if(zip){
-		let zipFile = path.join(ROOT, "web-ext-artifacts", "neat_url-" + manifest.version + "." + target + ".zip");
-		writeZip(outDir, zipFile);
-		console.log("  " + path.relative(ROOT, zipFile));
-	}
+	let zipFile = path.join(ROOT, "web-ext-artifacts", "neat_url-" + manifest.version + "." + target + ".zip");
+	writeZip(outDir, zipFile);
+	console.log("  " + path.relative(ROOT, zipFile));
 }
 
 let args = process.argv.slice(2);
 let targets = args.filter((arg) => TARGETS[arg]);
 if(targets.length == 0) targets = Object.keys(TARGETS);
-for(let target of targets) build(target, args.includes("--zip"));
+for(let target of targets) build(target);

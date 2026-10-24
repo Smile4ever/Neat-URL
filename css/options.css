@@ -1,88 +1,538 @@
-/* Used from https://stackoverflow.com/questions/306252/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers */
-.labelbox label {
-	display: block;
-	padding-left: 15px;
-	text-indent: -15px;
+/* Options page, opened in its own tab in Firefox and Chrome */
+:root {
+	--background: #ffffff;
+	--surface: #f9f9fb;
+	--text: #15141a;
+	--muted: #5b5b66;
+	--border: #e0e0e6;
+	--accent: #0061e0;
+	--button: #f0f0f4;
+	--button-hover: #e0e0e6;
+	--banner: #fff4de;
+	--warning: #a4400a;
+	--donate: #e0245e;
+	--donate-background: #fde8ef;
+	color-scheme: light;
 }
 
-input[type=checkbox] {
-	width: 13px;
-	height: 13px;
-	padding: 0;
-	margin:0;
-	margin-right: 3px;
-	vertical-align: bottom;
-	position: relative;
-	top: -1px;
-	*overflow: hidden;
-}
-/* End of used CSS */
-
-input[type=number]{
-	max-width: 4em;
-}
-
-body{
-	box-sizing: border-box;
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #1c1b22;
+		--surface: #23222b;
+		--text: #fbfbfe;
+		--muted: #bfbfc9;
+		--border: #3a3944;
+		--accent: #00ddff;
+		--button: #2b2a33;
+		--button-hover: #3a3944;
+		--banner: #4a3a12;
+		--warning: #ffbd4f;
+		--donate: #ff6b9a;
+		--donate-background: #4a1f2f;
+		color-scheme: dark;
+	}
 }
 
-/* CSS used from https://github.com/kainsavage/HistoryBlock/blob/web-extension/options/options.css */
-body, button, input, textarea {
-  /*font-family: Segoe UI, sans-serif;*/
-  font-size: 14px;
+body {
+	margin: 0;
+	background: var(--background);
+	color: var(--text);
+	font: 14px/1.4 system-ui, sans-serif;
 }
 
-body, button{
-  color: #333; /* From Mozilla Firefox CSS */
+body, button, input, textarea, select {
+	font-size: 14px;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* Navigation between Preferences and Log */
+nav.views {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	display: flex;
+	align-items: stretch;
+	gap: 4px;
+	padding: 0 24px;
+	background: var(--surface);
+	border-bottom: 1px solid var(--border);
+}
+
+nav.views .title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-right: 24px;
+	white-space: nowrap;
+	font-weight: 600;
+	font-size: 16px;
+}
+
+nav.views a {
+	display: flex;
+	align-items: center;
+	padding: 12px 16px;
+	color: var(--muted);
+	text-decoration: none;
+	border-bottom: 3px solid transparent;
+}
+
+nav.views a:hover {
+	color: var(--text);
+}
+
+nav.views .language {
+	align-self: center;
+	padding: 4px 6px;
+}
+
+/* Donate: on every tab, next to the language picker */
+nav.views a.donate {
+	align-self: center;
+	gap: 6px;
+	margin: 0 8px 0 auto;
+	padding: 4px 14px;
+	color: var(--text);
+	white-space: nowrap;
+	border: 1px solid var(--donate);
+	border-radius: 999px;
+}
+
+nav.views a.donate:hover {
+	background: var(--donate-background);
+}
+
+nav.views a.donate span[aria-hidden] {
+	color: var(--donate);
+}
+
+nav.views a.active {
+	color: var(--text);
+	border-bottom-color: var(--accent);
+}
+
+/* The page slides in when it opens */
+@keyframes appear {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}
+
+.view:not([hidden]) {
+	animation: appear 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.view:not([hidden]) {
+		animation: none;
+	}
+}
+
+.view {
+	max-width: 1100px;
+	padding: 16px 24px 32px;
+}
+
+/* The tabs Preferences, Appearance and Advanced share one form and the save bar */
+
+#optionsform .view {
+	padding-bottom: 24px;
+}
+
+.savebar {
+	position: sticky;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	/* Full width, with the buttons below the right edge of the options */
+	padding: 12px max(24px, calc(100% - 1100px + 24px)) 12px 24px;
+	background: var(--surface);
+	border-top: 1px solid var(--border);
+}
+
+.savebar #save_status {
+	flex: 1;
+	color: var(--muted);
+}
+
+.savebar.dirty #save_status {
+	color: var(--text);
+	font-weight: 600;
+}
+
+.savebar button, .savebar button.save {
+	margin: 0;
+}
+
+.refreshOptions {
+	padding: 16px 24px;
+}
+
+a {
+	color: var(--accent);
+}
+
+h2 {
+	margin: 32px 0 4px;
+	font-size: 18px;
 }
 
 button {
-  padding: 4px 20px;
-  background-color: #fbfbfb;
-  border: 1px solid #bbb;
-  border-radius: 2px; /* From Mozilla Firefox CSS */
-  margin: 0 4px;
+	padding: 4px 16px;
+	color: var(--text);
+	background-color: var(--button);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	margin: 0 4px 0 0;
+	cursor: pointer;
 }
 
 button:hover {
-  background-color: #ebebeb;
-}
-/* End of used CSS */
-
-.descr{
-	margin-inline-start: 1em;
-	-moz-box-align: center;
-	font-size: 0.85em;
-	/* font-size: 1.25rem; */
-	color: gray;
+	background-color: var(--button-hover);
 }
 
-.hr{
-	border-bottom: 1px solid #bbb
-}
-.firefox .firsthr{
-	display: block;
+button:disabled {
+	opacity: 0.5;
+	cursor: default;
+	background-color: var(--button);
 }
 
-/* CSS used from https://davidwalsh.name/flexbox-column */
-.flexbox-container {
-	display: -ms-flex;
-	display: -webkit-flex;
+button.save, button.primary {
+	padding: 8px 24px;
+	color: #ffffff;
+	background-color: var(--accent);
+	border-color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+	button.save, button.primary {
+		color: #15141a;
+	}
+}
+
+input, textarea, select {
+	color: var(--text);
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+}
+
+textarea, input[type=url], input[type=search] {
+	box-sizing: border-box;
+	padding: 6px;
+}
+
+textarea {
+	width: 100%;
+	resize: vertical;
+	font-family: ui-monospace, monospace;
+	font-size: 13px;
+}
+
+textarea.has-warning {
+	border-color: var(--warning);
+}
+
+/* One option per row: label and description on the left, the control on the right */
+.option {
 	display: flex;
+	gap: 24px;
+	padding: 12px 0;
 }
 
-.flexbox-container > div {
-	width: 33%;
+.option > div:first-child {
+	flex: 0 0 320px;
 }
 
-.flexbox-container > div:first-child {
-	margin-right: 20px;
+.option > div:last-child {
+	flex: 1;
+	min-width: 0;
 }
-/* End of used CSS */
 
-button::-moz-focus-inner {
-	border: 0;
+#test_url {
+	width: 100%;
 }
-/*.labelbox{
-	min-width: 350px;
-}*/
+
+.option.disabled .labelbox {
+	opacity: 0.5;
+}
+
+.labelbox label {
+	display: block;
+	font-weight: 600;
+}
+
+.descr {
+	margin-top: 2px;
+	font-size: 0.9em;
+	color: var(--muted);
+}
+
+.description {
+	color: var(--muted);
+}
+
+.links a {
+	margin-left: 12px;
+	white-space: nowrap;
+}
+
+.option.description:has(.tagline) {
+	padding: 0 0 4px;
+}
+
+.tagline {
+	margin: 0 0 2px;
+	line-height: 1.2;
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--text);
+}
+
+.hr {
+	border-bottom: 1px solid var(--border);
+}
+
+.permissionBanner, .noticeBanner {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	max-width: 1052px;
+	margin: 16px 24px 0;
+	padding: 12px 16px;
+	background: var(--banner);
+	border-radius: 4px;
+}
+
+/* Warning at the top of the Advanced tab */
+.callout-warning {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	margin: 12px 0;
+	padding: 12px 16px;
+	background: var(--banner);
+	border-left: 4px solid var(--warning);
+	border-radius: 4px;
+	font-weight: 600;
+}
+
+.callout-icon {
+	color: var(--warning);
+	font-size: 1.4em;
+	line-height: 1;
+}
+
+/* Below a list: the number of items and warnings */
+.list-status {
+	margin-top: 4px;
+	font-size: 0.9em;
+	color: var(--muted);
+}
+
+.warning {
+	color: var(--warning);
+	word-break: break-word;
+}
+
+/* Checkbox shown as a switch */
+input[type=checkbox].switch {
+	appearance: none;
+	position: relative;
+	width: 36px;
+	height: 20px;
+	margin: 0;
+	border-radius: 10px;
+	background: var(--button-hover);
+	border: 1px solid var(--border);
+	cursor: pointer;
+	transition: background-color 0.15s;
+}
+
+input[type=checkbox].switch::before {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--muted);
+	transition: transform 0.15s;
+}
+
+input[type=checkbox].switch:checked {
+	background: var(--accent);
+	border-color: var(--accent);
+}
+
+input[type=checkbox].switch:checked::before {
+	transform: translateX(16px);
+	background: var(--background);
+}
+
+/* Default blocked parameters, per category */
+.params-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.params-toolbar input {
+	flex: 1;
+	max-width: 400px;
+}
+
+.params {
+	border: 1px solid var(--border);
+	border-radius: 4px;
+}
+
+.params details + details {
+	border-top: 1px solid var(--border);
+}
+
+.params summary {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 8px;
+	cursor: pointer;
+	background: var(--surface);
+}
+
+.params summary .category-name {
+	flex: 1;
+}
+
+.category-params {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 2px 12px;
+	padding: 6px 8px 8px 28px;
+}
+
+.category-params label, .request-types label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+	cursor: pointer;
+}
+
+.category-params code, .request-types code {
+	overflow-wrap: anywhere;
+	font-size: 13px;
+}
+
+.category-params input:not(:checked) + code {
+	color: var(--muted);
+	text-decoration: line-through;
+}
+
+.request-types {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+	gap: 4px 12px;
+}
+
+/* Test a URL, with the same marks as the Log tab */
+.test-result {
+	margin-top: 6px;
+	word-break: break-all;
+	font-family: ui-monospace, monospace;
+	font-size: 13px;
+}
+
+.test-result .descr, .test-result .warning {
+	font-family: system-ui, sans-serif;
+	word-break: normal;
+}
+
+.test-result .cleaned::before {
+	content: "→ ";
+}
+
+/* Rules for the parameters that are left */
+.suggestions {
+	margin-top: 8px;
+	font-family: system-ui, sans-serif;
+	word-break: normal;
+}
+
+.suggestion {
+	display: grid;
+	grid-template-columns: minmax(100px, max-content) 1fr;
+	align-items: baseline;
+	gap: 6px 12px;
+	margin-top: 6px;
+}
+
+.suggestion code {
+	overflow-wrap: anywhere;
+}
+
+.suggestion-rules {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 6px;
+}
+
+.suggestion button {
+	margin: 0;
+	padding: 2px 10px;
+	font-size: 13px;
+}
+
+input[type=checkbox] {
+	margin: 0 6px 0 0;
+	vertical-align: -2px;
+}
+
+@media (max-width: 700px) {
+	nav.views {
+		padding: 0 8px;
+		overflow-x: auto;
+	}
+
+	.view, .savebar {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.savebar {
+		flex-wrap: wrap;
+	}
+
+	.savebar #save_status {
+		flex-basis: 100%;
+	}
+
+	.permissionBanner, .noticeBanner {
+		margin: 16px 16px 0;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.option {
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.option > div:first-child {
+		flex-basis: auto;
+	}
+}

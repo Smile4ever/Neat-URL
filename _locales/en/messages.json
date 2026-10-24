@@ -8,17 +8,11 @@
   "default_blocked_params_descr": {
     "message": "These are the default parameters that Neat URL will remove from the URL."
   },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
-  },
   "blocked_params": {
     "message": "Blocked parameters"
   },
   "blocked_params_descr": {
-    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters. Use a comma as the delimiter between blocked parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "Case-sensitive parameters that will be removed from the URL. Use param@domain.com to use domain-specific blocked parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
   },
   "icon_animation": {
     "message": "Icon animation"
@@ -50,12 +44,8 @@
   "icon_theme_light": {
 	  "message": "Always use light icons"
   },
-  "icon_theme_dark_notiflight": {
-	  "message": "Use dark icons except for notifications"
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "Use light icons except for notifications"
-  },
+
+
   "show_counter": {
 	  "message": "Show counter"
   },
@@ -68,36 +58,22 @@
   "counter_background_color_descr": {
 	  "message": "The background color used by the counter."
   },
-  "enable_logging": {
-    "message": "Enable logging"
-  },
-  "enable_logging_descr": {
-    "message": "Log URL changes to the browser console."
-  },
+
+
   "advanced": {
 	  "message": "Advanced"
   },
   "advanced_descr": {
     "message": "These options may bite."
   },
-  "theme": {
-	  "message": "Theme"
-  },
-  "theme_descr": {
-    "message": "Icon and notification theme options."
-  },
   "blacklist": {
     "message": "Domain blacklist"
   },
   "blacklist_descr": {
-    "message": "Comma separated list of domains. Neat URL will not work on these websites."
+    "message": "List of domains. Neat URL will not work on these websites."
   },
   "url_request_types": {
     "message": "URL request types"
-  },
-  "url_request_types_descr": {
-    "message": "Default value: main_frame. This list is comma-separated. Valid values can be found in the <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
 	  "message": "Use the default counter color"
@@ -119,6 +95,12 @@
   },
   "host_permission_grant": {
     "message": "Allow access"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori is Neat URL again. Your own parameters and whitelisted domains are kept: you find them in Blocked parameters and Domain blacklist."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
   },
   "clean_nested": {
     "message": "Clean URLs inside parameters"
@@ -153,9 +135,7 @@
   "show_log": {
     "message": "Log"
   },
-  "show_log_link": {
-    "message": "Show the log of cleaned URLs"
-  },
+
   "log_descr": {
     "message": "The last URLs that Neat URL cleaned. The log is only kept in memory and is empty after a browser restart."
   },
@@ -163,18 +143,281 @@
     "message": "Filter"
   },
   "log_clear": {
-    "message": "Clear"
+    "message": "Clear log"
+  },
+  "log_save": {
+    "message": "Save log for a bug report",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Report a problem"
+  },
+  "log_report_descr": {
+    "message": "Is a URL cleaned wrongly, or does a website no longer work? Save the log and attach the file to a new issue on GitHub. The file contains the URLs below and your preferences, so use the filter to save only the URLs that matter."
+  },
+  "log_report_github": {
+    "message": "New issue on GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Are you sure you want to clear the log? The $COUNT$ cleaned URLs in it will be removed.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "No URLs have been cleaned yet."
   },
-  "log_column_time": {
-    "message": "Time"
+  "log_empty_since": {
+    "message": "No URLs have been cleaned since $SINCE$.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "Type"
+  "log_column_rules": {
+    "message": "Rules",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "What goes into the file"
+  },
+  "log_save_always": {
+    "message": "Always included: the version of Neat URL, your browser and platform, and your other preferences."
+  },
+  "log_save_urls": {
+    "message": "The cleaned URLs that are shown ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Your own rules"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Uncheck what you'd rather keep private. In the file, rules that are left out are replaced by \"(own rule)\"."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Unchecked default parameters"
+  },
+  "log_save_cancel": {
+    "message": "Cancel"
+  },
+  "log_save_confirm": {
+    "message": "Save"
+  },
+  "language": {
+    "message": "Language"
+  },
+  "language_browser": {
+    "message": "Browser language",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Donate"
+  },
+  "menu_enabled": {
+    "message": "Enabled",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Preferences"
+  },
+  "about": {
+    "message": "In $BROWSER$, URLs are cleaned with $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Appearance"
+  },
+
+  "test_url": {
+    "message": "Test a URL"
+  },
+
+  "test_url_descr": {
+    "message": "Paste a URL to see what Neat URL removes. The test uses the preferences on this page, also when they are not saved yet."
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL doesn't change this URL."
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL doesn't change this URL: only http:// and https:// URLs are cleaned."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL doesn't change this URL: the domain is in \"Domain blacklist\"."
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL doesn't change this URL: it is a signed URL (\"Keep signed URLs\" on the Advanced tab)."
+  },
+
+  "test_url_suggestions": {
+    "message": "Which parameter do you want to remove? Click a rule to add it to the blocked parameters, then save."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (all websites)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (only $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (only with this value, only $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "This is not a valid URL."
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "Uncheck a parameter or a category to keep it in URLs."
+  },
+
+  "search_params": {
+    "message": "Search parameters"
+  },
+
+  "default_params_count": {
+    "message": "$ON$ of $TOTAL$ parameters are removed",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "Items: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "Separate items with a comma or a new line."
+  },
+
+  "list_invalid": {
+    "message": "Not valid, ignored: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "Looks like a domain, not a parameter: $ITEMS$. For a parameter on one domain, write parameter@domain.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "More than once: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "Already a default blocked parameter: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL cleans the URLs of these kinds of requests. The default is main_frame: the page that is opened in a tab. See <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "No type is chosen, so main_frame is used."
+  },
+
+  "restore_defaults": {
+    "message": "Restore defaults"
+  },
+
+  "restore_defaults_descr": {
+    "message": "Put all preferences back to their default values. Nothing changes until you save."
+  },
+
+  "revert_changes": {
+    "message": "Undo changes"
+  },
+
+  "unsaved_changes": {
+    "message": "There are unsaved changes."
+  },
+
+  "import_confirm": {
+    "message": "Import $COUNT$ preferences from $FILE$? They replace your current preferences.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

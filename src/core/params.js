@@ -5,13 +5,25 @@
 	const NeatURL = root.NeatURL = root.NeatURL || {};
 	const domain = NeatURL.domain || require("./domain.js");
 
+	// A label at the start of a line: "Tweakers: nb@tweakers.net, u@tweakers.net".
+	// The colon must be followed by a space, and a label has no comma, @ or =, so rules are never mistaken for a label.
+	const LABEL = /^\s*[^,@=]+?:(?:\s+|$)/;
+
+	// Splits a line into its label ("Tweakers: ", or "" without a label) and its rules.
+	// A line that ends with a colon is a header ("Campaign tracking:") and has no rules.
+	function splitLabel(line){
+		if(line.trim().endsWith(":")) return { label: line, rules: "" };
+		let match = LABEL.exec(line);
+		return match ? { label: match[0], rules: line.substring(match[0].length) } : { label: "", rules: line };
+	}
+
 	// "a, b ,c" -> ["a", "b", "c"]. Whitespace is not allowed inside a rule.
-	// Lines that end with a colon are headers ("Campaign tracking:") and are skipped.
+	// Headers ("Campaign tracking:") and labels ("Tweakers: ") are skipped.
 	function parseList(value){
 		if(value == undefined) return [];
 		if(Array.isArray(value)) return value.filter((item) => item != "");
 		return String(value).split(/\r?\n/)
-			.filter((line) => !line.trim().endsWith(":"))
+			.map((line) => splitLabel(line).rules)
 			.join(",")
 			.replace(/\s+/g, "")
 			.split(",")
@@ -145,6 +157,6 @@
 		return entry.prefix ? key.startsWith(entry.name) : key == entry.name;
 	}
 
-	NeatURL.params = { parseList, effectiveParams, parseEntry, parseBlacklist, compileConfig, entryMatchesKey, isExactName };
+	NeatURL.params = { parseList, splitLabel, effectiveParams, parseEntry, parseBlacklist, compileConfig, entryMatchesKey, isExactName };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.params;
 })(globalThis);

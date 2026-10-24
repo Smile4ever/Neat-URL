@@ -2,7 +2,6 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.js",
-    "build:zip": "node scripts/build.js --zip",
     "test": "node --test test/",
     "test:e2e": "node scripts/build.js && node test/e2e/run.mjs",
     "lint:firefox": "node scripts/build.js firefox && npx --yes web-ext@8 lint -s dist/firefox"

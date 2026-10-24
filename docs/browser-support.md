@@ -1,6 +1,6 @@
 # Browser support
 
-Neat URL 7 is a Manifest V3 extension for Firefox and Chrome. Both versions use the same parameter rules and the same preferences, but they clean URLs in a different way:
+Neat URL is a Manifest V3 extension for Firefox and Chrome. Both versions use the same parameter rules and the same preferences, but they clean URLs in a different way:
 
 | | Firefox | Chrome |
 |---|---|---|
@@ -39,8 +39,9 @@ Neat URL 7 is a Manifest V3 extension for Firefox and Chrome. Both versions use 
 | Counter color | ✅ | ✅ | |
 | Icon animation | ✅ | ✅ | |
 | Icon theme | ✅ | ✅ | |
-| Enable/disable with the toolbar button | ✅ | ✅ | Neat URL is enabled again after a browser restart. |
-| Log page (the last 500 cleaned URLs) | ✅ | ✅ | In the menu of the toolbar button and on the options page. Kept in memory only. |
+| Click the toolbar button: the options page with the URL of the tab in "Test a URL" | ✅ | ✅ | |
+| Enable/disable in the menu of the toolbar button (right-click → Enabled) | ✅ | ✅ | Neat URL is enabled again after a browser restart. |
+| Options page in its own tab, with a Log tab (the last 500 cleaned URLs) | ✅ | ✅ | Right-click the toolbar button → Log opens the Log tab. The log is kept in memory only. |
 | Logging to the console | ✅ | ⚠️ | [5] |
 | Import and export of the preferences | ✅ | ✅ | |
 | Links to addons.mozilla.org | ⚠️ | — | [6] |
@@ -85,9 +86,7 @@ Neat URL 7 is a Manifest V3 extension for Firefox and Chrome. Both versions use 
 | `declarativeNetRequestWithHostAccess` | — | ✅ | Chrome: the rules that clean URLs. |
 | `storage` | ✅ | ✅ | Preferences, counter. |
 | `tabs` | ✅ | ✅ | Counter per tab, the addons.mozilla.org workaround, and the cases of [2] and [7] in Chrome. |
-| `contextMenus` | ✅ | ✅ | "Preferences" in the menu of the toolbar button. |
-| `notifications` | ✅ | ✅ | "Saved preferences" notification. |
-
+| `contextMenus` | ✅ | ✅ | "Enabled", "Preferences" and "Log" in the menu of the toolbar button. |
 Neat URL also has a content script on every page, for the option "Change links in page". When the option is off, it only reads that option and stops.
 
 In Firefox, you can turn off access to all websites in the add-on manager. Neat URL then can't clean anything, and the options page shows a button to allow access again.

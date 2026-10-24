@@ -1,0 +1,395 @@
+{
+  "extensionDescription": {
+    "message": "Usuwa śmieci z adresów URL."
+  },
+  "default_blocked_params": {
+    "message": "Domyślnie blokowane parametry"
+  },
+  "default_blocked_params_descr": {
+    "message": "To są parametry, które Neat URL domyślnie usuwa z adresu URL."
+  },
+  "blocked_params": {
+    "message": "Blokowane parametry"
+  },
+  "blocked_params_descr": {
+    "message": "Parametry, które zostaną usunięte z adresu URL (wielkość liter ma znaczenie). Użyj parametr@domena.com, aby blokować parametr tylko w jednej domenie.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Reguły parametrów</a>"
+  },
+  "icon_animation": {
+    "message": "Animacja ikony"
+  },
+  "icon_animation_descr": {
+    "message": "Animacja wyświetlana, gdy Neat URL czyści adres URL."
+  },
+  "icon_animation_none": {
+    "message": "Bez animacji"
+  },
+  "icon_animation_missing_underscore": {
+    "message": "Brakujący podkreślnik"
+  },
+  "icon_animation_rotate": {
+    "message": "Obracanie ikony"
+  },
+  "icon_animation_surprise_me": {
+    "message": "Zaskocz mnie"
+  },
+  "icon_theme": {
+    "message": "Motyw ikony"
+  },
+  "icon_theme_descr": {
+    "message": "Domyślnie używane są ciemne ikony. Możesz zmienić tę opcję, aby używać jasnych ikon."
+  },
+  "icon_theme_dark": {
+    "message": "Zawsze używaj ciemnych ikon"
+  },
+  "icon_theme_light": {
+    "message": "Zawsze używaj jasnych ikon"
+  },
+  "show_counter": {
+    "message": "Pokaż licznik"
+  },
+  "show_counter_descr": {
+    "message": "Pokazuje licznik z liczbą przepisanych adresów URL."
+  },
+  "counter_background_color": {
+    "message": "Kolor tła licznika"
+  },
+  "counter_background_color_descr": {
+    "message": "Kolor tła używany przez licznik."
+  },
+  "advanced": {
+    "message": "Zaawansowane"
+  },
+  "advanced_descr": {
+    "message": "Te opcje mogą ugryźć."
+  },
+  "blacklist": {
+    "message": "Czarna lista domen"
+  },
+  "blacklist_descr": {
+    "message": "Lista domen. Neat URL nie będzie działać na tych stronach."
+  },
+  "url_request_types": {
+    "message": "Typy żądań URL"
+  },
+  "counter_default_color": {
+    "message": "Użyj domyślnego koloru licznika"
+  },
+  "savepreferences": {
+    "message": "Zapisz ustawienia"
+  },
+  "notify_preferences_saved": {
+    "message": "Ustawienia zapisane"
+  },
+  "change_links_in_page": {
+    "message": "Zmieniaj linki na stronie"
+  },
+  "change_links_in_page_descr": {
+    "message": "Usuwa blokowane parametry ze wszystkich linków podczas wczytywania strony."
+  },
+  "host_permission_missing": {
+    "message": "Neat URL potrzebuje dostępu do wszystkich stron, aby czyścić adresy URL."
+  },
+  "host_permission_grant": {
+    "message": "Zezwól na dostęp"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori znów jest Neat URL. Twoje własne parametry i domeny z białej listy zostały zachowane: znajdziesz je w polach Blokowane parametry i Czarna lista domen."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
+  },
+  "clean_nested": {
+    "message": "Czyść adresy URL w parametrach"
+  },
+  "clean_nested_descr": {
+    "message": "Czyści też adres URL, który jest wartością parametru, na przykład ?url=https://example.com/?utm_source=x. Domyślnie wyłączone, bo niektóre strony sprawdzają, czy taki link nie został zmieniony."
+  },
+  "keep_signed_urls": {
+    "message": "Zachowuj podpisane adresy URL"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Nie zmienia adresów URL z parametrem podpisu (sig, hmac lub nazwa kończąca się na signature). Ich zmiana psuje pobieranie i linki."
+  },
+  "import_export": {
+    "message": "Import i eksport"
+  },
+  "import_export_descr": {
+    "message": "Zapisz wszystkie ustawienia w pliku lub wczytaj je z pliku."
+  },
+  "export_settings": {
+    "message": "Eksportuj"
+  },
+  "import_settings": {
+    "message": "Importuj"
+  },
+  "import_done": {
+    "message": "Ustawienia zaimportowane."
+  },
+  "import_failed": {
+    "message": "Ten plik nie zawiera ustawień Neat URL."
+  },
+  "show_log": {
+    "message": "Dziennik"
+  },
+  "log_descr": {
+    "message": "Ostatnie adresy URL wyczyszczone przez Neat URL. Dziennik jest przechowywany tylko w pamięci i jest pusty po ponownym uruchomieniu przeglądarki."
+  },
+  "log_filter": {
+    "message": "Filtruj"
+  },
+  "log_clear": {
+    "message": "Wyczyść dziennik"
+  },
+  "log_save": {
+    "message": "Zapisz dziennik do zgłoszenia błędu",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Zgłoś problem"
+  },
+  "log_report_descr": {
+    "message": "Adres URL jest źle czyszczony albo strona przestała działać? Zapisz dziennik i dołącz plik do nowego zgłoszenia na GitHubie. Plik zawiera poniższe adresy URL i twoje ustawienia, więc użyj filtra, aby zapisać tylko istotne adresy."
+  },
+  "log_report_github": {
+    "message": "Nowe zgłoszenie na GitHubie"
+  },
+  "log_clear_confirm": {
+    "message": "Czy na pewno wyczyścić dziennik? Zostanie usuniętych $COUNT$ wyczyszczonych adresów URL.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_empty": {
+    "message": "Nie wyczyszczono jeszcze żadnego adresu URL."
+  },
+  "log_empty_since": {
+    "message": "Od $SINCE$ nie wyczyszczono żadnego adresu URL.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_column_rules": {
+    "message": "Reguły",
+    "description": "Column with the parameter rules that cleaned the URL"
+  },
+  "log_save_title": {
+    "message": "Co trafi do pliku"
+  },
+  "log_save_always": {
+    "message": "Zawsze dołączane: wersja Neat URL, przeglądarka i platforma oraz pozostałe preferencje."
+  },
+  "log_save_urls": {
+    "message": "Wyświetlone oczyszczone adresy URL ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Twoje własne reguły"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Odznacz to, co wolisz zachować dla siebie. W pliku pominięte reguły są zastępowane przez \"(own rule)\"."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Odznaczone parametry domyślne"
+  },
+  "log_save_cancel": {
+    "message": "Anuluj"
+  },
+  "log_save_confirm": {
+    "message": "Zapisz"
+  },
+  "language": {
+    "message": "Język"
+  },
+  "language_browser": {
+    "message": "Język przeglądarki",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Wesprzyj"
+  },
+  "menu_enabled": {
+    "message": "Włączony",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Ustawienia"
+  },
+  "about": {
+    "message": "W $BROWSER$ adresy URL są czyszczone za pomocą $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Wygląd"
+  },
+  "test_url": {
+    "message": "Przetestuj adres URL"
+  },
+  "test_url_descr": {
+    "message": "Wklej adres URL, aby zobaczyć, co usuwa Neat URL. Test używa ustawień z tej strony, także jeśli nie są jeszcze zapisane."
+  },
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+  "test_url_unchanged": {
+    "message": "Neat URL nie zmienia tego adresu URL."
+  },
+  "test_url_not_web": {
+    "message": "Neat URL nie zmienia tego adresu URL: czyszczone są tylko adresy http:// i https://."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL nie zmienia tego adresu URL: domena jest na liście „Czarna lista domen”."
+  },
+  "test_url_signed": {
+    "message": "Neat URL nie zmienia tego adresu URL: to podpisany adres URL („Zachowuj podpisane adresy URL” na karcie Zaawansowane)."
+  },
+  "test_url_suggestions": {
+    "message": "Który parametr chcesz usunąć? Kliknij regułę, aby dodać ją do blokowanych parametrów, a potem zapisz."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (wszystkie strony)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (tylko $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (tylko z tą wartością, tylko $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "To nie jest prawidłowy adres URL."
+  },
+  "default_blocked_params_uncheck": {
+    "message": "Odznacz parametr lub kategorię, aby zachować go w adresach URL."
+  },
+  "search_params": {
+    "message": "Szukaj parametrów"
+  },
+  "default_params_count": {
+    "message": "Usuwane parametry: $ON$ z $TOTAL$",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "list_count": {
+    "message": "Elementy: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_hint": {
+    "message": "Oddzielaj elementy przecinkiem lub nową linią."
+  },
+  "list_invalid": {
+    "message": "Nieprawidłowe, pomijane: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_looks_like_domain": {
+    "message": "Wygląda na domenę, a nie parametr: $ITEMS$. Dla parametru w jednej domenie napisz parametr@domena.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Więcej niż raz: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_already_default": {
+    "message": "Już domyślnie blokowany parametr: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "url_request_types_choose_descr": {
+    "message": "Neat URL czyści adresy URL tych typów żądań. Domyślnie main_frame: strona otwarta w karcie. Zobacz <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>listę typów zasobów</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+  "request_types_none": {
+    "message": "Nie wybrano żadnego typu, więc używany jest main_frame."
+  },
+  "restore_defaults": {
+    "message": "Przywróć domyślne"
+  },
+  "restore_defaults_descr": {
+    "message": "Przywraca domyślne wartości wszystkich ustawień. Nic się nie zmieni, dopóki nie zapiszesz."
+  },
+  "revert_changes": {
+    "message": "Cofnij zmiany"
+  },
+  "unsaved_changes": {
+    "message": "Są niezapisane zmiany."
+  },
+  "import_confirm": {
+    "message": "Zaimportować ustawienia ($COUNT$) z $FILE$? Zastąpią one Twoje obecne ustawienia.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
+  }
+}

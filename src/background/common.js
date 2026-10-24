@@ -10,8 +10,10 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	const PREF_KEYS = Object.keys(NeatURL.defaults.PREFS);
 	const ENABLED_KEY = "neat_url_enabled"; // runtime toggle of the toolbar button, reset on browser start
 	const BADGE_KEY = "neat_url_badge"; // counts per tab, in storage.session
-	const LOG_KEY = "neat_url_log"; // the last cleaned URLs for log.html, in storage.session (memory only)
+	const LOG_KEY = "neat_url_log"; // the last cleaned URLs for the Log tab of the options page, in storage.session (memory only)
+	const LOG_SINCE_KEY = "neat_url_log_since"; // when the log started: browser start or Clear on the Log tab, in storage.session
 	const LOG_SIZE = 500;
+	const LINKUMORI_NOTICE_KEY = "neat_url_linkumori_notice"; // the options page explains once what happened to the Linkumori settings
 
 	let version = browser.runtime.getManifest().version;
 	let state = null; // { prefs, config, types, enabled }
@@ -31,15 +33,25 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 
 	async function loadState(){
 		let [stored, defaultParams, suffixText] = await Promise.all([
-			browser.storage.local.get(PREF_KEYS.concat(["neat_url_version", "neat_url_hidden_params", ENABLED_KEY])),
+			browser.storage.local.get(PREF_KEYS.concat(["neat_url_version", "neat_url_hidden_params", ENABLED_KEY, LINKUMORI_NOTICE_KEY], NeatURL.migrate.LINKUMORI_KEYS)),
 			loadDefaultParams(),
 			fetchText("data/publicsuffix-ccSLD.txt")
 		]);
 
 		let migration = NeatURL.migrate.migrate(stored, version, defaultParams);
+		// Only the import from Linkumori removes keys: this update replaced Linkumori, so show once what happened to its settings.
+		// Storing the changes reloads the state, which can see the Linkumori keys again before they are removed:
+		// the notice is stored with the changes, and the options page only opens the first time.
+		let fromLinkumori = migration.remove.length > 0;
+		let noticeShown = stored[LINKUMORI_NOTICE_KEY] === true;
+		if(fromLinkumori) migration.changes[LINKUMORI_NOTICE_KEY] = true;
 		if(Object.keys(migration.changes).length > 0){
 			await browser.storage.local.set(migration.changes);
 			Object.assign(stored, migration.changes);
+		}
+		if(fromLinkumori){
+			await browser.storage.local.remove(migration.remove);
+			if(!noticeShown) openOptionsTab("preferences").catch((error) => console.error("[Neat URL]: could not open the options", error));
 		}
 
 		let prefs = NeatURL.defaults.getDefaultPrefs();
@@ -57,7 +69,7 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 			suffixList: suffixText.split(/\r?\n/).map((line) => line.trim()).filter((line) => line != "")
 		});
 
-		if(prefs.neat_url_logging && config.invalid.length > 0) console.warn("[Neat URL]: ignoring invalid parameters", config.invalid);
+		if(config.invalid.length > 0) console.warn("[Neat URL]: ignoring invalid parameters", config.invalid);
 
 		let types = NeatURL.params.parseList(prefs.neat_url_types);
 		if(types.length == 0) types = ["main_frame"];
@@ -93,8 +105,9 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		stateListeners.push(listener);
 	}
 
+	// Cleaned URLs are shown on the Log tab of the options page, this is for debugging only
 	function log(...args){
-		if(state && state.prefs.neat_url_logging) console.log("[Neat URL]:", ...args);
+		console.debug("[Neat URL]:", ...args);
 	}
 
 	/// Toolbar icon
@@ -107,21 +120,17 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	}
 
 	function resolveIconURL(file){
-		let theme = iconTheme().replace("_notiflight", "").replace("_notifdark", "");
-		return resolveIconByTheme(file, theme);
-	}
-
-	function resolveIconUrlNotif(file){
-		let theme = iconTheme();
-		if(theme.includes("_notiflight")) return resolveIconByTheme(file, "light");
-		if(theme.includes("_notifdark")) return resolveIconByTheme(file, "dark");
-		return resolveIconByTheme(file, theme);
+		return resolveIconByTheme(file, iconTheme());
 	}
 
 	function applyState(){
 		let enabled = state.enabled;
 		browser.action.setIcon({ path: resolveIconURL(enabled ? "neaturl-96-state0.png" : "neaturl-96-state0_disabled.png") });
 		browser.action.setTitle({ title: "Neat URL " + version + " - " + (enabled ? "enabled" : "disabled") });
+		// The menu may not exist yet right after the start, createContextMenus() then uses the state
+		try{
+			Promise.resolve(browser.contextMenus.update("neaturl-tb-enabled", { checked: enabled })).catch(() => {});
+		}catch(error){}
 
 		if(!state.prefs.neat_url_counter_default_color){
 			browser.action.setBadgeBackgroundColor({ color: state.prefs.neat_url_counter_color });
@@ -176,8 +185,13 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	}
 
 	// Called by the platform code when a URL was cleaned
-	/// Log for log.html. storage.session is kept in memory and survives a suspended background.
+	/// Log for the Log tab of the options page. storage.session is kept in memory and survives a suspended background.
 	let logQueue = Promise.resolve();
+
+	// storage.session is empty after a browser start, and the background runs again after a suspension
+	browser.storage.session.get(LOG_SINCE_KEY).then((result) => {
+		if(!(LOG_SINCE_KEY in result)) return browser.storage.session.set({ [LOG_SINCE_KEY]: Date.now() });
+	}).catch((error) => console.error("[Neat URL]: could not start the log", error));
 
 	function addLogEntry(entry){
 		logQueue = logQueue.then(async () => {
@@ -188,8 +202,9 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 	}
 
 	function reportCleaned(details, newUrl){
-		log(`(type ${details.type}): '${details.url}' has been changed to '${newUrl}'`);
-		addLogEntry({ time: Date.now(), type: details.type, tabId: details.tabId, url: details.url, cleaned: newUrl });
+		let applied = new Set();
+		NeatURL.clean.cleanUrl(details.url, state.config, { applied });
+		addLogEntry({ time: Date.now(), type: details.type, tabId: details.tabId, url: details.url, cleaned: newUrl, rules: Array.from(applied) });
 		animateToolbarIcon();
 		if(state.prefs.neat_url_show_counter) incrementBadgeValue(details.tabId);
 	}
@@ -212,42 +227,47 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		await browser.storage.session.set({ [BADGE_KEY]: counts });
 	});
 
-	/// Toggle
-	browser.action.onClicked.addListener(async () => {
-		await ensureState();
-		await browser.storage.local.set({ [ENABLED_KEY]: !state.enabled });
-		// storage.onChanged reloads the state
+	/// Toolbar button: opens the options page with the URL of the tab in "Test a URL"
+	browser.action.onClicked.addListener((tab) => {
+		let url = tab && /^https?:\/\//i.test(tab.url || "") ? tab.url : null;
+		openOptionsTab("preferences", url).catch((error) => console.error("[Neat URL]: could not open the options", error));
 	});
 
-	/// Context menu
+	/// Context menu of the toolbar button: enable/disable, preferences and log
 	function createContextMenus(){
 		browser.contextMenus.removeAll().then(() => {
-			browser.contextMenus.create({ id: "neaturl-tb-preferences", title: "Preferences", contexts: ["action"] });
+			browser.contextMenus.create({ id: "neaturl-tb-enabled", type: "checkbox", checked: state ? state.enabled : true, title: browser.i18n.getMessage("menu_enabled"), contexts: ["action"] });
+			browser.contextMenus.create({ id: "neaturl-tb-preferences", title: browser.i18n.getMessage("preferences"), contexts: ["action"] });
 			browser.contextMenus.create({ id: "neaturl-tb-log", title: browser.i18n.getMessage("show_log"), contexts: ["action"] });
 		});
 	}
 
-	browser.contextMenus.onClicked.addListener((info) => {
-		if(info.menuItemId == "neaturl-tb-preferences") browser.runtime.openOptionsPage();
-		if(info.menuItemId == "neaturl-tb-log") browser.tabs.create({ url: browser.runtime.getURL("log.html") });
-	});
-
-	/// Notifications
-	function notify(message){
-		browser.notifications.create(message.substring(0, 20), {
-			type: "basic",
-			iconUrl: browser.runtime.getURL(resolveIconUrlNotif("neaturl-96-state0.png")),
-			title: "Neat URL",
-			message: message
-		});
+	// Opens the options page on a view (#preferences or #log), in the tab that is already open if there is one.
+	// testUrl is put in "Test a URL". An open options page gets a message, so it doesn't reload and keeps unsaved changes.
+	async function openOptionsTab(view, testUrl){
+		let page = browser.runtime.getURL("options.html");
+		let tabs = (await browser.tabs.query({})).filter((tab) => tab.url && tab.url.startsWith(page));
+		if(tabs.length == 0){
+			await browser.tabs.create({ url: page + (testUrl ? "?test=" + encodeURIComponent(testUrl) : "") + "#" + view });
+			return;
+		}
+		await browser.tabs.update(tabs[0].id, { active: true });
+		await browser.windows.update(tabs[0].windowId, { focused: true });
+		await browser.runtime.sendMessage({ action: "show-options", view: view, testUrl: testUrl }).catch(() => {});
 	}
+
+	browser.contextMenus.onClicked.addListener((info) => {
+		if(info.menuItemId == "neaturl-tb-preferences") openOptionsTab("preferences");
+		if(info.menuItemId == "neaturl-tb-log") openOptionsTab("log");
+		// storage.onChanged reloads the state
+		if(info.menuItemId == "neaturl-tb-enabled") browser.storage.local.set({ [ENABLED_KEY]: info.checked });
+	});
 
 	// The config for the content script that changes links in the page (src/content/links.js)
 	function getContentConfig(state){
 		return {
 			enabled: state.enabled,
 			changeLinks: state.prefs.neat_url_change_links_in_page,
-			logging: state.prefs.neat_url_logging,
 			config: {
 				entries: state.config.entries,
 				blacklist: state.config.blacklist,
@@ -262,9 +282,6 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		switch(message.action){
 			case "refresh-options":
 				reloadState();
-				break;
-			case "notify":
-				ensureState().then(() => notify(message.data));
 				break;
 			case "get-config":
 				ensureState().then((state) => sendResponse(getContentConfig(state)));

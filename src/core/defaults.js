@@ -12,7 +12,6 @@
 		"neat_url_show_counter": { "type": "checked", "default": true },
 		"neat_url_counter_color": { "type": "value", "default": "#eeeeee" },
 		"neat_url_counter_default_color": { "type": "checked", "default": true },
-		"neat_url_logging": { "type": "checked", "default": false },
 		"neat_url_clean_nested": { "type": "checked", "default": false },
 		"neat_url_keep_signed_urls": { "type": "checked", "default": true },
 		"neat_url_change_links_in_page": { "type": "checked", "default": false },

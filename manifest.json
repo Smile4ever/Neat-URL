@@ -3,7 +3,7 @@
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/Smile4ever/Neat-URL",
 	"manifest_version": 3,
-	"version": "7.0.0",
+	"version": "2026.10.24",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/dark/neaturl-48.png",
@@ -11,7 +11,6 @@
 	},
 	"permissions": [
 		"storage",
-		"notifications",
 		"contextMenus",
 		"tabs",
 		"webRequest",
@@ -22,7 +21,8 @@
 		"<all_urls>"
 	],
 	"options_ui": {
-		"page": "options.html"
+		"page": "options.html",
+		"open_in_tab": true
 	},
 	"action": {
 		"default_icon": "icons/dark/neaturl-96-state0.png",

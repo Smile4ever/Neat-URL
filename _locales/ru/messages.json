@@ -3,22 +3,16 @@
     "message": "Удаляет мусор из URL."
   },
   "default_blocked_params": {
-    "message": "Default blocked parameters (EN)"
+    "message": "Параметры, блокируемые по умолчанию"
   },
   "default_blocked_params_descr": {
-    "message": "These are the default parameters that Neat URL will remove from the URL. (EN)"
-  },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+    "message": "Эти параметры Neat URL по умолчанию удаляет из URL."
   },
   "blocked_params": {
     "message": "Заблокированные параметры URL-адресов."
   },
   "blocked_params_descr": {
-    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов. Разделяйте отдельные параметры запятой.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "Чувствительные к регистру параметры, которые будут удалены из URL. Используйте шаблон param@domain.com чтобы применять удаление параметров для конкретных доменов.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Правила параметров</a>"
   },
   "icon_animation": {
     "message": "Анимация значка"
@@ -50,12 +44,6 @@
   "icon_theme_light": {
 	  "message": "Всегда использовать светлые значки"
   },
-  "icon_theme_dark_notiflight": {
-	  "message": "Использовать тёмные значки, кроме уведомлений"
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "Использовать светлые значки, кроме уведомлений"
-  },
   "show_counter": {
 	  "message": "Показывать счетчик"
   },
@@ -68,40 +56,24 @@
   "counter_background_color_descr": {
 	  "message": "Цвет фона, используемый счетчиком."
   },
-  "enable_logging": {
-    "message": "Включить журналирование",
-    "description": ""
-  },
-  "enable_logging_descr": {
-    "message": "Записывать изменения URL-адресов в консоль браузера"
-  },
+
   "advanced": {
 	  "message": "Дополнительно"
   },
   "advanced_descr": {
     "message": "Это параметры для опытного пользователя."
   },
-  "theme": {
-	  "message": "Theme"
-  },
-  "theme_descr": {
-    "message": "Icon and notification theme options."
-  },
   "blacklist": {
 	  "message": "Черный список доменов"
   },
   "blacklist_descr": {
-	  "message": "Список доменов, разделённый запятыми. Neat URL не будет срабатывать на этих сайтах."
+	  "message": "Список доменов. Neat URL не будет срабатывать на этих сайтах."
   },
   "url_request_types": {
     "message": "Типы URL-запросов"
   },
-  "url_request_types_descr": {
-    "message": "Значение по умолчанию: main_frame. Этот список разделен запятыми. Допустимые значения можно найти здесь: <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
-  },
   "counter_default_color": {
-	  "message": "Use the default counter color"
+	  "message": "Использовать цвет счётчика по умолчанию"
   },
   "savepreferences": {
     "message": "Сохранить настройки"
@@ -110,16 +82,22 @@
   	"message": "Настройки сохранены"
   },
   "change_links_in_page": {
-    "message": "Change links in page"
+    "message": "Изменять ссылки на странице"
   },
   "change_links_in_page_descr": {
-    "message": "Remove blocked parameters from all links when loading a page"
+    "message": "Удалять блокируемые параметры из всех ссылок при загрузке страницы."
   },
   "host_permission_missing": {
     "message": "Neat URL нужен доступ ко всем сайтам, чтобы очищать URL-адреса."
   },
   "host_permission_grant": {
     "message": "Разрешить доступ"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori снова стал Neat URL. Ваши собственные параметры и домены из белого списка сохранены: они находятся в разделах «Заблокированные параметры» и «Черный список доменов»."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "ОК"
   },
   "clean_nested": {
     "message": "Очищать URL-адреса внутри параметров"
@@ -154,9 +132,6 @@
   "show_log": {
     "message": "Журнал"
   },
-  "show_log_link": {
-    "message": "Показать журнал очищенных URL-адресов"
-  },
   "log_descr": {
     "message": "Последние URL-адреса, очищенные Neat URL. Журнал хранится только в памяти и очищается после перезапуска браузера."
   },
@@ -164,18 +139,281 @@
     "message": "Фильтр"
   },
   "log_clear": {
-    "message": "Очистить"
+    "message": "Очистить журнал"
+  },
+  "log_save": {
+    "message": "Сохранить журнал для сообщения об ошибке",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Сообщить о проблеме"
+  },
+  "log_report_descr": {
+    "message": "URL очищается неправильно или сайт перестал работать? Сохраните журнал и приложите файл к новому issue на GitHub. Файл содержит URL-адреса ниже и ваши настройки, поэтому с помощью фильтра сохраните только нужные адреса."
+  },
+  "log_report_github": {
+    "message": "Новый issue на GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Вы уверены, что хотите очистить журнал? Будет удалено очищенных URL-адресов: $COUNT$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "URL-адреса ещё не очищались."
   },
-  "log_column_time": {
-    "message": "Время"
+  "log_empty_since": {
+    "message": "С $SINCE$ URL-адреса не очищались.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "Тип"
+  "log_column_rules": {
+    "message": "Правила",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "Что попадёт в файл"
+  },
+  "log_save_always": {
+    "message": "Всегда включается: версия Neat URL, ваш браузер и платформа, а также остальные настройки."
+  },
+  "log_save_urls": {
+    "message": "Показанные очищенные URL ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Ваши собственные правила"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Снимите отметку с того, что хотите оставить в тайне. В файле исключённые правила заменяются на «(own rule)»."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Отключённые стандартные параметры"
+  },
+  "log_save_cancel": {
+    "message": "Отмена"
+  },
+  "log_save_confirm": {
+    "message": "Сохранить"
+  },
+  "language": {
+    "message": "Язык"
+  },
+  "language_browser": {
+    "message": "Язык браузера",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Пожертвовать"
+  },
+  "menu_enabled": {
+    "message": "Включено",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Настройки"
+  },
+  "about": {
+    "message": "В $BROWSER$ URL очищаются с помощью $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Внешний вид"
+  },
+
+  "test_url": {
+    "message": "Проверить URL"
+  },
+
+  "test_url_descr": {
+    "message": "Вставьте URL, чтобы увидеть, что удалит Neat URL. Проверка использует настройки на этой странице, даже если они ещё не сохранены."
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL не изменяет этот URL."
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL не изменяет этот URL: очищаются только URL с http:// и https://."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL не изменяет этот URL: домен находится в списке «Черный список доменов»."
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL не изменяет этот URL: это подписанный URL («Не изменять подписанные URL-адреса» на вкладке Дополнительно)."
+  },
+
+  "test_url_suggestions": {
+    "message": "Какой параметр вы хотите удалить? Нажмите на правило, чтобы добавить его в блокируемые параметры, затем сохраните."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (все сайты)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (только $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (только с этим значением, только $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Это недопустимый URL."
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "Снимите отметку с параметра или категории, чтобы сохранить их в URL."
+  },
+
+  "search_params": {
+    "message": "Поиск параметров"
+  },
+
+  "default_params_count": {
+    "message": "Удаляется параметров: $ON$ из $TOTAL$",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "Элементов: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "Разделяйте элементы запятой или новой строкой."
+  },
+
+  "list_invalid": {
+    "message": "Недопустимо, игнорируется: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "Похоже на домен, а не на параметр: $ITEMS$. Для параметра на одном домене пишите parameter@domain.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Повторяется: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "Уже параметр, блокируемый по умолчанию: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL очищает URL запросов этих типов. По умолчанию — main_frame: страница, открытая во вкладке. См. <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>список типов ресурсов</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "Тип не выбран, поэтому используется main_frame."
+  },
+
+  "restore_defaults": {
+    "message": "Восстановить значения по умолчанию"
+  },
+
+  "restore_defaults_descr": {
+    "message": "Вернуть все настройки к значениям по умолчанию. Ничего не изменится, пока вы не сохраните."
+  },
+
+  "revert_changes": {
+    "message": "Отменить изменения"
+  },
+
+  "unsaved_changes": {
+    "message": "Есть несохранённые изменения."
+  },
+
+  "import_confirm": {
+    "message": "Импортировать настройки ($COUNT$) из $FILE$? Они заменят ваши текущие настройки.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

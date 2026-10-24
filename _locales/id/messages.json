@@ -1,0 +1,395 @@
+{
+  "extensionDescription": {
+    "message": "Membuang sampah dari URL."
+  },
+  "default_blocked_params": {
+    "message": "Parameter yang diblokir secara bawaan"
+  },
+  "default_blocked_params_descr": {
+    "message": "Ini adalah parameter yang dihapus Neat URL dari URL secara bawaan."
+  },
+  "blocked_params": {
+    "message": "Parameter yang diblokir"
+  },
+  "blocked_params_descr": {
+    "message": "Parameter yang akan dihapus dari URL (huruf besar dan kecil dibedakan). Gunakan parameter@domain.com untuk memblokir parameter hanya di satu domain.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Aturan parameter</a>"
+  },
+  "icon_animation": {
+    "message": "Animasi ikon"
+  },
+  "icon_animation_descr": {
+    "message": "Animasi yang ditampilkan saat Neat URL membersihkan URL."
+  },
+  "icon_animation_none": {
+    "message": "Tanpa animasi"
+  },
+  "icon_animation_missing_underscore": {
+    "message": "Garis bawah yang hilang"
+  },
+  "icon_animation_rotate": {
+    "message": "Putar ikon"
+  },
+  "icon_animation_surprise_me": {
+    "message": "Kejutkan saya"
+  },
+  "icon_theme": {
+    "message": "Tema ikon"
+  },
+  "icon_theme_descr": {
+    "message": "Ikon gelap digunakan secara bawaan. Anda bisa mengubah opsi ini untuk memakai ikon terang."
+  },
+  "icon_theme_dark": {
+    "message": "Selalu gunakan ikon gelap"
+  },
+  "icon_theme_light": {
+    "message": "Selalu gunakan ikon terang"
+  },
+  "show_counter": {
+    "message": "Tampilkan penghitung"
+  },
+  "show_counter_descr": {
+    "message": "Menampilkan penghitung jumlah URL yang ditulis ulang."
+  },
+  "counter_background_color": {
+    "message": "Warna latar penghitung"
+  },
+  "counter_background_color_descr": {
+    "message": "Warna latar yang dipakai penghitung."
+  },
+  "advanced": {
+    "message": "Lanjutan"
+  },
+  "advanced_descr": {
+    "message": "Opsi ini bisa menggigit."
+  },
+  "blacklist": {
+    "message": "Daftar hitam domain"
+  },
+  "blacklist_descr": {
+    "message": "Daftar domain. Neat URL tidak akan bekerja di situs web ini."
+  },
+  "url_request_types": {
+    "message": "Jenis permintaan URL"
+  },
+  "counter_default_color": {
+    "message": "Gunakan warna penghitung bawaan"
+  },
+  "savepreferences": {
+    "message": "Simpan preferensi"
+  },
+  "notify_preferences_saved": {
+    "message": "Preferensi disimpan"
+  },
+  "change_links_in_page": {
+    "message": "Ubah tautan di halaman"
+  },
+  "change_links_in_page_descr": {
+    "message": "Menghapus parameter yang diblokir dari semua tautan saat halaman dimuat."
+  },
+  "host_permission_missing": {
+    "message": "Neat URL memerlukan akses ke semua situs web untuk membersihkan URL."
+  },
+  "host_permission_grant": {
+    "message": "Izinkan akses"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori kembali menjadi Neat URL. Parameter Anda sendiri dan domain di daftar putih tetap disimpan: Anda dapat menemukannya di Parameter yang diblokir dan Daftar hitam domain."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
+  },
+  "clean_nested": {
+    "message": "Bersihkan URL di dalam parameter"
+  },
+  "clean_nested_descr": {
+    "message": "Juga membersihkan URL yang menjadi nilai sebuah parameter, misalnya ?url=https://example.com/?utm_source=x. Mati secara bawaan, karena beberapa situs web memeriksa bahwa tautan seperti itu tidak diubah."
+  },
+  "keep_signed_urls": {
+    "message": "Pertahankan URL bertanda tangan"
+  },
+  "keep_signed_urls_descr": {
+    "message": "Tidak mengubah URL dengan parameter tanda tangan (sig, hmac, atau nama yang berakhiran signature). Mengubahnya merusak unduhan dan tautan."
+  },
+  "import_export": {
+    "message": "Impor dan ekspor"
+  },
+  "import_export_descr": {
+    "message": "Simpan semua preferensi ke berkas, atau muat dari berkas."
+  },
+  "export_settings": {
+    "message": "Ekspor"
+  },
+  "import_settings": {
+    "message": "Impor"
+  },
+  "import_done": {
+    "message": "Preferensi diimpor."
+  },
+  "import_failed": {
+    "message": "Berkas ini tidak berisi preferensi Neat URL."
+  },
+  "show_log": {
+    "message": "Log"
+  },
+  "log_descr": {
+    "message": "URL terakhir yang dibersihkan Neat URL. Log hanya disimpan di memori dan kosong setelah peramban dimulai ulang."
+  },
+  "log_filter": {
+    "message": "Saring"
+  },
+  "log_clear": {
+    "message": "Hapus log"
+  },
+  "log_save": {
+    "message": "Simpan log untuk laporan bug",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Laporkan masalah"
+  },
+  "log_report_descr": {
+    "message": "Apakah URL dibersihkan dengan salah, atau situs web tidak berfungsi lagi? Simpan log dan lampirkan berkasnya ke issue baru di GitHub. Berkas itu berisi URL di bawah dan preferensi Anda, jadi gunakan saringan untuk menyimpan URL yang penting saja."
+  },
+  "log_report_github": {
+    "message": "Issue baru di GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Yakin ingin menghapus log? $COUNT$ URL yang telah dibersihkan di dalamnya akan dihapus.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_empty": {
+    "message": "Belum ada URL yang dibersihkan."
+  },
+  "log_empty_since": {
+    "message": "Tidak ada URL yang dibersihkan sejak $SINCE$.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_column_rules": {
+    "message": "Aturan",
+    "description": "Column with the parameter rules that cleaned the URL"
+  },
+  "log_save_title": {
+    "message": "Apa yang masuk ke berkas"
+  },
+  "log_save_always": {
+    "message": "Selalu disertakan: versi Neat URL, browser dan platform Anda, serta preferensi Anda yang lain."
+  },
+  "log_save_urls": {
+    "message": "URL yang dibersihkan yang ditampilkan ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Aturan Anda sendiri"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Hapus centang pada yang ingin Anda rahasiakan. Di dalam berkas, aturan yang tidak disertakan diganti dengan \"(own rule)\"."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Parameter bawaan yang tidak dicentang"
+  },
+  "log_save_cancel": {
+    "message": "Batal"
+  },
+  "log_save_confirm": {
+    "message": "Simpan"
+  },
+  "language": {
+    "message": "Bahasa"
+  },
+  "language_browser": {
+    "message": "Bahasa peramban",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Donasi"
+  },
+  "menu_enabled": {
+    "message": "Aktif",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Preferensi"
+  },
+  "about": {
+    "message": "Di $BROWSER$, URL dibersihkan dengan $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Tampilan"
+  },
+  "test_url": {
+    "message": "Uji URL"
+  },
+  "test_url_descr": {
+    "message": "Tempel URL untuk melihat apa yang dihapus Neat URL. Uji ini memakai preferensi di halaman ini, juga jika belum disimpan."
+  },
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+  "test_url_unchanged": {
+    "message": "Neat URL tidak mengubah URL ini."
+  },
+  "test_url_not_web": {
+    "message": "Neat URL tidak mengubah URL ini: hanya URL http:// dan https:// yang dibersihkan."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL tidak mengubah URL ini: domainnya ada di \"Daftar hitam domain\"."
+  },
+  "test_url_signed": {
+    "message": "Neat URL tidak mengubah URL ini: ini URL bertanda tangan (\"Pertahankan URL bertanda tangan\" di tab Lanjutan)."
+  },
+  "test_url_suggestions": {
+    "message": "Parameter mana yang ingin Anda hapus? Klik aturan untuk menambahkannya ke parameter yang diblokir, lalu simpan."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (semua situs web)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (hanya $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (hanya dengan nilai ini, hanya $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Ini bukan URL yang valid."
+  },
+  "default_blocked_params_uncheck": {
+    "message": "Hapus centang parameter atau kategori untuk mempertahankannya di URL."
+  },
+  "search_params": {
+    "message": "Cari parameter"
+  },
+  "default_params_count": {
+    "message": "$ON$ dari $TOTAL$ parameter dihapus",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "list_count": {
+    "message": "Item: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_hint": {
+    "message": "Pisahkan item dengan koma atau baris baru."
+  },
+  "list_invalid": {
+    "message": "Tidak valid, diabaikan: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_looks_like_domain": {
+    "message": "Tampak seperti domain, bukan parameter: $ITEMS$. Untuk parameter di satu domain, tulis parameter@domain.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Lebih dari sekali: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_already_default": {
+    "message": "Sudah menjadi parameter yang diblokir secara bawaan: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "url_request_types_choose_descr": {
+    "message": "Neat URL membersihkan URL dari jenis permintaan ini. Bawaannya main_frame: halaman yang dibuka di tab. Lihat <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>daftar jenis sumber daya</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+  "request_types_none": {
+    "message": "Tidak ada jenis yang dipilih, jadi main_frame dipakai."
+  },
+  "restore_defaults": {
+    "message": "Pulihkan bawaan"
+  },
+  "restore_defaults_descr": {
+    "message": "Mengembalikan semua preferensi ke nilai bawaannya. Tidak ada yang berubah sampai Anda menyimpan."
+  },
+  "revert_changes": {
+    "message": "Batalkan perubahan"
+  },
+  "unsaved_changes": {
+    "message": "Ada perubahan yang belum disimpan."
+  },
+  "import_confirm": {
+    "message": "Impor $COUNT$ preferensi dari $FILE$? Preferensi ini menggantikan preferensi Anda saat ini.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
+  }
+}

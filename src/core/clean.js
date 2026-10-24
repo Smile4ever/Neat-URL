@@ -96,6 +96,7 @@
 
 	// options.endings: set to false to skip ending rules
 	// options.nested: set to false to skip URLs inside parameter values (config.cleanNested)
+	// options.applied: a Set that gets the rules (as written in the preferences) that changed the URL
 	function cleanUrl(href, config, options){
 		return cleanUrlAtDepth(href, config, options || {}, 0);
 	}
@@ -119,18 +120,25 @@
 		// The excluded parameter always takes precedence, also over wildcards
 		let isExcluded = (key, value) => excludes.some((entry) => params.entryMatchesKey(entry, key, value));
 
+		// Remembers the rules that changed something, for the log
+		let apply = (entry) => {
+			if(entry && options.applied) options.applied.add(entry.raw);
+			return entry != undefined;
+		};
+		let findEntry = (entries, key, value) => entries.find((entry) => params.entryMatchesKey(entry, key, value));
+
 		let search = url.search.substring(1);
-		let newSearch = removeParams(search, (key, value) => !isExcluded(key, value) && queryEntries.some((entry) => params.entryMatchesKey(entry, key, value)));
+		let newSearch = removeParams(search, (key, value) => !isExcluded(key, value) && apply(findEntry(queryEntries, key, value)));
 		if(config.cleanNested && options.nested !== false && depth < MAX_NESTING){
 			newSearch = cleanNestedParams(newSearch, config, options, depth);
 		}
 
 		let hash = url.hash;
 		if(hash != ""){
-			if(byKind("hashClear").length > 0 || byKind("hashExact").some((entry) => entry.name == hash)){
+			if(apply(byKind("hashClear")[0] || byKind("hashExact").find((entry) => entry.name == hash))){
 				hash = "";
 			}else if(hashEntries.length > 0){
-				let fragment = removeParams(hash.substring(1), (key, value) => hashEntries.some((entry) => params.entryMatchesKey(entry, key, value)));
+				let fragment = removeParams(hash.substring(1), (key, value) => apply(findEntry(hashEntries, key, value)));
 				hash = fragment == "" ? "" : "#" + fragment;
 			}
 		}
@@ -146,6 +154,7 @@
 				let isProductPage = path.substring(0, index).includes("/dp/");
 				if(newSearch == "" || entry.force || isProductPage){
 					path = path.substring(0, index);
+					apply(entry);
 				}
 			}
 		}

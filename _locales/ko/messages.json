@@ -1,0 +1,395 @@
+{
+  "extensionDescription": {
+    "message": "URL에서 쓰레기를 제거합니다."
+  },
+  "default_blocked_params": {
+    "message": "기본 차단 매개변수"
+  },
+  "default_blocked_params_descr": {
+    "message": "Neat URL이 기본적으로 URL에서 제거하는 매개변수입니다."
+  },
+  "blocked_params": {
+    "message": "차단 매개변수"
+  },
+  "blocked_params_descr": {
+    "message": "URL에서 제거할 매개변수입니다(대소문자 구분). 한 도메인에서만 차단하려면 param@domain.com 형식을 사용하세요.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>매개변수 규칙</a>"
+  },
+  "icon_animation": {
+    "message": "아이콘 애니메이션"
+  },
+  "icon_animation_descr": {
+    "message": "Neat URL이 URL을 정리할 때 보여 줄 애니메이션입니다."
+  },
+  "icon_animation_none": {
+    "message": "애니메이션 없음"
+  },
+  "icon_animation_missing_underscore": {
+    "message": "사라지는 밑줄"
+  },
+  "icon_animation_rotate": {
+    "message": "아이콘 회전"
+  },
+  "icon_animation_surprise_me": {
+    "message": "놀라게 해 줘"
+  },
+  "icon_theme": {
+    "message": "아이콘 테마"
+  },
+  "icon_theme_descr": {
+    "message": "기본적으로 어두운 아이콘을 사용합니다. 밝은 아이콘을 사용하도록 이 옵션을 바꿀 수 있습니다."
+  },
+  "icon_theme_dark": {
+    "message": "항상 어두운 아이콘 사용"
+  },
+  "icon_theme_light": {
+    "message": "항상 밝은 아이콘 사용"
+  },
+  "show_counter": {
+    "message": "카운터 표시"
+  },
+  "show_counter_descr": {
+    "message": "다시 쓴 URL의 수를 보여 주는 카운터를 표시합니다."
+  },
+  "counter_background_color": {
+    "message": "카운터 배경색"
+  },
+  "counter_background_color_descr": {
+    "message": "카운터에 사용하는 배경색입니다."
+  },
+  "advanced": {
+    "message": "고급"
+  },
+  "advanced_descr": {
+    "message": "이 옵션들은 물 수도 있습니다."
+  },
+  "blacklist": {
+    "message": "도메인 차단 목록"
+  },
+  "blacklist_descr": {
+    "message": "도메인 목록입니다. Neat URL은 이 웹사이트에서 작동하지 않습니다."
+  },
+  "url_request_types": {
+    "message": "URL 요청 유형"
+  },
+  "counter_default_color": {
+    "message": "기본 카운터 색상 사용"
+  },
+  "savepreferences": {
+    "message": "환경설정 저장"
+  },
+  "notify_preferences_saved": {
+    "message": "환경설정을 저장했습니다"
+  },
+  "change_links_in_page": {
+    "message": "페이지의 링크 변경"
+  },
+  "change_links_in_page_descr": {
+    "message": "페이지를 불러올 때 모든 링크에서 차단 매개변수를 제거합니다."
+  },
+  "host_permission_missing": {
+    "message": "Neat URL이 URL을 정리하려면 모든 웹사이트에 접근할 수 있어야 합니다."
+  },
+  "host_permission_grant": {
+    "message": "접근 허용"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori가 다시 Neat URL이 되었습니다. 직접 추가한 매개변수와 허용 목록의 도메인은 그대로 유지됩니다. 차단 매개변수와 도메인 차단 목록에서 찾을 수 있습니다."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "확인"
+  },
+  "clean_nested": {
+    "message": "매개변수 안의 URL 정리"
+  },
+  "clean_nested_descr": {
+    "message": "매개변수 값인 URL도 정리합니다. 예: ?url=https://example.com/?utm_source=x. 일부 웹사이트는 이런 링크가 바뀌지 않았는지 확인하므로 기본적으로 꺼져 있습니다."
+  },
+  "keep_signed_urls": {
+    "message": "서명된 URL 유지"
+  },
+  "keep_signed_urls_descr": {
+    "message": "서명 매개변수(sig, hmac 또는 signature로 끝나는 이름)가 있는 URL은 바꾸지 않습니다. 바꾸면 다운로드와 링크가 깨집니다."
+  },
+  "import_export": {
+    "message": "가져오기 및 내보내기"
+  },
+  "import_export_descr": {
+    "message": "모든 환경설정을 파일로 저장하거나 파일에서 불러옵니다."
+  },
+  "export_settings": {
+    "message": "내보내기"
+  },
+  "import_settings": {
+    "message": "가져오기"
+  },
+  "import_done": {
+    "message": "환경설정을 가져왔습니다."
+  },
+  "import_failed": {
+    "message": "이 파일에는 Neat URL 환경설정이 없습니다."
+  },
+  "show_log": {
+    "message": "기록"
+  },
+  "log_descr": {
+    "message": "Neat URL이 최근에 정리한 URL입니다. 기록은 메모리에만 보관되며 브라우저를 다시 시작하면 비워집니다."
+  },
+  "log_filter": {
+    "message": "필터"
+  },
+  "log_clear": {
+    "message": "기록 지우기"
+  },
+  "log_save": {
+    "message": "버그 신고용으로 기록 저장",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "문제 신고"
+  },
+  "log_report_descr": {
+    "message": "URL이 잘못 정리되거나 웹사이트가 더 이상 작동하지 않나요? 기록을 저장하고 그 파일을 GitHub의 새 이슈에 첨부하세요. 파일에는 아래의 URL과 환경설정이 들어 있으므로, 필터를 사용해 필요한 URL만 저장하세요."
+  },
+  "log_report_github": {
+    "message": "GitHub에 새 이슈 만들기"
+  },
+  "log_clear_confirm": {
+    "message": "정말 기록을 지울까요? 정리된 URL $COUNT$개가 삭제됩니다.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_empty": {
+    "message": "아직 정리된 URL이 없습니다."
+  },
+  "log_empty_since": {
+    "message": "$SINCE$ 이후로 정리된 URL이 없습니다.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_column_rules": {
+    "message": "규칙",
+    "description": "Column with the parameter rules that cleaned the URL"
+  },
+  "log_save_title": {
+    "message": "파일에 포함되는 내용"
+  },
+  "log_save_always": {
+    "message": "항상 포함: Neat URL 버전, 브라우저와 플랫폼, 그 밖의 설정."
+  },
+  "log_save_urls": {
+    "message": "표시된 정리된 URL ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "사용자 규칙"
+  },
+  "log_save_own_rules_descr": {
+    "message": "공개하고 싶지 않은 항목은 선택을 해제하세요. 파일에서 제외된 규칙은 \"(own rule)\"로 바뀝니다."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "선택 해제한 기본 매개변수"
+  },
+  "log_save_cancel": {
+    "message": "취소"
+  },
+  "log_save_confirm": {
+    "message": "저장"
+  },
+  "language": {
+    "message": "언어"
+  },
+  "language_browser": {
+    "message": "브라우저 언어",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "후원하기"
+  },
+  "menu_enabled": {
+    "message": "사용",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "환경설정"
+  },
+  "about": {
+    "message": "$BROWSER$에서는 $ENGINE$(으)로 URL을 정리합니다.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "모양"
+  },
+  "test_url": {
+    "message": "URL 테스트"
+  },
+  "test_url_descr": {
+    "message": "URL을 붙여 넣어 Neat URL이 무엇을 제거하는지 확인하세요. 테스트는 아직 저장하지 않았더라도 이 페이지의 환경설정을 사용합니다."
+  },
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+  "test_url_unchanged": {
+    "message": "Neat URL은 이 URL을 바꾸지 않습니다."
+  },
+  "test_url_not_web": {
+    "message": "Neat URL은 이 URL을 바꾸지 않습니다: http:// 및 https:// URL만 정리합니다."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL은 이 URL을 바꾸지 않습니다: 도메인이 \"도메인 차단 목록\"에 있습니다."
+  },
+  "test_url_signed": {
+    "message": "Neat URL은 이 URL을 바꾸지 않습니다: 서명된 URL입니다(고급 탭의 \"서명된 URL 유지\")."
+  },
+  "test_url_suggestions": {
+    "message": "어떤 매개변수를 제거할까요? 규칙을 클릭하면 차단 매개변수에 추가됩니다. 그런 다음 저장하세요."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (모든 웹사이트)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ ($DOMAIN$만)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (이 값일 때만, $DOMAIN$만)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "올바른 URL이 아닙니다."
+  },
+  "default_blocked_params_uncheck": {
+    "message": "URL에 남겨 둘 매개변수나 카테고리의 선택을 해제하세요."
+  },
+  "search_params": {
+    "message": "매개변수 검색"
+  },
+  "default_params_count": {
+    "message": "매개변수 $TOTAL$개 중 $ON$개를 제거합니다",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "list_count": {
+    "message": "항목: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_hint": {
+    "message": "항목은 쉼표나 줄 바꿈으로 구분하세요."
+  },
+  "list_invalid": {
+    "message": "올바르지 않아 무시됨: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_looks_like_domain": {
+    "message": "매개변수가 아니라 도메인처럼 보입니다: $ITEMS$. 한 도메인의 매개변수는 parameter@domain 형식으로 쓰세요.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "두 번 이상 있음: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_already_default": {
+    "message": "이미 기본 차단 매개변수임: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "url_request_types_choose_descr": {
+    "message": "Neat URL은 이 유형의 요청 URL을 정리합니다. 기본값은 main_frame(탭에서 연 페이지)입니다. <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>리소스 유형 목록</a>을 참고하세요.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+  "request_types_none": {
+    "message": "선택한 유형이 없으므로 main_frame을 사용합니다."
+  },
+  "restore_defaults": {
+    "message": "기본값 복원"
+  },
+  "restore_defaults_descr": {
+    "message": "모든 환경설정을 기본값으로 되돌립니다. 저장할 때까지 아무것도 바뀌지 않습니다."
+  },
+  "revert_changes": {
+    "message": "변경 취소"
+  },
+  "unsaved_changes": {
+    "message": "저장하지 않은 변경 사항이 있습니다."
+  },
+  "import_confirm": {
+    "message": "$FILE$에서 환경설정 $COUNT$개를 가져올까요? 현재 환경설정을 대체합니다.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
+  }
+}

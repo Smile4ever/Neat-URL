@@ -6,19 +6,13 @@
     "message": "Standaard geblokkeerde parameters"
   },
   "default_blocked_params_descr": {
-    "message": "These are the default parameters that Neat URL will remove from the URL."
-  },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+    "message": "Deze parameters verwijdert Neat URL standaard uit de URL."
   },
   "blocked_params": {
     "message": "Geblokkeerde parameters"
   },
   "blocked_params_descr": {
-    "message": "Hoofdlettergevoelige parameters die uit de URL verwijderd zullen worden. Gebruik parameter@domein.com om domeinspecifieke geblokkeerde parameters te gebruiken. Gebruik een komma als scheidingsteken tussen geblokkeerde parameters.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "Hoofdlettergevoelige parameters die uit de URL verwijderd zullen worden. Gebruik parameter@domein.com om domeinspecifieke geblokkeerde parameters te gebruiken.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameterregels</a>"
   },
   "icon_animation": {
     "message": "Icoonanimatie"
@@ -50,12 +44,8 @@
   "icon_theme_light": {
     "message": "Gebruik altijd lichte icoontjes"
   },
-  "icon_theme_dark_notiflight": {
-    "message": "Gebruik donkere icoontjes behalve voor notificaties"
-  },
-  "icon_theme_light_notifdark": {
-    "message": "Gebruik lichte icoontjes behalve voor notificaties"
-  },
+
+
   "show_counter": {
 	  "message": "Toon teller"
   },
@@ -68,36 +58,22 @@
   "counter_background_color_descr": {
 	  "message": "De achtergrondkleur die gebruikt wordt door de teller."
   },
-  "enable_logging": {
-    "message": "Zet logging aan"
-  },
-  "enable_logging_descr": {
-    "message": "Log URL-veranderingen naar de browserconsole."
-  },
+
+
   "advanced": {
     "message": "Geavanceerd"
   },
   "advanced_descr": {
     "message": "Deze opties kunnen bijten."
   },
-  "theme": {
-	  "message": "Thema"
-  },
-  "theme_descr": {
-    "message": "Opties voor het icoon- en meldingenthema."
-  },
   "blacklist": {
     "message": "Zwarte lijst van domeinen"
   },
   "blacklist_descr": {
-    "message": "Kommagescheiden lijst van domeinen. Neat URL zal niet werken op deze websites."
+    "message": "Lijst van domeinen. Neat URL zal niet werken op deze websites."
   },
   "url_request_types": {
     "message": "URL-aanvraagtypes"
-  },
-  "url_request_types_descr": {
-    "message": "Standaardwaarde: main_frame. Deze lijst is kommagescheiden. Geldige waardes kunnen gevonden worden in <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>de lijst van aanvraagtypes</a>.",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
 	  "message": "Gebruik de standaard achtergrondkleur voor de teller"
@@ -109,16 +85,22 @@
     "message": "Voorkeuren opgeslagen"
   },
   "change_links_in_page": {
-    "message": "Change links in page"
+    "message": "Links in de pagina aanpassen"
   },
   "change_links_in_page_descr": {
-    "message": "Remove blocked parameters from all links when loading a page"
+    "message": "Verwijder geblokkeerde parameters uit alle links bij het laden van een pagina."
   },
   "host_permission_missing": {
     "message": "Neat URL heeft toegang tot alle websites nodig om URL's op te schonen."
   },
   "host_permission_grant": {
     "message": "Toegang verlenen"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori is weer Neat URL. Je eigen parameters en domeinen op de witte lijst zijn bewaard: je vindt ze bij Geblokkeerde parameters en Zwarte lijst van domeinen."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
   },
   "clean_nested": {
     "message": "URL's in parameters opschonen"
@@ -151,30 +133,291 @@
     "message": "Dit bestand bevat geen voorkeuren van Neat URL."
   },
   "show_log": {
-    "message": "Log"
+    "message": "Logboek"
   },
-  "show_log_link": {
-    "message": "Log van opgeschoonde URL's tonen"
-  },
+
   "log_descr": {
-    "message": "De laatste URL's die Neat URL heeft opgeschoond. De log staat alleen in het geheugen en is leeg na een herstart van de browser."
+    "message": "De laatste URL's die Neat URL heeft opgeschoond. Het logboek staat alleen in het geheugen en is leeg na een herstart van de browser."
   },
   "log_filter": {
     "message": "Filter"
   },
   "log_clear": {
-    "message": "Wissen"
+    "message": "Logboek wissen"
+  },
+  "log_save": {
+    "message": "Logboek bewaren voor een bugmelding",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Een probleem melden"
+  },
+  "log_report_descr": {
+    "message": "Wordt een URL verkeerd opgeschoond, of werkt een website niet meer? Bewaar het logboek en voeg het bestand toe aan een nieuwe melding op GitHub. Het bestand bevat de URL's hieronder en je voorkeuren, dus gebruik de filter om alleen de URL's te bewaren die ertoe doen."
+  },
+  "log_report_github": {
+    "message": "Nieuwe melding op GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Weet je zeker dat je het logboek wilt wissen? De $COUNT$ opgeschoonde URL's erin worden verwijderd.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "Er zijn nog geen URL's opgeschoond."
   },
-  "log_column_time": {
-    "message": "Tijd"
+  "log_empty_since": {
+    "message": "Er zijn nog geen URL's opgeschoond sinds $SINCE$.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "Type"
+  "log_column_rules": {
+    "message": "Regels",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "Wat er in het bestand komt"
+  },
+  "log_save_always": {
+    "message": "Altijd inbegrepen: de versie van Neat URL, je browser en platform, en je andere voorkeuren."
+  },
+  "log_save_urls": {
+    "message": "De getoonde opgeschoonde URL's ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Je eigen regels"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Vink uit wat je liever privé houdt. In het bestand worden weggelaten regels vervangen door \"(own rule)\"."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Uitgevinkte standaardparameters"
+  },
+  "log_save_cancel": {
+    "message": "Annuleren"
+  },
+  "log_save_confirm": {
+    "message": "Opslaan"
+  },
+  "language": {
+    "message": "Taal"
+  },
+  "language_browser": {
+    "message": "Taal van de browser",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Doneren"
+  },
+  "menu_enabled": {
+    "message": "Ingeschakeld",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Voorkeuren"
+  },
+  "about": {
+    "message": "In $BROWSER$ worden URL's opgeschoond met $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Uiterlijk"
+  },
+
+  "test_url": {
+    "message": "Test een URL"
+  },
+
+  "test_url_descr": {
+    "message": "Plak een URL om te zien wat Neat URL verwijdert. De test gebruikt de voorkeuren op deze pagina, ook als ze nog niet opgeslagen zijn."
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL verandert deze URL niet."
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL verandert deze URL niet: alleen http://- en https://-URLs worden opgeschoond."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL verandert deze URL niet: het domein staat in \"Zwarte lijst van domeinen\"."
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL verandert deze URL niet: het is een ondertekende URL (\"Ondertekende URL's ongemoeid laten\" op het tabblad Geavanceerd)."
+  },
+
+  "test_url_suggestions": {
+    "message": "Welke parameter wil je verwijderen? Klik op een regel om die aan de geblokkeerde parameters toe te voegen en sla daarna op."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (alle websites)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (alleen $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (alleen met deze waarde, alleen $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Dit is geen geldige URL."
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "Vink een parameter of categorie uit om die in URLs te behouden."
+  },
+
+  "search_params": {
+    "message": "Parameters zoeken"
+  },
+
+  "default_params_count": {
+    "message": "$ON$ van $TOTAL$ parameters worden verwijderd",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "Aantal: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "Scheid items met een komma of een nieuwe regel."
+  },
+
+  "list_invalid": {
+    "message": "Ongeldig, wordt genegeerd: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "Lijkt op een domein, niet op een parameter: $ITEMS$. Voor een parameter op één domein schrijf je parameter@domein.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Meer dan één keer: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "Al een standaard geblokkeerde parameter: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL schoont de URLs van deze soorten aanvragen op. De standaard is main_frame: de pagina die in een tabblad geopend wordt. Zie <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>de lijst van aanvraagtypes</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "Er is geen type gekozen, dus main_frame wordt gebruikt."
+  },
+
+  "restore_defaults": {
+    "message": "Standaardwaarden herstellen"
+  },
+
+  "restore_defaults_descr": {
+    "message": "Zet alle voorkeuren terug op hun standaardwaarde. Er verandert niets tot je opslaat."
+  },
+
+  "revert_changes": {
+    "message": "Wijzigingen ongedaan maken"
+  },
+
+  "unsaved_changes": {
+    "message": "Er zijn niet-opgeslagen wijzigingen."
+  },
+
+  "import_confirm": {
+    "message": "$COUNT$ voorkeuren importeren uit $FILE$? Ze vervangen je huidige voorkeuren.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

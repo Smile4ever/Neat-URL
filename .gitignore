@@ -1,2 +1,4 @@
 node_modules/
 dist/
+# Built by npm run build; every release has its zips on GitHub (Releases)
+web-ext-artifacts/

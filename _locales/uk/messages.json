@@ -4,22 +4,16 @@
     "description": "Description of the extension."
   },
   "default_blocked_params": {
-    "message": "Default blocked parameters"
+    "message": "Параметри, що блокуються за замовчуванням"
   },
   "default_blocked_params_descr": {
-    "message": "These are the default parameters that Neat URL will remove from the URL."
-  },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+    "message": "Ці параметри Neat URL за замовчуванням видаляє з URL."
   },
   "blocked_params": {
     "message": "Заблоковані параметри URL-адрес."
   },
   "blocked_params_descr": {
-    "message": "Чутливі до регістру параметри, котрі будуть видалені з URL. Використовуйте шаблон param@domain.com щоб застосовувати видалення параметрів для конкретних доменів. Розділяйте окремі параметри комою.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "Чутливі до регістру параметри, котрі будуть видалені з URL. Використовуйте шаблон param@domain.com щоб застосовувати видалення параметрів для конкретних доменів.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Правила параметрів</a>"
   },
   "icon_animation": {
     "message": "Анімація піктограми"
@@ -51,12 +45,6 @@
   "icon_theme_light": {
   	"message": "Завжди використовувати світлі піктограми"
   },
-  "icon_theme_dark_notiflight": {
-	  "message": "Використовувати темні піктограми, крім сповіщень"
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "Використовувати світі піктограми, крім сповіщень"
-  },
   "show_counter": {
 	  "message": "Показувати лічильник"
   },
@@ -69,39 +57,24 @@
   "counter_background_color_descr": {
 	  "message": "Колір фону, що використовується лічильником."
   },
-  "enable_logging": {
-    "message": "Ввімкнути ведення журналу"
-  },
-  "enable_logging_descr": {
-    "message": "Записувати зміни URL-адрес в консоль браузера"
-  },
+
   "advanced": {
 	  "message": "Додатково"
   },
   "advanced_descr": {
     "message": "Це параметри для досвідченого користувача."
   },
-  "theme": {
-	  "message": "Theme"
-  },
-  "theme_descr": {
-    "message": "Icon and notification theme options."
-  },
   "blacklist": {
   	"message": "Чорний список доменів"
   },
   "blacklist_descr": {
-	  "message": "Список доменів, розділений комами. Neat URL не буде спрацьовувати на цих веб-сайтах."
+	  "message": "Список доменів. Neat URL не буде спрацьовувати на цих веб-сайтах."
   },
   "url_request_types": {
     "message": "Типи URL-запитів"
   },
-  "url_request_types_descr": {
-    "message": "Значення за замовчуванням: main_frame. Цей список розділено комами. Допустимі значення можна знайти тут: <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types</a>.",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
-  },
   "counter_default_color": {
-	  "message": "Use the default counter color"
+	  "message": "Використовувати колір лічильника за замовчуванням"
   },
   "savepreferences": {
     "message": "Зберегти налаштування"
@@ -110,16 +83,22 @@
 	  "message": "Налаштування збережено"
   },
   "change_links_in_page": {
-    "message": "Change links in page"
+    "message": "Змінювати посилання на сторінці"
   },
   "change_links_in_page_descr": {
-    "message": "Remove blocked parameters from all links when loading a page"
+    "message": "Видаляти заблоковані параметри з усіх посилань під час завантаження сторінки."
   },
   "host_permission_missing": {
     "message": "Neat URL потрібен доступ до всіх сайтів, щоб очищати URL-адреси."
   },
   "host_permission_grant": {
     "message": "Дозволити доступ"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori знову став Neat URL. Ваші власні параметри й домени з білого списку збережено: вони у розділах «Заблоковані параметри» та «Чорний список доменів»."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
   },
   "clean_nested": {
     "message": "Очищати URL-адреси всередині параметрів"
@@ -154,9 +133,6 @@
   "show_log": {
     "message": "Журнал"
   },
-  "show_log_link": {
-    "message": "Показати журнал очищених URL-адрес"
-  },
   "log_descr": {
     "message": "Останні URL-адреси, які очистив Neat URL. Журнал зберігається лише в пам'яті й порожній після перезапуску браузера."
   },
@@ -164,18 +140,281 @@
     "message": "Фільтр"
   },
   "log_clear": {
-    "message": "Очистити"
+    "message": "Очистити журнал"
+  },
+  "log_save": {
+    "message": "Зберегти журнал для звіту про помилку",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Повідомити про проблему"
+  },
+  "log_report_descr": {
+    "message": "URL очищається неправильно або сайт перестав працювати? Збережіть журнал і додайте файл до нового issue на GitHub. Файл містить URL-адреси нижче та ваші налаштування, тож за допомогою фільтра збережіть лише потрібні адреси."
+  },
+  "log_report_github": {
+    "message": "Новий issue на GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Ви впевнені, що хочете очистити журнал? Буде видалено очищених URL-адрес: $COUNT$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "Ще жодну URL-адресу не очищено."
   },
-  "log_column_time": {
-    "message": "Час"
+  "log_empty_since": {
+    "message": "З $SINCE$ жодну URL-адресу не очищено.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "Тип"
+  "log_column_rules": {
+    "message": "Правила",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "Що потрапить у файл"
+  },
+  "log_save_always": {
+    "message": "Завжди включено: версія Neat URL, ваш браузер і платформа, а також інші налаштування."
+  },
+  "log_save_urls": {
+    "message": "Показані очищені URL ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Ваші власні правила"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Зніміть позначку з того, що хочете зберегти в таємниці. У файлі виключені правила замінюються на «(own rule)»."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Вимкнені стандартні параметри"
+  },
+  "log_save_cancel": {
+    "message": "Скасувати"
+  },
+  "log_save_confirm": {
+    "message": "Зберегти"
+  },
+  "language": {
+    "message": "Мова"
+  },
+  "language_browser": {
+    "message": "Мова браузера",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Пожертвувати"
+  },
+  "menu_enabled": {
+    "message": "Увімкнено",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Налаштування"
+  },
+  "about": {
+    "message": "У $BROWSER$ URL очищуються за допомогою $ENGINE$.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Вигляд"
+  },
+
+  "test_url": {
+    "message": "Перевірити URL"
+  },
+
+  "test_url_descr": {
+    "message": "Вставте URL, щоб побачити, що видалить Neat URL. Перевірка використовує налаштування на цій сторінці, навіть якщо їх ще не збережено."
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL не змінює цей URL."
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL не змінює цей URL: очищуються лише URL з http:// та https://."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL не змінює цей URL: домен є у списку «Чорний список доменів»."
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL не змінює цей URL: це підписаний URL («Не змінювати підписані URL-адреси» на вкладці Додатково)."
+  },
+
+  "test_url_suggestions": {
+    "message": "Який параметр ви хочете видалити? Натисніть на правило, щоб додати його до заблокованих параметрів, потім збережіть."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (усі веб-сайти)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (лише $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (лише з цим значенням, лише $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Це недійсний URL."
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "Зніміть позначку з параметра або категорії, щоб залишити їх в URL."
+  },
+
+  "search_params": {
+    "message": "Пошук параметрів"
+  },
+
+  "default_params_count": {
+    "message": "Видаляється параметрів: $ON$ з $TOTAL$",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "Елементів: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "Розділяйте елементи комою або новим рядком."
+  },
+
+  "list_invalid": {
+    "message": "Недійсне, ігнорується: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "Схоже на домен, а не на параметр: $ITEMS$. Для параметра на одному домені пишіть parameter@domain.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Повторюється: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "Вже є параметром, що блокується за замовчуванням: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL очищує URL запитів цих типів. За замовчуванням — main_frame: сторінка, відкрита у вкладці. Див. <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>список типів ресурсів</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "Тип не вибрано, тому використовується main_frame."
+  },
+
+  "restore_defaults": {
+    "message": "Відновити значення за замовчуванням"
+  },
+
+  "restore_defaults_descr": {
+    "message": "Повернути всі налаштування до значень за замовчуванням. Нічого не зміниться, доки ви не збережете."
+  },
+
+  "revert_changes": {
+    "message": "Скасувати зміни"
+  },
+
+  "unsaved_changes": {
+    "message": "Є незбережені зміни."
+  },
+
+  "import_confirm": {
+    "message": "Імпортувати налаштування ($COUNT$) з $FILE$? Вони замінять ваші поточні налаштування.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

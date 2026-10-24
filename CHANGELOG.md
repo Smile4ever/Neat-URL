@@ -1,26 +1,44 @@
-7.0.0 (unreleased)
+2026.10.24
 =====
-* 6.0.0 and 6.1.0 were never officially released, so this contains all their changes (see below)
+* The version is now the date of the release. This is the successor of 5.0.0 (and of Linkumori 166.0 formerly Neat URL in the Chrome Web Store).
+* Requirements: Firefox 140 or newer, or Chrome 121 or newer. Older browsers don't get this update.
+* 6.0.0 was never officially released, so this contains all its changes (see below)
+* Chrome: Neat URL replaces Linkumori, the temporary replacement in the Chrome Web Store. Its own parameters and whitelisted domains are added to Blocked parameters and Domain blacklist.
 * Manifest V3 for Firefox and Chrome, fixes #291 (Chrome MV3) and #303 (Chromium)
-    * Firefox 140 or newer: URLs are still cleaned with a blocking webRequest listener
-    * Chrome 121 or newer: URLs are cleaned with declarativeNetRequest rules
+    * Firefox: URLs are still cleaned with a blocking webRequest listener
+    * Chrome: URLs are cleaned with declarativeNetRequest rules
     * Supported features per browser: see docs/browser-support.md
-    * Firefox: the options page shows a button when Neat URL has no access to all websites
-    * Tested with Firefox 140 ESR, 153 and 158 (#316) and Chrome 156
-* New feature: keep signed URLs (sig, hmac, ...signature), fixes #314 and #315. On by default.
-* New feature: clean URLs inside parameters, up to three levels deep (?url=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dx). Off by default.
-* New feature: parameters with a value, for example ref=share@amazon.com, fixes #183
-* New feature: import and export of the preferences, fixes #175 and #301
-* New feature: a log page with the last 500 cleaned URLs and the removed parameters (right-click the toolbar button → Log). Kept in memory only.
-* New feature: wildcards in the domain blacklist (archive.*, *.archive.*), fixes #286
-* New feature: header lines ("Name:") in the parameter lists, fixes #285
-* Change links in page: also cleans links that the page adds later, when they are used
+    * Firefox: you can turn off access to all websites in the add-on manager. Neat URL then can't clean any URL, and the options page shows a button to allow access again.
+
+* New features
+    * Keep signed URLs (sig, hmac, ...signature), fixes #314 and #315. On by default.
+    * Clean URLs inside parameters, up to three levels deep (?url=https%3A%2F%2Fexample.com%2F%3Futm_source%3Dx). Off by default.
+    * Parameters with a value, for example ref=share@amazon.com, fixes #183
+    * Import and export of the preferences, fixes #175 and #301
+    * Groups in the parameter lists, with a header line ("Name:") or a label at the start of a line ("Tweakers: nb@tweakers.net, u@tweakers.net"), fixes #285. Before, such a label silently became a parameter named "Tweakers:nb".
+    * Wildcards in the domain blacklist (archive.*, *.archive.*), fixes #286
+    * Change links in page: also cleans links that the page adds later, when they are used
+
+* New options page in its own tab, with a dark theme
+    * Tabs Preferences, Appearance, Advanced and Log. The domain blacklist moved to Preferences.
+    * Test a URL: shows what Neat URL removes and which rules removed it, and suggests rules for the parameters that are left
+    * The default blocked parameters are a list per category: uncheck a parameter or category to keep it. This replaces "Override list for default blocked parameters".
+    * Log tab with the last 500 cleaned URLs and the rules that cleaned them, which can be saved for a bug report. Before saving, you see what goes into the file and can leave out the URLs and your own rules. The log is kept in memory only. This replaces the option "Enable logging".
+    * Unsaved changes are shown, with Undo changes and Ctrl+S
+    * The parameter lists warn about invalid rules, duplicates and parameters that are already a default
+    * A language picker, and better accessibility
+    * The cursor starts in Test a URL on Preferences, and in the filter on Log
+* Toolbar button: a click opens Test a URL for the current tab. Enable/disable moved to the right-click menu.
+* No more notifications, and no notifications permission: the options page shows "Preferences saved" itself. The icon themes "except for notifications" become dark or light.
+* New languages: Spanish, French, Italian, Polish, Traditional Chinese, Korean, Turkish and Indonesian
+* Translations: texts that were still in English are translated (German, Dutch, Russian, Ukrainian, Chinese), and the Japanese description is fixed
 
 * Updated default parameters
     * Removed assetId, assetType, campaignId, recipientId and siteId (Oracle Eloqua): too generic, fixes #299
     * Fixed ws_ab_test@*.aliexpress.com (the @ was missing)
-    * cid was already removed in 6.0.0, which also fixes #307 and #308 (Google sign-in)
-    * wt_zmc is removed from PDF links too (from TODO.md)
+    * Removed cid (see 6.0.0), which also fixes #307 and #308 (Google sign-in)
+    * wt_zmc is removed from PDF links too
+    * cxt, ref_*, s and t are removed on x.com too (they were only removed on twitter.com)
 
 * Bugs fixed
     * Wildcard parameters such as utm_* were only partly removed (every second parameter was skipped), fixes #223 and #297
@@ -35,23 +53,16 @@
     * Default parameters that were removed in Neat URL 4 no longer come back (they are added to the override list, or excluded if a wildcard covers them)
     * Suffix wildcards on short domains (x.*) didn't match
     * The domain blacklist matched parts of domain names (ample.com also excluded example.com)
-    * Other parameters keep their encoding
+    * The parameters that are kept are no longer re-encoded (q=a+b%20c)
     * Errors on the options page, and labels that pointed to the wrong option
-    * "browser is not defined" in the content script on Chromium browsers (#269)
-    * The upgrade from 5.0 or 6.x keeps the lines and headers of your parameter list
+    * "browser is not defined" in the content script on Chromium browsers, fixes #269
+    * The upgrade from 5.0 or 6.0 keeps the lines and headers of your parameter list
 
-* Changes
-    * Removed browser-polyfill and build.sh: build with npm run build, test with npm test and npm run test:e2e
+* For developers
+    * Build with npm run build, test with npm test and npm run test:e2e (replaces build.sh). browser-polyfill is removed.
     * Documentation in docs/ (browser support, architecture, development)
-    * Translations for the new texts in all languages
-
-6.1.0 (2024-09-?)
-==================
-* Since 6.0.0 was never officially released, this contains all changes from 6.0.0 and more
-* Changes
-    * Replace Promises by async/await code
-    * Updated build script
-    * Change homepage URL
+    * async/await instead of Promises
+    * The homepage is now https://github.com/Smile4ever/Neat-URL
 
 6.0.0 (2022-02-07)
 =====

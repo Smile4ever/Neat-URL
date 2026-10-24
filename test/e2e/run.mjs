@@ -65,10 +65,10 @@ async function launchChrome(){
 			let page = await browser.newPage();
 			let errors = [];
 			page.on("pageerror", (error) => errors.push(error.message));
-			await page.goto(`chrome-extension://${id}/log.html`);
+			await page.goto(`chrome-extension://${id}/options.html#log`);
 			await wait(500);
 			let result = await page.evaluate(`({
-				rows: document.querySelectorAll("#log tbody tr").length,
+				rows: document.querySelectorAll("#log li").length,
 				removed: document.querySelectorAll("#log del").length,
 				paypal: Array.from(document.querySelectorAll(".cleaned")).some((n) => n.textContent.endsWith("/paypalme/Smile4ever/10"))
 			})`);
@@ -108,7 +108,7 @@ async function launchFirefox(){
 			manifest.background.scripts.unshift("e2e-config.js");
 			fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest));
 			await browser.installExtension(dir);
-			await wait(1500);
+			await wait(2500); // the new copy must have stored its preferences
 		},
 		cleanup: () => fs.rmSync(variantRoot, { recursive: true, force: true })
 	};

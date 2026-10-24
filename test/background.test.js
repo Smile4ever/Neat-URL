@@ -37,6 +37,9 @@ function createBrowser(initialStorage, options){
 				store[key] = values[key];
 			}
 			if(name == "local") setTimeout(() => onChanged.fire(changes, name), 0);
+		},
+		remove: async (keys) => {
+			for(let key of [].concat(keys)) delete store[key];
 		}
 	});
 
@@ -46,9 +49,8 @@ function createBrowser(initialStorage, options){
 		runtime: { getManifest: () => ({ version: "5.0.0" }), getURL: (p) => p, onMessage: event(), onStartup: event(), onInstalled: event(), openOptionsPage: () => {} },
 		storage: { local: area(local, "local"), session: area(session, "session"), onChanged: onChanged },
 		action: { setIcon: () => {}, setTitle: () => {}, setBadgeText: () => {}, setBadgeBackgroundColor: () => {}, onClicked: event() },
-		contextMenus: { onClicked: event(), removeAll: async () => {}, create: () => {} },
-		tabs: { onActivated: event(), onUpdated: event(), onRemoved: event(), query: async () => [], update: () => {} },
-		notifications: { create: () => {} },
+		contextMenus: { onClicked: event(), removeAll: async () => {}, create: () => {}, update: async () => {} },
+		tabs: { onActivated: event(), onUpdated: event(), onRemoved: event(), query: async () => [], update: () => {}, created: [], create: async function(details){ this.created.push(details); } },
 		webRequest: { onBeforeRequest: event() },
 		fetchDelay: options.fetchDelay || 0
 	};
@@ -84,26 +86,39 @@ test("a request during startup waits for the preferences (B3)", async () => {
 	assert.strictEqual(result.redirectUrl, "https://example.com/?x=1");
 });
 
-test("toggle works after saving the preferences (B5)", async () => {
+test("the menu of the toolbar button enables and disables, also after saving the preferences (B5)", async () => {
 	let browser = createBrowser();
 	let context = loadBackground(browser);
 	await context.NeatURL.background.ensureState();
 	let listener = browser.webRequest.onBeforeRequest.listeners[0];
 
 	// Save preferences twice, like the options page does
-	await browser.storage.local.set({ neat_url_logging: false });
+	await browser.storage.local.set({ neat_url_show_counter: true });
 	await wait(50);
-	await browser.storage.local.set({ neat_url_logging: false });
+	await browser.storage.local.set({ neat_url_show_counter: true });
 	await wait(50);
 
-	assert.strictEqual(browser.action.onClicked.listeners.length, 1);
-	await Promise.all(browser.action.onClicked.fire());
+	assert.strictEqual(browser.contextMenus.onClicked.listeners.length, 1);
+	browser.contextMenus.onClicked.fire({ menuItemId: "neaturl-tb-enabled", checked: false });
 	await wait(50);
 	assert.strictEqual(listener(request("https://example.com/?utm_source=a")), undefined, "disabled after one click");
 
-	await Promise.all(browser.action.onClicked.fire());
+	browser.contextMenus.onClicked.fire({ menuItemId: "neaturl-tb-enabled", checked: true });
 	await wait(50);
 	assert.strictEqual(listener(request("https://example.com/?utm_source=a")).redirectUrl, "https://example.com/");
+});
+
+test("the toolbar button opens the options with the URL of the tab", async () => {
+	let browser = createBrowser();
+	loadBackground(browser);
+	browser.action.onClicked.fire({ url: "https://example.com/?utm_source=a&x=1" });
+	browser.action.onClicked.fire({ url: "about:blank" });
+	await wait(10);
+	assert.deepStrictEqual(browser.tabs.created.map((tab) => tab.url), [
+		"options.html?test=" + encodeURIComponent("https://example.com/?utm_source=a&x=1") + "#preferences",
+		"options.html#preferences"
+	]);
+	assert.strictEqual(browser.local.neat_url_enabled, undefined, "a click doesn't disable Neat URL");
 });
 
 test("migration doesn't remove own parameters on every start (B1, B2)", async () => {
@@ -155,4 +170,21 @@ test("cleaned URLs are kept in the log in storage.session", async () => {
 	assert.strictEqual(log[1].url, "https://example.com/?fbclid=a&x=1");
 	assert.strictEqual(log[1].cleaned, "https://example.com/?x=1");
 	assert.strictEqual(log[1].type, "main_frame");
+	// The rules that cleaned the URL, as written in the preferences
+	assert.deepStrictEqual(Array.from(log[0].rules), ["utm_*"]);
+	assert.deepStrictEqual(Array.from(log[1].rules), ["fbclid"]);
+});
+
+test("update from Linkumori: its settings are imported once and the options page explains it", async () => {
+	let browser = createBrowser({ PurifyUrlsSettings: { status: true }, customRules: [{ domain: "example.com", param: "ref" }], whitelist: ["bank.example"], theme: "dark" });
+	for(let i = 0; i < 2; i++){
+		let context = loadBackground(browser);
+		await context.NeatURL.background.ensureState();
+		await wait(10);
+	}
+	assert.strictEqual(browser.local.neat_url_blocked_params, "ref@*.example.com");
+	assert.strictEqual(browser.local.neat_url_blacklist, "bank.example");
+	assert.deepStrictEqual(["PurifyUrlsSettings", "customRules", "whitelist", "theme"].filter((key) => key in browser.local), []);
+	assert.strictEqual(browser.local.neat_url_linkumori_notice, true);
+	assert.deepStrictEqual(browser.tabs.created.map((tab) => tab.url), ["options.html#preferences"], "opened once");
 });

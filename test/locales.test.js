@@ -18,9 +18,25 @@ test("every locale has every message of the default locale", () => {
 
 test("every data-i18n id in the pages exists", () => {
 	let english = read("en");
-	for(let page of ["options.html", "log.html"]){
+	for(let page of ["options.html"]){
 		let html = fs.readFileSync(path.join(ROOT, page), "utf8");
 		let ids = Array.from(html.matchAll(/data-i18n(?:-placeholder)?="([^"]+)"/g), (match) => match[1]);
 		assert.deepStrictEqual(ids.filter((id) => !(id in english)), [], page);
+	}
+});
+
+test("the language picker of the options page has every locale", () => {
+	let code = fs.readFileSync(path.join(ROOT, "options.js"), "utf8");
+	let list = JSON.parse(/const LANGUAGES = (\{[^}]*\});/.exec(code)[1]);
+	assert.deepStrictEqual(Object.keys(list).sort(), fs.readdirSync(LOCALES).sort());
+});
+
+test("every message id in the scripts of the pages exists", () => {
+	let english = read("en");
+	for(let script of ["options.js", "log.js"]){
+		let code = fs.readFileSync(path.join(ROOT, script), "utf8");
+		let ids = Array.from(code.matchAll(/(?:\bmessage|getMessage)\("([^"]+)"/g), (match) => match[1]);
+		assert.ok(ids.length > 0, script);
+		assert.deepStrictEqual(ids.filter((id) => !(id in english)), [], script);
 	}
 });

@@ -4,22 +4,16 @@
     "description": "Beschreibung der Erweiterung."
   },
   "default_blocked_params": {
-    "message": "Default blocked parameters"
+    "message": "Standardmäßig blockierte Parameter"
   },
   "default_blocked_params_descr": {
-    "message": "These are the default parameters that Neat URL will remove from the URL."
-  },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+    "message": "Diese Parameter entfernt Neat URL standardmäßig aus der URL."
   },
   "blocked_params": {
     "message": "Blockierte Parameter"
   },
   "blocked_params_descr": {
-    "message": "Parameter (Groß-/Kleinschreibung wird beachtet), die von der URL entfernt werden. Benutze parameter@domain.com um domainspezifische blockierte Parameter zu verwenden. Benutze ein Komma als Trennzeichen zwischen blockierter Parameter.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "Parameter (Groß-/Kleinschreibung wird beachtet), die von der URL entfernt werden. Benutze parameter@domain.com um domainspezifische blockierte Parameter zu verwenden.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameterregeln</a>"
   },
   "icon_animation": {
     "message": "Icon-Animation"
@@ -51,13 +45,8 @@
   "icon_theme_light": {
 	  "message": "Immer helle Icons verwenden"
   },
-  "icon_theme_dark_notiflight": {
-  	"message": "Überall bis auf in Benachrichtigungen dunkle Icons verwenden",
-    "description": ""
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "Überall bis auf in Benachrichtigungen helle Icons verwenden"
-  },
+
+
   "show_counter": {
 	  "message": "Zähler anzeigen"
   },
@@ -70,36 +59,22 @@
   "counter_background_color_descr": {
 	  "message": "Die vom Zähler verwendete Hintergrundfarbe."
   },
-  "enable_logging": {
-    "message": "Logging aktivieren"
-  },
-  "enable_logging_descr": {
-    "message": "URL-Veränderungen in die Browserkonsole loggen."
-  },
+
+
   "advanced": {
 	  "message": "Erweitert"
   },
   "advanced_descr": {
     "message": "Diese Optionen können beißen."
   },
-  "theme": {
-	  "message": "Thema"
-  },
-  "theme_descr": {
-    "message": "Themenoptionen für Symbole und Benachrichtigungen."
-  },
   "blacklist": {
     "message": "Domain-Sperrliste"
   },
   "blacklist_descr": {
-    "message": "Durch Komma getrennte Liste an Domains. Neat URL wird auf diesen Webseiten nicht arbeiten."
+    "message": "Liste an Domains. Neat URL wird auf diesen Webseiten nicht arbeiten."
   },
   "url_request_types": {
     "message": "URL-Anfrage-Typen"
-  },
-  "url_request_types_descr": {
-    "message": "Standardwert: main_frame. Diese Liste ist kommasepariert. Gültige Werte können in der <a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>Liste von Ressourcen-Typen</a> gefunden werden.",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
   },
   "counter_default_color": {
 	  "message": "Die standardmäßige Zähler-Farbe verwenden"
@@ -111,16 +86,22 @@
 	  "message": "Einstellungen gespeichert"
   },
   "change_links_in_page": {
-    "message": "Change links in page"
+    "message": "Links in der Seite ändern"
   },
   "change_links_in_page_descr": {
-    "message": "Remove blocked parameters from all links when loading a page"
+    "message": "Blockierte Parameter beim Laden einer Seite aus allen Links entfernen."
   },
   "host_permission_missing": {
     "message": "Neat URL benötigt Zugriff auf alle Websites, um URLs zu bereinigen."
   },
   "host_permission_grant": {
     "message": "Zugriff erlauben"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori ist wieder Neat URL. Deine eigenen Parameter und die Domains auf der Whitelist bleiben erhalten: Du findest sie bei Blockierte Parameter und Domain-Sperrliste."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
   },
   "clean_nested": {
     "message": "URLs in Parametern bereinigen"
@@ -155,9 +136,7 @@
   "show_log": {
     "message": "Protokoll"
   },
-  "show_log_link": {
-    "message": "Protokoll der bereinigten URLs anzeigen"
-  },
+
   "log_descr": {
     "message": "Die letzten URLs, die Neat URL bereinigt hat. Das Protokoll wird nur im Arbeitsspeicher gehalten und ist nach einem Neustart des Browsers leer."
   },
@@ -165,18 +144,281 @@
     "message": "Filtern"
   },
   "log_clear": {
-    "message": "Leeren"
+    "message": "Protokoll leeren"
+  },
+  "log_save": {
+    "message": "Protokoll für einen Fehlerbericht speichern",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Ein Problem melden"
+  },
+  "log_report_descr": {
+    "message": "Wird eine URL falsch bereinigt oder funktioniert eine Website nicht mehr? Speichere das Protokoll und hänge die Datei an ein neues Issue auf GitHub an. Die Datei enthält die URLs unten und deine Einstellungen. Verwende also den Filter, um nur die wichtigen URLs zu speichern."
+  },
+  "log_report_github": {
+    "message": "Neues Issue auf GitHub"
+  },
+  "log_clear_confirm": {
+    "message": "Bist du sicher, dass du das Protokoll leeren möchtest? Die $COUNT$ bereinigten URLs darin werden entfernt.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "Es wurden noch keine URLs bereinigt."
   },
-  "log_column_time": {
-    "message": "Zeit"
+  "log_empty_since": {
+    "message": "Seit $SINCE$ wurden keine URLs bereinigt.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "Typ"
+  "log_column_rules": {
+    "message": "Regeln",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "Was in die Datei kommt"
+  },
+  "log_save_always": {
+    "message": "Immer enthalten: die Version von Neat URL, dein Browser und deine Plattform sowie deine übrigen Einstellungen."
+  },
+  "log_save_urls": {
+    "message": "Die angezeigten bereinigten URLs ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Deine eigenen Regeln"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Entferne den Haken bei allem, was du lieber privat hältst. In der Datei werden weggelassene Regeln durch \"(own rule)\" ersetzt."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "Abgewählte Standardparameter"
+  },
+  "log_save_cancel": {
+    "message": "Abbrechen"
+  },
+  "log_save_confirm": {
+    "message": "Speichern"
+  },
+  "language": {
+    "message": "Sprache"
+  },
+  "language_browser": {
+    "message": "Sprache des Browsers",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Spenden"
+  },
+  "menu_enabled": {
+    "message": "Aktiviert",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Einstellungen"
+  },
+  "about": {
+    "message": "In $BROWSER$ werden URLs mit $ENGINE$ bereinigt.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Darstellung"
+  },
+
+  "test_url": {
+    "message": "URL testen"
+  },
+
+  "test_url_descr": {
+    "message": "Füge eine URL ein, um zu sehen, was Neat URL entfernt. Der Test verwendet die Einstellungen auf dieser Seite, auch wenn sie noch nicht gespeichert sind."
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL ändert diese URL nicht."
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL ändert diese URL nicht: Nur http://- und https://-URLs werden bereinigt."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL ändert diese URL nicht: Die Domain steht in „Domain-Sperrliste“."
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL ändert diese URL nicht: Es ist eine signierte URL („Signierte URLs nicht ändern“ im Tab Erweitert)."
+  },
+
+  "test_url_suggestions": {
+    "message": "Welchen Parameter möchtest du entfernen? Klicke auf eine Regel, um sie zu den blockierten Parametern hinzuzufügen, und speichere danach."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (alle Webseiten)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (nur $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (nur mit diesem Wert, nur $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Das ist keine gültige URL."
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "Entferne das Häkchen bei einem Parameter oder einer Kategorie, um ihn in URLs zu behalten."
+  },
+
+  "search_params": {
+    "message": "Parameter suchen"
+  },
+
+  "default_params_count": {
+    "message": "$ON$ von $TOTAL$ Parametern werden entfernt",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "Anzahl: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "Trenne Einträge mit einem Komma oder einer neuen Zeile."
+  },
+
+  "list_invalid": {
+    "message": "Ungültig, wird ignoriert: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "Sieht aus wie eine Domain, nicht wie ein Parameter: $ITEMS$. Für einen Parameter auf einer Domain schreibe parameter@domain.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Mehrfach vorhanden: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "Bereits ein standardmäßig blockierter Parameter: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL bereinigt die URLs dieser Anfragetypen. Standard ist main_frame: die Seite, die in einem Tab geöffnet wird. Siehe die <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>Liste von Ressourcen-Typen</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "Kein Typ gewählt, daher wird main_frame verwendet."
+  },
+
+  "restore_defaults": {
+    "message": "Standardwerte wiederherstellen"
+  },
+
+  "restore_defaults_descr": {
+    "message": "Setzt alle Einstellungen auf ihre Standardwerte zurück. Erst beim Speichern ändert sich etwas."
+  },
+
+  "revert_changes": {
+    "message": "Änderungen verwerfen"
+  },
+
+  "unsaved_changes": {
+    "message": "Es gibt ungespeicherte Änderungen."
+  },
+
+  "import_confirm": {
+    "message": "$COUNT$ Einstellungen aus $FILE$ importieren? Sie ersetzen deine aktuellen Einstellungen.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

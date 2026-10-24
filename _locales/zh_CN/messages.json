@@ -3,22 +3,16 @@
     "message": "移除网址中的无用段。"
   },
   "default_blocked_params": {
-    "message": "Default blocked parameters (EN)"
+    "message": "默认拦截的参数"
   },
   "default_blocked_params_descr": {
-    "message": "These are the default parameters that Neat URL will remove from the URL. (EN)"
-  },
-  "override_default_blocked_params": {
-    "message": "Override list for default blocked parameters"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "To disable parameters that are part of the default blocked parameters, add them here. Use a comma as the delimiter between disabled default blocked parameters."
+    "message": "Neat URL 默认会从网址中移除这些参数。"
   },
   "blocked_params": {
     "message": "拦截参数"
   },
   "blocked_params_descr": {
-    "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。使用逗号分隔多个参数。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parameter rules</a>"
+    "message": "从网址中移除的参数，大小写敏感。拦截特定域名的参数可用例如 param@domain.com。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>参数规则</a>"
   },
   "icon_animation": {
     "message": "图标动画"
@@ -50,57 +44,36 @@
   "icon_theme_light": {
 	  "message": "始终使用明亮图标"
   },
-  "icon_theme_dark_notiflight": {
-	  "message": "使用暗色图标（通知除外）"
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "使用明亮图标（通知除外）"
-  },
   "show_counter": {
-	  "message": "Show counter"
+	  "message": "显示计数器"
   },
   "show_counter_descr": {
-	  "message": "Show a counter which displays the number of rewritten URLs."
+	  "message": "显示一个计数器，显示已改写的网址数量。"
   },
   "counter_background_color": {
-	  "message": "Counter background color"
+	  "message": "计数器背景颜色"
   },
   "counter_background_color_descr": {
-	  "message": "The background color used by the counter."
+	  "message": "计数器使用的背景颜色。"
   },
-  "enable_logging": {
-    "message": "启用日志"
-  },
-  "enable_logging_descr": {
-    "message": "将网址变更记录到浏览器控制台。"
-  },
+
   "advanced": {
 	  "message": "高级"
   },
   "advanced_descr": {
     "message": "慎重修改，以防故障。"
   },
-  "theme": {
-	  "message": "Theme"
-  },
-  "theme_descr": {
-    "message": "Icon and notification theme options."
-  },
   "blacklist": {
-	  "message": "Domain blacklist"
+	  "message": "域名黑名单"
   },
   "blacklist_descr": {
-  	"message": "Comma separated list of domains. Neat URL will not work on these websites."
+  	"message": "域名列表。Neat URL 不会在这些网站上运行。"
   },
   "url_request_types": {
     "message": "网址请求类型"
   },
-  "url_request_types_descr": {
-    "message": "默认值：main_frame。此列表以逗号分隔。有效值见<a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>资源类型列表</a>。",
-    "description": "Please leave the link intact. You can translate the normal text and the text 'the list of resource types'. The link must not be changed. main_frame must also stay the same."
-  },
   "counter_default_color": {
-	  "message": "Use the default counter color"
+	  "message": "使用默认的计数器颜色"
   },
   "savepreferences": {
     "message": "保存设置"
@@ -109,16 +82,22 @@
 	  "message": "设置已保存"
   },
   "change_links_in_page": {
-    "message": "Change links in page"
+    "message": "更改页面中的链接"
   },
   "change_links_in_page_descr": {
-    "message": "Remove blocked parameters from all links when loading a page"
+    "message": "加载页面时，从所有链接中移除拦截的参数。"
   },
   "host_permission_missing": {
     "message": "Neat URL 需要访问所有网站的权限才能清理网址。"
   },
   "host_permission_grant": {
     "message": "允许访问"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori 已恢复为 Neat URL。你自己的参数和白名单中的域名都已保留：可以在“拦截参数”和“域名黑名单”中找到它们。"
+  },
+  "linkumori_notice_dismiss": {
+    "message": "确定"
   },
   "clean_nested": {
     "message": "清理参数中的网址"
@@ -153,9 +132,6 @@
   "show_log": {
     "message": "日志"
   },
-  "show_log_link": {
-    "message": "显示已清理网址的日志"
-  },
   "log_descr": {
     "message": "Neat URL 最近清理的网址。日志只保存在内存中，重启浏览器后为空。"
   },
@@ -163,18 +139,281 @@
     "message": "筛选"
   },
   "log_clear": {
-    "message": "清除"
+    "message": "清除日志"
+  },
+  "log_save": {
+    "message": "保存日志以报告错误",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "报告问题"
+  },
+  "log_report_descr": {
+    "message": "网址清理得不对，或者某个网站无法正常使用？保存日志，并将文件附加到 GitHub 上的新 issue。该文件包含下方的网址和你的首选项，因此请使用筛选只保存相关的网址。"
+  },
+  "log_report_github": {
+    "message": "在 GitHub 上新建 issue"
+  },
+  "log_clear_confirm": {
+    "message": "确定要清除日志吗？将删除 $COUNT$ 个已清理的网址。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "尚未清理任何网址。"
   },
-  "log_column_time": {
-    "message": "时间"
+  "log_empty_since": {
+    "message": "自 $SINCE$ 以来尚未清理任何网址。",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "类型"
+  "log_column_rules": {
+    "message": "规则",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "网址"
+  "log_save_title": {
+    "message": "文件中包含的内容"
+  },
+  "log_save_always": {
+    "message": "始终包含：Neat URL 的版本、你的浏览器和平台，以及你的其他首选项。"
+  },
+  "log_save_urls": {
+    "message": "显示的已清理 URL（$COUNT$）",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "你的自定义规则"
+  },
+  "log_save_own_rules_descr": {
+    "message": "取消勾选你不想公开的内容。在文件中，被排除的规则会替换为“(own rule)”。"
+  },
+  "log_save_unchecked_defaults": {
+    "message": "已取消勾选的默认参数"
+  },
+  "log_save_cancel": {
+    "message": "取消"
+  },
+  "log_save_confirm": {
+    "message": "保存"
+  },
+  "language": {
+    "message": "语言"
+  },
+  "language_browser": {
+    "message": "浏览器语言",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "捐赠"
+  },
+  "menu_enabled": {
+    "message": "已启用",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "设置"
+  },
+  "about": {
+    "message": "在 $BROWSER$ 中，使用 $ENGINE$ 清理网址。",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "外观"
+  },
+
+  "test_url": {
+    "message": "测试网址"
+  },
+
+  "test_url_descr": {
+    "message": "粘贴一个网址，查看 Neat URL 会移除什么。测试使用此页面上的首选项，即使尚未保存。"
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URL 不会更改此网址。"
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URL 不会更改此网址：只清理 http:// 和 https:// 网址。"
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL 不会更改此网址：该域名在“Domain blacklist”中。"
+  },
+
+  "test_url_signed": {
+    "message": "Neat URL 不会更改此网址：这是一个已签名的网址（高级选项卡中的“保留已签名的网址”）。"
+  },
+
+  "test_url_suggestions": {
+    "message": "要移除哪个参数？点击一条规则即可将其添加到拦截的参数中，然后保存。"
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$（所有网站）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$（仅 $DOMAIN$）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$（仅限此值，仅 $DOMAIN$）",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "这不是有效的网址。"
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "取消勾选某个参数或类别，即可在网址中保留它。"
+  },
+
+  "search_params": {
+    "message": "搜索参数"
+  },
+
+  "default_params_count": {
+    "message": "将移除 $TOTAL$ 个参数中的 $ON$ 个",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "项目数：$COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "用逗号或换行分隔各项。"
+  },
+
+  "list_invalid": {
+    "message": "无效，已忽略：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "看起来是域名，而不是参数：$ITEMS$。若要指定某个域名的参数，请写成 parameter@domain。",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "重复：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "已是默认拦截的参数：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URL 会清理这些类型请求的网址。默认值为 main_frame：在标签页中打开的页面。参见<a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>资源类型列表</a>。",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "未选择类型，因此使用 main_frame。"
+  },
+
+  "restore_defaults": {
+    "message": "恢复默认值"
+  },
+
+  "restore_defaults_descr": {
+    "message": "将所有首选项恢复为默认值。保存前不会有任何更改。"
+  },
+
+  "revert_changes": {
+    "message": "撤销更改"
+  },
+
+  "unsaved_changes": {
+    "message": "有未保存的更改。"
+  },
+
+  "import_confirm": {
+    "message": "从 $FILE$ 导入 $COUNT$ 项首选项？它们将替换你当前的首选项。",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

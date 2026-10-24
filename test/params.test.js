@@ -47,6 +47,21 @@ test("parseList skips header lines", () => {
 	assert.deepStrictEqual(params.parseList("Campaign tracking (powerdns):\nhss_channel\n\nOther:\na, b"), ["hss_channel", "a", "b"]);
 });
 
+test("parseList skips labels at the start of a line", () => {
+	assert.deepStrictEqual(params.parseList("tweakers: umt@tweakers.net\ntest=222, google.com"), ["umt@tweakers.net", "test=222", "google.com"]);
+	assert.deepStrictEqual(params.parseList("Campaign tracking (Adobe):  sc_cid, mkt_tok"), ["sc_cid", "mkt_tok"]);
+	// Not a label: no space after the colon, or a comma, @ or = before it
+	assert.deepStrictEqual(params.parseList("a:b, c"), ["a:b", "c"]);
+	assert.deepStrictEqual(params.parseList("x@a.com, y: z"), ["x@a.com", "y:z"]);
+	assert.deepStrictEqual(params.parseList("ref=a: b"), ["ref=a:b"]);
+});
+
+test("splitLabel", () => {
+	assert.deepStrictEqual(params.splitLabel("Tweakers: nb@tweakers.net"), { label: "Tweakers: ", rules: "nb@tweakers.net" });
+	assert.deepStrictEqual(params.splitLabel("Header:"), { label: "Header:", rules: "" });
+	assert.deepStrictEqual(params.splitLabel("a, b"), { label: "", rules: "a, b" });
+});
+
 test("effectiveParams: defaults minus overrides plus own parameters", () => {
 	assert.deepStrictEqual(params.effectiveParams(["a", "b"], ["b"], ["c", "a"]), ["a", "c"]);
 });

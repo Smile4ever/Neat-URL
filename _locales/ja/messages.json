@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "URLからごみを除去するします。"
+    "message": "URLからごみを除去します。"
   },
   "default_blocked_params": {
     "message": "既定でブロックされるパラメーター"
@@ -8,17 +8,11 @@
   "default_blocked_params_descr": {
     "message": "Neat URLがURLから削除する、既定のパラメータです。"
   },
-  "override_default_blocked_params": {
-    "message": "既定でブロックされるパラメーターの上書きリスト"
-  },
-  "override_default_blocked_params_descr": {
-    "message": "既定でブロックされるパラメーターのうち、無効にしたいものをカンマで区切って書いて下さい。"
-  },
   "blocked_params": {
     "message": "ブロックされるパラメーター"
   },
   "blocked_params_descr": {
-    "message": "URLから削除したいパラメーターを、カンマで区切って書いて下さい。大文字と小文字は区別されます。ドメインを指定してブロックしたパラメーターを設定する場合は、param@domain.comの書式を使用してください。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>パラメーターの規則</a>"
+    "message": "URLから削除したいパラメーターを書いて下さい。大文字と小文字は区別されます。ドメインを指定してブロックしたパラメーターを設定する場合は、param@domain.comの書式を使用してください。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>パラメーターの規則</a>"
   },
   "icon_animation": {
     "message": "アイコンのアニメーション"
@@ -50,12 +44,8 @@
   "icon_theme_light": {
 	  "message": "常に明るいアイコンを使用する"
   },
-  "icon_theme_dark_notiflight": {
-	  "message": "通知を除いて、暗いアイコンを使用する"
-  },
-  "icon_theme_light_notifdark": {
-	  "message": "通知を除いて、明るいアイコンを使用する"
-  },
+
+
   "show_counter": {
 	  "message": "カウンターを表示"
   },
@@ -68,36 +58,22 @@
   "counter_background_color_descr": {
 	  "message": "カウンターが使用する背景色です。"
   },
-  "enable_logging": {
-    "message": "ログを有効にする"
-  },
-  "enable_logging_descr": {
-    "message": "URLの変更をブラウザのコンソールにログ出力します。"
-  },
+
+
   "advanced": {
 	  "message": "高度な設定"
   },
   "advanced_descr": {
     "message": "これらのオプションは悪い影響を及ぼすかもしれません。"
   },
-  "theme": {
-	  "message": "テーマ"
-  },
-  "theme_descr": {
-    "message": "アイコンと通知のテーマに関するオプションです。"
-  },
   "blacklist": {
     "message": "ドメインのブロックリスト"
   },
   "blacklist_descr": {
-    "message": "カンマで区切られたドメインのリストです。Neat URLは、これらのウェブサイトでは作動しません。"
+    "message": "ドメインのリストです。Neat URLは、これらのウェブサイトでは作動しません。"
   },
   "url_request_types": {
     "message": "URLのリクエスト型"
-  },
-  "url_request_types_descr": {
-    "message": "既定値: main_frame. このリストはカンマで区切られています。有効な値は、<a href='https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types (en-US)</a>で確認することができます。",
-    "description": "リンクはそのままにしておいてください。通常のテキストと 'the list of resource types' というテキストを翻訳することができます。リンクは変更しないでください。main_frameもそのままにしてください。"
   },
   "counter_default_color": {
 	  "message": "既定のカウンター色を使用する"
@@ -119,6 +95,12 @@
   },
   "host_permission_grant": {
     "message": "アクセスを許可"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori は Neat URL に戻りました。独自のパラメーターとホワイトリストのドメインは保持されています。「ブロックされるパラメーター」と「ドメインのブロックリスト」にあります。"
+  },
+  "linkumori_notice_dismiss": {
+    "message": "OK"
   },
   "clean_nested": {
     "message": "パラメーター内の URL をクリーンにする"
@@ -153,9 +135,7 @@
   "show_log": {
     "message": "ログ"
   },
-  "show_log_link": {
-    "message": "クリーンにした URL のログを表示"
-  },
+
   "log_descr": {
     "message": "Neat URL が最近クリーンにした URL です。ログはメモリーにのみ保存され、ブラウザーを再起動すると空になります。"
   },
@@ -163,18 +143,281 @@
     "message": "絞り込み"
   },
   "log_clear": {
-    "message": "消去"
+    "message": "ログを消去"
+  },
+  "log_save": {
+    "message": "バグ報告用にログを保存",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "問題を報告"
+  },
+  "log_report_descr": {
+    "message": "URL が正しくクリーンにされない、またはウェブサイトが動かなくなりましたか？ログを保存し、そのファイルを GitHub の新しい Issue に添付してください。ファイルには下の URL と設定が含まれるので、絞り込みを使って必要な URL だけを保存してください。"
+  },
+  "log_report_github": {
+    "message": "GitHub で新しい Issue を作成"
+  },
+  "log_clear_confirm": {
+    "message": "ログを消去してもよろしいですか？クリーンにした $COUNT$ 件の URL が削除されます。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "log_empty": {
     "message": "まだクリーンにした URL はありません。"
   },
-  "log_column_time": {
-    "message": "時刻"
+  "log_empty_since": {
+    "message": "$SINCE$ 以降、クリーンにした URL はありません。",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
   },
-  "log_column_type": {
-    "message": "種類"
+  "log_column_rules": {
+    "message": "ルール",
+    "description": "Column with the parameter rules that cleaned the URL"
   },
-  "log_column_url": {
-    "message": "URL"
+  "log_save_title": {
+    "message": "ファイルに含まれる内容"
+  },
+  "log_save_always": {
+    "message": "常に含まれるもの: Neat URL のバージョン、ブラウザーとプラットフォーム、その他の設定。"
+  },
+  "log_save_urls": {
+    "message": "表示中のクリーンアップされた URL ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "独自のルール"
+  },
+  "log_save_own_rules_descr": {
+    "message": "非公開にしたいものはチェックを外してください。ファイル内では、除外したルールは「(own rule)」に置き換えられます。"
+  },
+  "log_save_unchecked_defaults": {
+    "message": "チェックを外した既定のパラメーター"
+  },
+  "log_save_cancel": {
+    "message": "キャンセル"
+  },
+  "log_save_confirm": {
+    "message": "保存"
+  },
+  "language": {
+    "message": "言語"
+  },
+  "language_browser": {
+    "message": "ブラウザーの言語",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "寄付する"
+  },
+  "menu_enabled": {
+    "message": "有効",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "設定"
+  },
+  "about": {
+    "message": "$BROWSER$ では、URL は $ENGINE$ で整理されます。",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "外観"
+  },
+
+  "test_url": {
+    "message": "URLをテスト"
+  },
+
+  "test_url_descr": {
+    "message": "URLを貼り付けると、Neat URLが何を削除するかを確認できます。テストには、保存前であってもこのページの設定が使われます。"
+  },
+
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+
+  "test_url_unchanged": {
+    "message": "Neat URLはこのURLを変更しません。"
+  },
+
+  "test_url_not_web": {
+    "message": "Neat URLはこのURLを変更しません: クリーンにされるのはhttp://とhttps://のURLだけです。"
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URLはこのURLを変更しません: ドメインが「ドメインのブロックリスト」に含まれています。"
+  },
+
+  "test_url_signed": {
+    "message": "Neat URLはこのURLを変更しません: 署名付きURLです（高度な設定タブの「署名付き URL を変更しない」）。"
+  },
+
+  "test_url_suggestions": {
+    "message": "どのパラメーターを削除しますか？規則をクリックするとブロックするパラメーターに追加されます。その後、保存してください。"
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$（すべてのウェブサイト）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$（$DOMAIN$のみ）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$（この値の場合のみ、$DOMAIN$のみ）",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "有効なURLではありません。"
+  },
+
+  "default_blocked_params_uncheck": {
+    "message": "URLに残したいパラメーターやカテゴリーのチェックを外してください。"
+  },
+
+  "search_params": {
+    "message": "パラメーターを検索"
+  },
+
+  "default_params_count": {
+    "message": "$TOTAL$個中$ON$個のパラメーターが削除されます",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+
+  "list_count": {
+    "message": "項目数: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_hint": {
+    "message": "項目はカンマまたは改行で区切ってください。"
+  },
+
+  "list_invalid": {
+    "message": "無効なため無視されます: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_looks_like_domain": {
+    "message": "パラメーターではなくドメインのようです: $ITEMS$。特定のドメインのパラメーターには、parameter@domainと書いてください。",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "重複しています: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "list_already_default": {
+    "message": "既定でブロックされるパラメーターです: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+
+
+  "url_request_types_choose_descr": {
+    "message": "Neat URLは、これらの種類のリクエストのURLをクリーンにします。既定値はmain_frame（タブで開かれるページ）です。<a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>the list of resource types (en-US)</a>を参照してください。",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+
+  "request_types_none": {
+    "message": "種類が選択されていないため、main_frameが使われます。"
+  },
+
+  "restore_defaults": {
+    "message": "既定値に戻す"
+  },
+
+  "restore_defaults_descr": {
+    "message": "すべての設定を既定値に戻します。保存するまで何も変更されません。"
+  },
+
+  "revert_changes": {
+    "message": "変更を元に戻す"
+  },
+
+  "unsaved_changes": {
+    "message": "保存されていない変更があります。"
+  },
+
+  "import_confirm": {
+    "message": "$FILE$から$COUNT$個の設定をインポートしますか？現在の設定は置き換えられます。",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
   }
 }

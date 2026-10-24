@@ -1,17 +1,13 @@
 # Neat URL
 
-Neat URL is a browser extension that cleans URLs, removing parameters such as Google Analytics' utm parameters. [Download for Firefox][] or [download for Chrome][].
+Neat URL removes tracking parameters from the URLs you open, like Google Analytics' `utm_source`, Facebook's `fbclid` and Google Ads' `gclid`. The page loads without them, so the link you bookmark, copy or share is clean too.
+
+[Download for Firefox][] (Firefox 140 or newer) or [download for Chrome][] (Chrome 121 or newer).
 
 [Download for Firefox]: https://addons.mozilla.org/en-US/firefox/addon/neat-url/
 [Download for Chrome]: https://chrome.google.com/webstore/detail/neat-url/jchobbjgibcahbheicfocecmhocglkco
 
-Neat URL 7 requires Firefox 140 or newer, or Chrome 121 or newer. Almost every feature works in both browsers; see [Browser support](docs/browser-support.md) for the differences.
-
-## Documentation
-
-* [Browser support](docs/browser-support.md): which features work in Firefox and Chrome
-* [Architecture](docs/architecture.md): how Neat URL cleans URLs in each browser
-* [Development](docs/development.md): build, test and release
+![Test a URL on the options page of Neat URL](images/store/1-test-a-url.png)
 
 ## Example
 
@@ -21,20 +17,52 @@ Before:
 After:
 * https://www.phoronix.com/scan.php?page=news_item&px=Ioquake3-Auto-Updater
 
-## Why should I use this?
+## How to use it
 
-Are you tired of handing over data to Google or other companies?
+Neat URL works right after you install it: 170 well-known tracking parameters are removed by default. You only need the options if a website doesn't work, or if you want to remove more.
 
-Do you want to see neater URLs?
+* **Click the toolbar button** to open the options page with the URL of the current tab in Test a URL. You see which parameters are removed, and you can add a rule for the ones that are left.
+* **Right-click the toolbar button** to disable Neat URL (until the browser restarts), or to open the Log.
+* The **counter** on the toolbar button shows how many URLs were cleaned in the current tab.
 
-Neat URL is just what you're looking for!
+Almost every feature works in both browsers; see [Browser support](docs/browser-support.md) for the differences.
 
-## Default blocked parameters
+## Privacy
 
-[See the default configuration here](./data/default-params-by-category.json)
+Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs. The log of cleaned URLs is kept in memory only and is empty after a browser restart.
+
+## Options
+
+The options page has the tabs Preferences, Appearance, Advanced and Log. Changes are kept until you click Save (or press Ctrl+S); the bar at the bottom shows when there are unsaved changes. The language of the options page can be chosen at the top right (the language of the browser by default).
+
+* **Test a URL**: paste a URL to see which parameters Neat URL removes and which rules removed them. The test uses the preferences on the page, also before you save them. For every parameter that is left, it suggests a rule (`name` for all websites, `name@domain` for that domain only, `name=value@domain` for that domain only when the parameter has that value); a click adds the rule to the blocked parameters.
+* **Blocked parameters**: your own rules, see [Parameter rules](#parameter-rules).
+* **Domain blacklist**: Neat URL doesn't change URLs on these domains (and their subdomains). Wildcards work here too: `archive.*` for archive.org, archive.ph and so on, `*.archive.*` also for web.archive.org.
+* **Default blocked parameters**: a list per category with a search field. Uncheck a parameter or a whole category to keep it in URLs. ([The same list as a file](data/default-params-by-category.json).)
+* Below every list, the options page shows the number of items and warns about invalid rules, duplicates and parameters that are already a default.
+
+Appearance:
+
+* **Icon animation**, **icon theme** and the **counter** on the toolbar button, with its color.
+
+Advanced:
+
+* **Change links in page** (off by default): also clean the links in a page, so a copied link is clean too.
+* **Keep signed URLs** (on by default): URLs with a signature parameter (`sig`, `hmac` or a name that ends with `signature`, like `X-Amz-Signature`) are not changed, because the server rejects them after any change.
+* **Clean URLs inside parameters** (off by default): also clean a URL that is the value of a parameter, for example `https://example.com/?url=https%3A%2F%2Fexample.org%2F%3Futm_source%3Dx` becomes `https://example.com/?url=https%3A%2F%2Fexample.org%2F`. Some sites check that such a link was not changed (for example login redirects), so this is off by default.
+* **URL request types**: the kinds of requests that are cleaned, `main_frame` (the page in a tab) by default.
+* **Import and export**: save all preferences to a file, or load them from a file.
+* **Restore defaults**: puts all preferences back to their default values (after Save).
+
+Log:
+
+* The last cleaned URLs, with the removed parameters struck through and the rules that removed them. **Save log for a bug report** stores the log in a file with the technical details (version, browser, engine, platform and your preferences).
 
 ## Parameter rules
-A parameter is something that starts with ?. You can add your own parameter in the options of Neat URL. The ? is ommitted in the options, so a ?ved parameter becomes "ved". There are a few exceptions to this rule (see below)
+
+A parameter is a part of the URL after the `?`, separated by `&`: in `https://example.com/?utm_source=mail&id=5` the parameters are `utm_source` and `id`. In the options you only write the name, without `?` or `&`, so `?ved` becomes `ved`. There are a few exceptions to this rule (see below).
+
+Most people never need to write a rule themselves: Test a URL suggests one for every parameter that is left.
 
 Parameters can be global (for every domain):
 
@@ -43,18 +71,18 @@ Parameters can be global (for every domain):
 Parameters can contain @ signs (domain-specific):
 
     nb@tweakers.net
-    
+
 Parameters can contain @ signs with a wildcard so every subdomain will match too (root wildcard domain):
 
     param@*.wired.com
-    
+
 Parameters can contain @ signs with a wildcard at the end of a domain name (matches every domain name which begins with "google" and ends in an unknown suffix, called suffix wildcard domain):
 
     param@google.*
 
-Mixing a root wild card domain with a suffix wildcard domain in the same parameter is also possible:
+Mixing a root wildcard domain with a suffix wildcard domain in the same parameter is also possible:
 
-    param@*.google.* (too many wildcards)
+    param@*.google.*
 
 Parameters can contain a wildcard at the end or before the domain sign:
 
@@ -82,11 +110,15 @@ The list can be split into groups with a header line that ends with a colon:
     Tweakers:
     nb@tweakers.net, u@tweakers.net
 
+Or with a label at the start of a line (a colon followed by a space):
+
+    Tweakers: nb@tweakers.net, u@tweakers.net
+
 Other valid parameters - ending parameters (exceptions to the ? rule):
 
 |||
 | --- | --- |
-| `$/ref@amazon.*` | remove everything after `/ref` on Amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters. \n\nException: Amazon product pages parameters are cleaned like they contain two dollar signs |
+| `$/ref@amazon.*` | remove everything after `/ref` on Amazon domains - this will only apply when there are no query parameters left after removing the filtered query parameters.<br><br>Exception: Amazon product pages are cleaned as if the rule had two dollar signs |
 | `$$/ref@amazon.*` | remove everything after `/ref` on Amazon domains - this will always apply, even when there are other query parameters after removing the filtered query parameters - this option is available because the user should be in control but beware that double dollar signs are dangerous, it might break the URL |
 
 Other valid parameters - hash parameters (exceptions to the ? rule):
@@ -106,76 +138,34 @@ Invalid parameters:
 | `/ref@amazon.*$` | dollar sign should be at the beginning |
 | `ref@*` | domain cannot be a wildcard, use ref instead to apply globally |
 
-## Other options
-
-* **Domain blacklist**: Neat URL doesn't change URLs on these domains (and their subdomains). Wildcards work here too: `archive.*` for archive.org, archive.ph and so on, `*.archive.*` also for web.archive.org.
-* **Keep signed URLs** (on by default): URLs with a signature parameter (`sig`, `hmac` or a name that ends with `signature`, like `X-Amz-Signature`) are not changed, because the server rejects them after any change.
-* **Clean URLs inside parameters** (off by default): also clean a URL that is the value of a parameter, for example `https://example.com/?url=https%3A%2F%2Fexample.org%2F%3Futm_source%3Dx` becomes `https://example.com/?url=https%3A%2F%2Fexample.org%2F`. Some sites check that such a link was not changed (for example login redirects), so this is off by default.
-* **Change links in page** (off by default): also clean the links in a page, so a copied link is clean too.
-* **Import and export**: save all preferences to a file, or load them from a file.
-
-## Recommended parameters
-Parameters meant for the general public are included as default blocked parameters. You can add your own parameters for specific websites that are not (yet) supported by default. Parameters with only one or two letters will never be included in Neat URL by default, unless they can be given a domain.
-
-For Tweakers.net:
-nb@tweakers.net, u@tweakers.net
-
-For Vivaldi.com:
-#?pk_campaign@vivaldi.com, #?pk_kwd@vivaldi.com
-
-Google Analytics - tracking
-https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
-
-tid, aip, ds, qt, uid, uip, ua, geoid, dr, cn, cs, cm, ck, cc, ci, gclid, dclid, linkid
-cid (campaign id, but used for other purposes by other websites - not included by default anymore)
-
-Google (possibly tracking)
-* aqs (https://superuser.com/questions/653295/what-is-the-aqs-parameter-in-google-search-query)
-* psi (possibly Page Speed Insights - possibly tracking)
-
-Google (tracking status unknown)
-* bav, bih, biw, ech (https://www.google.be/webhp?bav=on.2,or.r_qf.&biw=1920&bih=957&dpr=1&ech=1&psi=sXm9VNzfM8LYaqTigegJ.1421703563661.3&ei=sXm9VNzfM8LYaqTigegJ&emsg=NCSR&noj=1)
-* bvm, csi, cp, dpr, dq, forward, iact, ndsp, pbx, pq, sa, scroll, sclient, stick, vet, yv (https://greasyfork.org/en/scripts/31223-remove-google-tracking-uwaa/code)
-* tbnid
-
-Google (non tracking)
-* oq (original query)
-* prmd (type of search - https://revadigital.com/2012/06/the-complicated-nature-of-google-urls/)
-* npa, sc, z (Disabling Advertising Personalization - https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters)
-
-Tracking
-* icid (https://www.kshb.com/livevideo?ICID=ref_fark)
-* sr_share (SimpleReach - https://web.archive.org/web/20190817204709/http://docs.simplereach.com/how-tos-1/setting-up-tracking-parameters-for-social-distribution)
-
-For addons.mozilla.org:
-src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
-
-(only works when extensions.webextensions.restrictedDomains is edited in about:config)
-(test URL https://support.mozilla.org/de/kb/enterprise-roots?as=u&utm_source=inproduct)
-
-Other parameters you can consider (website unknown)
-* iid
-* ijn
-* nid
-* ref_
-
 ## Help, it does not work!
-* Have you checked that the syntax you are using is valid?
-* WebExtensions (like Neat URL) aren't allow to work on several Mozilla domains. This is a security feature. To allow all WebExtensions to work on these websites, you need to edit extensions.webextensions.restrictedDomains in about:config.
-* A website doesn't work any more? Add the parameter to the override list (for a default parameter), add an exclusion like `!param@example.com`, or add the domain to the domain blacklist.
+* A website doesn't work any more? Uncheck the parameter in the default blocked parameters (for a default parameter), add an exclusion like `!param@example.com`, or add the domain to the domain blacklist.
+* Click the toolbar button on the page: the options page opens with that URL in Test a URL, so you see which parameters are removed and get suggestions for rules.
+* Open the Log tab of the options page (right-click the toolbar button → Log) to see which URLs were changed, which parameters were removed and which rules removed them.
+* Have you checked that the syntax of your rules is valid? The options page warns about invalid rules below the list.
 * Firefox: check that Neat URL has access to all websites (Add-ons → Neat URL → Permissions). The options page shows a button when access is missing.
-* Open the log (right-click the toolbar button → Log, or the link on the options page) to see which URLs were changed and which parameters were removed. With "Enable logging" the changes are also written to the browser console; in Chrome that is the console of the service worker (chrome://extensions → Neat URL → service worker).
+* Extensions (like Neat URL) aren't allowed to work on several Mozilla domains, such as addons.mozilla.org. This is a security feature of Firefox. To allow all extensions to work on these websites, you need to edit extensions.webextensions.restrictedDomains in about:config.
 * A hash that changes without loading a page (for example a link to #section on the same page) can't be cleaned. See [Browser support](docs/browser-support.md).
+* Still a problem? [Open an issue on GitHub](https://github.com/Smile4ever/Neat-URL/issues/new) and attach the file from **Save log for a bug report** on the Log tab.
+
+## Documentation
+
+* [Browser support](docs/browser-support.md): which features work in Firefox and Chrome
+* [Architecture](docs/architecture.md): how Neat URL cleans URLs in each browser
+* [Development](docs/development.md): build, test and release
+* [Recommended parameters](docs/recommended-parameters.md): notes about parameters that are, or could become, a default
+* [Store listing](docs/store-listing.md): the texts and screenshots for addons.mozilla.org and the Chrome Web Store
 
 ## History
 Neat URL is based on [Lean URL](https://github.com/xmikro/lean-url/).
 
 Neat URL contains a few improvements:
 * set your own URL parameters on the options page (to reach feature parity with Pure URL)
-* fixed for recent Firefox versions and compatible with Chrome
+* works in Firefox and Chrome (Manifest V3)
 * a nice animation and counter in the toolbar (can be changed or disabled)
 * domain-specific blocked parameters (to reach feature parity with Pure URL)
 * wildcard domain-specific blocked parameters
 * wildcard at the end of blocked parameters (general or domain-specific)
-* absolute wildcard parameter (domain-specific))
+* absolute wildcard parameter (domain-specific)
 * expanded default blocked parameter offering
+* Test a URL with suggested rules, and a log of the cleaned URLs

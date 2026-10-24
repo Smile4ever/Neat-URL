@@ -11,15 +11,15 @@ src/core/                     shared, no browser APIs (also runs in Node for the
   dnr.js                      compileDnrRules(config): the Chrome engine
   migrate.js                  migration of stored preferences between versions
 src/background/
-  common.js                   state, counter, icon animation, toggle, context menu, notifications
+  common.js                   state, counter, icon animation, toggle, context menu
   firefox.js                  blocking webRequest listener
   chrome.js                   installs the declarativeNetRequest rules, observes their redirects
   chrome-sw.js                service worker entry point (importScripts)
 src/content/
   links.js                    option "Change links in page"
-log.html, log.js              log page
+log.js                        the Log tab of the options page
 manifest.json                 works in both browsers; scripts/build.js makes one per browser
-options.html, options.js      options page (shared)
+options.html, options.js      options page in its own tab, with the tabs #preferences, #appearance, #advanced and #log
 data/                         default parameters, public suffixes
 ```
 
@@ -29,7 +29,9 @@ Both browsers use a non-persistent background in Manifest V3: a Firefox event pa
 
 * All listeners are registered synchronously when the script starts.
 * The preferences are loaded once into a state object (`ensureState()`) and reloaded on `storage.onChanged`. The options page only writes to `storage.local`.
-* The counter per tab is kept in `storage.session`, and the on/off state of the toolbar button in `storage.local` (reset to "on" by `runtime.onStartup`).
+* The options page has its own language picker (`neat_url_language` in `storage.local`, not part of the exported preferences). `browser.i18n` always uses the language of the browser, so for another language `options.js` loads `_locales/<language>/messages.json` and fills in the placeholders itself (`message()`); `log.js` uses the same function. The menu of the toolbar button still uses the language of the browser.
+* The options page keeps changes in the form until Save (or Ctrl+S). It compares the form with `storage.local` to show the save bar and warns before the tab is closed with unsaved changes. "Test a URL" runs `cleanUrl()` in the options page with the values of the form, so it also works before saving. The checkboxes of the default parameters write the override list (`neat_url_override_default_blocked_params`), which is a hidden field on the page.
+* The counter per tab is kept in `storage.session`, and the on/off state (the checkbox "Enabled" in the menu of the toolbar button) in `storage.local` (reset to "on" by `runtime.onStartup`).
 * Migration of stored preferences runs while the state loads, and only when `neat_url_version` is lower than the current version.
 
 ## Firefox engine
@@ -86,7 +88,7 @@ Rules can't decode and encode a parameter value (option "Clean URLs inside param
 
 ## Log
 
-`reportCleaned()` in `common.js` adds every cleaned URL to a list of the last 500 in `storage.session`. That storage is kept in memory only, so the log is empty after a browser restart, and it survives a suspended background. `log.html` reads the list and follows changes with `storage.onChanged`. In Chrome only the first internal redirect of a navigation is reported, so the log shows the result of `cleanUrl()`, which is where the chain of rules ends.
+`reportCleaned()` in `common.js` adds every cleaned URL to a list of the last 500 in `storage.session`. That storage is kept in memory only, so the log is empty after a browser restart, and it survives a suspended background. The Log tab of the options page (`log.js`) reads the list and follows changes with `storage.onChanged`. `neat_url_log_since` in `storage.session` is the moment the log started (set by the background when it is missing, so after a browser start, and by the Clear button); an empty log shows "No URLs have been cleaned since …" with that time. Every entry also has the rules that cleaned the URL, as written in the preferences: `reportCleaned()` runs `cleanUrl()` once more with `options.applied`, so this works the same for both browsers. Save on the Log tab downloads the shown entries as JSON, with the technical details for a bug report (`getTechnicalDetails()` in `log.js`): version, browser, engine, platform, user agent, language, whether Neat URL is enabled and has access to all websites, invalid rules, the number of `declarativeNetRequest` rules (Chrome) and all preferences; Clear asks for confirmation first. The menu of the toolbar button opens the options page on `#log`, in the tab that is already open if there is one. A click on the toolbar button opens `#preferences` with the URL of the tab (`options.html?test=<URL>`); an options page that is already open gets the message `show-options` instead, so it doesn't reload and keeps unsaved changes. In Chrome only the first internal redirect of a navigation is reported, so the log shows the result of `cleanUrl()`, which is where the chain of rules ends.
 
 ## Change links in page
 

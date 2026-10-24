@@ -1,102 +1,209 @@
+/* Log tab of the options page (uses the colors of options.css).
+   The marks of removed parts are also used by "Test a URL" on the Preferences tab. */
 :root {
-	--background: #ffffff;
-	--text: #15141a;
-	--muted: #5b5b66;
-	--border: #e0e0e6;
 	--removed: #c50042;
 	--removed-background: #ffe8ee;
-	--row: #f9f9fb;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: #1c1b22;
-		--text: #fbfbfe;
-		--muted: #bfbfc9;
-		--border: #3a3944;
 		--removed: #ff9aa2;
 		--removed-background: #4a1f2a;
-		--row: #23222b;
 	}
 }
 
-body {
-	margin: 0;
-	padding: 16px 24px;
-	background: var(--background);
-	color: var(--text);
-	font: 14px/1.4 system-ui, sans-serif;
-}
-
-h1 {
-	margin: 0 0 4px;
-	font-size: 20px;
-}
-
-header p {
-	margin: 0 0 12px;
+#view-log .intro, #empty {
 	color: var(--muted);
 }
 
-.toolbar {
+/* Report a problem: save the log for a bug report */
+#view-log .report {
 	display: flex;
-	gap: 8px;
-	margin-bottom: 16px;
+	align-items: center;
+	gap: 16px 24px;
+	margin: 16px 0 24px;
+	padding: 12px 16px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 4px;
 }
 
-.toolbar input {
+#view-log .report h2 {
+	margin: 0 0 4px;
+	font-size: 15px;
+}
+
+#view-log .report p {
+	margin: 0;
+	color: var(--muted);
+}
+
+#view-log .report-actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+#view-log .report-actions a::after {
+	content: " ↗";
+}
+
+/* What goes into the saved log */
+#save_log_dialog {
+	width: min(480px, calc(100vw - 32px));
+	box-sizing: border-box;
+	padding: 20px 24px;
+	color: var(--text);
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+#save_log_dialog::backdrop {
+	background: rgba(0, 0, 0, 0.4);
+}
+
+#save_log_dialog h2 {
+	margin: 0 0 8px;
+	font-size: 18px;
+}
+
+#save_log_dialog h3 {
+	margin: 20px 0 4px;
+	font-size: 15px;
+}
+
+#save_log_dialog p {
+	margin: 0 0 8px;
+}
+
+#save_log_dialog .include {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 0;
+}
+
+#save_log_dialog .include:has(input:disabled) {
+	color: var(--muted);
+}
+
+#save_log_dialog .count {
+	color: var(--muted);
+}
+
+#save_log_dialog .dialog-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 20px;
+}
+
+#view-log .toolbar {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+#view-log .toolbar input {
 	flex: 1;
 	max-width: 400px;
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
+/* One cleaned URL: time, the URL before and after, and the rules that removed the parameters */
+#log {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--border);
 }
 
-th {
-	text-align: left;
+#log li {
+	display: grid;
+	grid-template-columns: 90px minmax(0, 1fr) 200px;
+	gap: 4px 16px;
+	padding: 8px;
+	border-bottom: 1px solid var(--border);
+}
+
+#log li:nth-child(even) {
+	background: var(--surface);
+}
+
+#log .meta {
+	display: flex;
+	flex-direction: column;
 	color: var(--muted);
-	font-weight: normal;
-	border-bottom: 1px solid var(--border);
-	padding: 4px 8px;
-}
-
-td {
-	vertical-align: top;
-	padding: 6px 8px;
-	border-bottom: 1px solid var(--border);
-}
-
-tbody tr:nth-child(even) {
-	background: var(--row);
-}
-
-td.time, td.type {
 	white-space: nowrap;
-	color: var(--muted);
 }
 
-td.url {
-	word-break: break-all;
+#log .type {
+	font-size: 12px;
+}
+
+#log .url {
+	overflow-wrap: anywhere;
 	font-family: ui-monospace, monospace;
 	font-size: 13px;
 }
 
-.cleaned {
+#log .cleaned {
 	color: var(--muted);
 }
 
-.cleaned::before {
+#log .cleaned::before {
 	content: "→ ";
 }
 
-del {
+#log .rules {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+#log .rules code {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	padding: 0 6px;
+	font-size: 12px;
+	color: var(--muted);
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+	#view-log .report {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	#view-log .report-actions {
+		align-items: flex-start;
+	}
+
+	#log li {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	#log .meta {
+		flex-direction: row;
+		gap: 8px;
+	}
+
+	#log .rules {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+#log del, .test-result del {
 	color: var(--removed);
 	background: var(--removed-background);
 	text-decoration: line-through;
-}
-
-#empty {
-	color: var(--muted);
 }

@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout
@@ -24,10 +26,22 @@ jobs:
       run: npm test
     - name: Build
       run: |
-        npm run build:zip
+        npm run build
         echo "VERSION=$(node -p "require('./manifest.json').version")" >> "$GITHUB_ENV"
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
         name: neat-url-${{ env.VERSION }}
         path: web-ext-artifacts/neat_url-${{ env.VERSION }}.*.zip
+    - name: Tag and release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+          echo "Tag $VERSION already exists"
+        else
+          node scripts/changelog.js "$VERSION" > release-notes.md
+          gh release create "$VERSION" web-ext-artifacts/neat_url-$VERSION.*.zip \
+            --target "$GITHUB_SHA" --title "$VERSION" --notes-file release-notes.md
+        fi

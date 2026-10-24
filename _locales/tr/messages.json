@@ -1,0 +1,395 @@
+{
+  "extensionDescription": {
+    "message": "URL'lerdeki çöpleri temizler."
+  },
+  "default_blocked_params": {
+    "message": "Varsayılan engellenen parametreler"
+  },
+  "default_blocked_params_descr": {
+    "message": "Neat URL'nin varsayılan olarak URL'den kaldırdığı parametreler bunlardır."
+  },
+  "blocked_params": {
+    "message": "Engellenen parametreler"
+  },
+  "blocked_params_descr": {
+    "message": "URL'den kaldırılacak parametreler (büyük/küçük harf duyarlı). Bir parametreyi yalnızca bir alan adında engellemek için parametre@alanadi.com yazın.<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>Parametre kuralları</a>"
+  },
+  "icon_animation": {
+    "message": "Simge animasyonu"
+  },
+  "icon_animation_descr": {
+    "message": "Neat URL bir URL'yi temizlerken gösterilen animasyon."
+  },
+  "icon_animation_none": {
+    "message": "Animasyon yok"
+  },
+  "icon_animation_missing_underscore": {
+    "message": "Eksik alt çizgi"
+  },
+  "icon_animation_rotate": {
+    "message": "Simgeyi döndür"
+  },
+  "icon_animation_surprise_me": {
+    "message": "Beni şaşırt"
+  },
+  "icon_theme": {
+    "message": "Simge teması"
+  },
+  "icon_theme_descr": {
+    "message": "Varsayılan olarak koyu simgeler kullanılır. Açık simgeler kullanmak için bu seçeneği değiştirebilirsiniz."
+  },
+  "icon_theme_dark": {
+    "message": "Her zaman koyu simgeler kullan"
+  },
+  "icon_theme_light": {
+    "message": "Her zaman açık simgeler kullan"
+  },
+  "show_counter": {
+    "message": "Sayacı göster"
+  },
+  "show_counter_descr": {
+    "message": "Yeniden yazılan URL sayısını gösteren bir sayaç gösterir."
+  },
+  "counter_background_color": {
+    "message": "Sayaç arka plan rengi"
+  },
+  "counter_background_color_descr": {
+    "message": "Sayacın kullandığı arka plan rengi."
+  },
+  "advanced": {
+    "message": "Gelişmiş"
+  },
+  "advanced_descr": {
+    "message": "Bu seçenekler ısırabilir."
+  },
+  "blacklist": {
+    "message": "Alan adı kara listesi"
+  },
+  "blacklist_descr": {
+    "message": "Alan adı listesi. Neat URL bu web sitelerinde çalışmaz."
+  },
+  "url_request_types": {
+    "message": "URL istek türleri"
+  },
+  "counter_default_color": {
+    "message": "Varsayılan sayaç rengini kullan"
+  },
+  "savepreferences": {
+    "message": "Tercihleri kaydet"
+  },
+  "notify_preferences_saved": {
+    "message": "Tercihler kaydedildi"
+  },
+  "change_links_in_page": {
+    "message": "Sayfadaki bağlantıları değiştir"
+  },
+  "change_links_in_page_descr": {
+    "message": "Bir sayfa yüklenirken tüm bağlantılardan engellenen parametreleri kaldırır."
+  },
+  "host_permission_missing": {
+    "message": "Neat URL'nin URL'leri temizlemek için tüm web sitelerine erişmesi gerekir."
+  },
+  "host_permission_grant": {
+    "message": "Erişime izin ver"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori yeniden Neat URL oldu. Kendi parametreleriniz ve beyaz listedeki alan adları korundu: Engellenen parametreler ve Alan adı kara listesi bölümlerinde bulabilirsiniz."
+  },
+  "linkumori_notice_dismiss": {
+    "message": "Tamam"
+  },
+  "clean_nested": {
+    "message": "Parametrelerin içindeki URL'leri temizle"
+  },
+  "clean_nested_descr": {
+    "message": "Bir parametrenin değeri olan URL'yi de temizler, örneğin ?url=https://example.com/?utm_source=x. Bazı web siteleri böyle bir bağlantının değiştirilmediğini kontrol ettiği için varsayılan olarak kapalıdır."
+  },
+  "keep_signed_urls": {
+    "message": "İmzalı URL'leri koru"
+  },
+  "keep_signed_urls_descr": {
+    "message": "İmza parametresi (sig, hmac veya signature ile biten bir ad) olan URL'leri değiştirmez. Bunları değiştirmek indirmeleri ve bağlantıları bozar."
+  },
+  "import_export": {
+    "message": "İçe ve dışa aktar"
+  },
+  "import_export_descr": {
+    "message": "Tüm tercihleri bir dosyaya kaydedin veya bir dosyadan yükleyin."
+  },
+  "export_settings": {
+    "message": "Dışa aktar"
+  },
+  "import_settings": {
+    "message": "İçe aktar"
+  },
+  "import_done": {
+    "message": "Tercihler içe aktarıldı."
+  },
+  "import_failed": {
+    "message": "Bu dosya Neat URL tercihleri içermiyor."
+  },
+  "show_log": {
+    "message": "Günlük"
+  },
+  "log_descr": {
+    "message": "Neat URL'nin temizlediği son URL'ler. Günlük yalnızca bellekte tutulur ve tarayıcı yeniden başlatıldığında boşalır."
+  },
+  "log_filter": {
+    "message": "Filtrele"
+  },
+  "log_clear": {
+    "message": "Günlüğü temizle"
+  },
+  "log_save": {
+    "message": "Hata bildirimi için günlüğü kaydet",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "Sorun bildir"
+  },
+  "log_report_descr": {
+    "message": "Bir URL yanlış mı temizleniyor, ya da bir web sitesi artık çalışmıyor mu? Günlüğü kaydedin ve dosyayı GitHub'da yeni bir sorun kaydına ekleyin. Dosya aşağıdaki URL'leri ve tercihlerinizi içerir, bu yüzden yalnızca önemli URL'leri kaydetmek için filtreyi kullanın."
+  },
+  "log_report_github": {
+    "message": "GitHub'da yeni sorun kaydı"
+  },
+  "log_clear_confirm": {
+    "message": "Günlüğü temizlemek istediğinizden emin misiniz? Temizlenmiş $COUNT$ URL kaldırılacak.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_empty": {
+    "message": "Henüz hiçbir URL temizlenmedi."
+  },
+  "log_empty_since": {
+    "message": "$SINCE$ saatinden beri hiçbir URL temizlenmedi.",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_column_rules": {
+    "message": "Kurallar",
+    "description": "Column with the parameter rules that cleaned the URL"
+  },
+  "log_save_title": {
+    "message": "Dosyaya neler girer"
+  },
+  "log_save_always": {
+    "message": "Her zaman eklenir: Neat URL sürümü, tarayıcınız ve platformunuz ile diğer tercihleriniz."
+  },
+  "log_save_urls": {
+    "message": "Gösterilen temizlenmiş URL'ler ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "Kendi kurallarınız"
+  },
+  "log_save_own_rules_descr": {
+    "message": "Gizli tutmak istediklerinizin işaretini kaldırın. Dosyada, dışarıda bırakılan kuralların yerine \"(own rule)\" yazılır."
+  },
+  "log_save_unchecked_defaults": {
+    "message": "İşareti kaldırılmış varsayılan parametreler"
+  },
+  "log_save_cancel": {
+    "message": "İptal"
+  },
+  "log_save_confirm": {
+    "message": "Kaydet"
+  },
+  "language": {
+    "message": "Dil"
+  },
+  "language_browser": {
+    "message": "Tarayıcı dili",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "Bağış yap"
+  },
+  "menu_enabled": {
+    "message": "Etkin",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "Tercihler"
+  },
+  "about": {
+    "message": "$BROWSER$ içinde URL'ler $ENGINE$ ile temizlenir.",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "Görünüm"
+  },
+  "test_url": {
+    "message": "Bir URL'yi test et"
+  },
+  "test_url_descr": {
+    "message": "Neat URL'nin neyi kaldırdığını görmek için bir URL yapıştırın. Test, henüz kaydedilmemiş olsalar bile bu sayfadaki tercihleri kullanır."
+  },
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+  "test_url_unchanged": {
+    "message": "Neat URL bu URL'yi değiştirmez."
+  },
+  "test_url_not_web": {
+    "message": "Neat URL bu URL'yi değiştirmez: yalnızca http:// ve https:// URL'leri temizlenir."
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL bu URL'yi değiştirmez: alan adı \"Alan adı kara listesi\" içinde."
+  },
+  "test_url_signed": {
+    "message": "Neat URL bu URL'yi değiştirmez: bu imzalı bir URL (Gelişmiş sekmesinde \"İmzalı URL'leri koru\")."
+  },
+  "test_url_suggestions": {
+    "message": "Hangi parametreyi kaldırmak istiyorsunuz? Engellenen parametrelere eklemek için bir kurala tıklayın, sonra kaydedin."
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$ (tüm web siteleri)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$ (yalnızca $DOMAIN$)",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$ (yalnızca bu değerle, yalnızca $DOMAIN$)",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "Bu geçerli bir URL değil."
+  },
+  "default_blocked_params_uncheck": {
+    "message": "URL'lerde tutmak için bir parametrenin veya kategorinin işaretini kaldırın."
+  },
+  "search_params": {
+    "message": "Parametre ara"
+  },
+  "default_params_count": {
+    "message": "$TOTAL$ parametreden $ON$ tanesi kaldırılıyor",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "list_count": {
+    "message": "Öğe: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_hint": {
+    "message": "Öğeleri virgül veya yeni satırla ayırın."
+  },
+  "list_invalid": {
+    "message": "Geçersiz, yok sayıldı: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_looks_like_domain": {
+    "message": "Parametre değil, alan adına benziyor: $ITEMS$. Bir alan adındaki parametre için parametre@alanadi yazın.",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "Birden fazla kez: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_already_default": {
+    "message": "Zaten varsayılan engellenen parametre: $ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "url_request_types_choose_descr": {
+    "message": "Neat URL bu istek türlerinin URL'lerini temizler. Varsayılan main_frame'dir: bir sekmede açılan sayfa. Bkz. <a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>kaynak türleri listesi</a>.",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+  "request_types_none": {
+    "message": "Hiçbir tür seçilmedi, bu nedenle main_frame kullanılıyor."
+  },
+  "restore_defaults": {
+    "message": "Varsayılanları geri yükle"
+  },
+  "restore_defaults_descr": {
+    "message": "Tüm tercihleri varsayılan değerlerine döndürür. Kaydedene kadar hiçbir şey değişmez."
+  },
+  "revert_changes": {
+    "message": "Değişiklikleri geri al"
+  },
+  "unsaved_changes": {
+    "message": "Kaydedilmemiş değişiklikler var."
+  },
+  "import_confirm": {
+    "message": "$FILE$ dosyasından $COUNT$ tercih içe aktarılsın mı? Mevcut tercihlerinizin yerini alacaklar.",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
+  }
+}

@@ -68,6 +68,7 @@
 	{ "name": "signed URL with X-Amz-Signature is kept", "url": "https://bucket.s3.amazonaws.com/f?utm_source=x&X-Amz-Signature=1", "expected": "https://bucket.s3.amazonaws.com/f?utm_source=x&X-Amz-Signature=1" },
 	{ "name": "signed URLs can be changed when the option is off", "config": {"keepSigned": false}, "url": "https://files.example.com/download?id=1&utm_source=x&sig=abc", "expected": "https://files.example.com/download?id=1&sig=abc" },
 	{ "name": "header lines in the parameter list (#285)", "config": {"blocked": "My rules:\nfoo, bar\nOther:\nbaz@example.com"}, "url": "https://example.com/?foo=1&bar=2&baz=3&keep=4", "expected": "https://example.com/?keep=4" },
+	{ "name": "labels in the parameter list", "config": {"blocked": "tweakers: umt@tweakers.net\nMine: test=222, foo"}, "url": "https://tweakers.net/artikel/?umt=test&test=222&foo=1&keep=4", "expected": "https://tweakers.net/artikel/?keep=4" },
 	{ "name": "blacklist with a suffix wildcard (#286)", "config": {"blacklist": "archive.*"}, "url": "https://archive.ph/?utm_source=a", "expected": "https://archive.ph/?utm_source=a" },
 	{ "name": "blacklist with a root and suffix wildcard", "config": {"blacklist": "*.archive.*"}, "url": "https://web.archive.org/web/2020/?utm_source=a", "expected": "https://web.archive.org/web/2020/?utm_source=a" },
 	{ "name": "cid is not a default any more (#307, #314)", "url": "https://accounts.google.com/signin?cid=1&continue=x", "expected": "https://accounts.google.com/signin?cid=1&continue=x" },
@@ -75,5 +76,7 @@
 	{ "name": "ws_ab_test on AliExpress", "url": "https://www.aliexpress.com/item/1.html?ws_ab_test=1&x=2", "expected": "https://www.aliexpress.com/item/1.html?x=2" },
 	{ "name": "wt_zmc on a PDF", "url": "https://advise.zeit.de/wp-content/uploads/2023/02/ZEITReisetraeume2023-2.pdf?wt_zmc=nl.int.zonaudev.77556405706_414236646305.nl_ref.", "expected": "https://advise.zeit.de/wp-content/uploads/2023/02/ZEITReisetraeume2023-2.pdf" },
 	{ "name": "cxt on twitter.com without www (#288)", "url": "https://twitter.com/x/status/1?cxt=HHw", "expected": "https://twitter.com/x/status/1" },
+	{ "name": "share parameters on x.com", "url": "https://x.com/x/status/1?s=20&t=abc&cxt=HHw&ref_src=twsrc", "expected": "https://x.com/x/status/1" },
+	{ "name": "share parameters on mobile.x.com", "url": "https://mobile.x.com/x/status/1?s=20&t=abc", "expected": "https://mobile.x.com/x/status/1" },
 	{ "name": "PayPal donation link from addons.mozilla.org", "url": "https://www.paypal.com/paypalme/Smile4ever/10?utm_content=product-page-contribute&utm_medium=referral&utm_source=addons.mozilla.org", "expected": "https://www.paypal.com/paypalme/Smile4ever/10" }
 ]

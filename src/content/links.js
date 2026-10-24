@@ -13,7 +13,6 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		if(!/^https?:/i.test(link.href)) return;
 		let cleaned = NeatURL.clean.cleanUrl(link.href, settings.config);
 		if(cleaned == link.href) return;
-		if(settings.logging) console.log("[Neat URL]: link changed to " + cleaned);
 		link.href = cleaned;
 	}
 

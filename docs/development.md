@@ -19,16 +19,10 @@ Each browser uses its own background (Firefox `background.scripts`, Chrome `back
 ## Build
 
 ```sh
-npm run build        # dist/firefox and dist/chrome
-npm run build:zip    # also web-ext-artifacts/neat_url-<version>.<browser>.zip
+npm run build    # web-ext-artifacts/neat_url-<version>.<browser>.zip
 ```
 
-The build copies only the files that one browser needs, and removes the manifest keys and permissions of the other browser. The version is in `manifest.json`.
-
-To try a build:
-
-* Firefox: `about:debugging` → This Firefox → Load Temporary Add-on → `dist/firefox/manifest.json`
-* Chrome: `chrome://extensions` → Developer mode → Load unpacked → `dist/chrome`
+The build copies only the files that one browser needs, and removes the manifest keys and permissions of the other browser. The version is in `manifest.json`. The zips are made from `dist/firefox` and `dist/chrome`, which the e2e test and `npm run lint:firefox` also use.
 
 ## Tests
 
@@ -64,22 +58,24 @@ node test/e2e/debug-chrome.mjs "ref, !ref@amazon.co.uk" "https://www.amazon.co.u
 
 ## Translations
 
-Texts are in `_locales/<language>/messages.json`. English (`en`) is the default. `npm test` fails when a language misses a text that English has, or when `options.html` uses an id that doesn't exist. So a new text must be added to every language.
+Texts are in `_locales/<language>/messages.json`. English (`en`) is the default. `npm test` fails when a language misses a text that English has, or when `options.html` uses an id that doesn't exist. So a new text must be added to every language. A new language also needs a line in `LANGUAGES` in `options.js` (the language picker); `npm test` checks that too.
 
 ## Release checklist
 
-1. Update the version in `manifest.json` and `CHANGELOG.md`.
+1. Update the version in `manifest.json` and `CHANGELOG.md`. The version is the date of the release, without leading zeros: `2026.10.24`, `2026.11.5`. A second release on the same day gets a fourth number: `2026.11.5.1`.
 2. `npm test`, `npm run test:e2e` and `npm run lint:firefox` pass.
 3. Manual check in Firefox:
    * fresh install, then a link with `utm_source` and `fbclid`
-   * update from the previous release with your own parameters and removed defaults: nothing lost, removed defaults stay off. For 7.0.0: update from 5.0.0 (the last release) with a real profile, and from 4.1.5.
-   * save the preferences, then turn Neat URL off and on with the toolbar button
+   * update from the previous release with your own parameters and removed defaults: nothing lost, removed defaults stay off. For 2026.10.24: update from 5.0.0 (the last release) with a real profile, and from 4.1.5.
+   * save the preferences, then turn Neat URL off and on with the menu of the toolbar button (right-click → Enabled)
+   * click the toolbar button on a page with `utm_source`: the options page opens with that URL in Test a URL, also when it is already open
    * restart the browser with restored tabs
    * counter, animation, a link to addons.mozilla.org
    * the options "Clean URLs inside parameters" and "Change links in page"
    * export the preferences, change something, import the file again
+   * options page: Test a URL, uncheck a default parameter (Test a URL no longer removes it), unsaved changes bar, Undo changes, Restore defaults
    * sign in to a Google account and download a file from a site with signed links (#307, #314)
    * turn off access to all websites in the add-on manager: the options page shows the button to allow it again
 4. The same manual check in Chrome (without addons.mozilla.org and the access button).
-5. `npm run build:zip` and upload `web-ext-artifacts/neat_url-<version>.firefox.zip` to AMO and `neat_url-<version>.chrome.zip` to the Chrome Web Store.
+5. `npm run build` and upload `web-ext-artifacts/neat_url-<version>.firefox.zip` to AMO and `neat_url-<version>.chrome.zip` to the Chrome Web Store.
 6. Chrome Web Store: the privacy form asks for a reason per permission. Use the "Why" column of the permissions table in [browser-support.md](browser-support.md). Neat URL collects no data and sends nothing anywhere.

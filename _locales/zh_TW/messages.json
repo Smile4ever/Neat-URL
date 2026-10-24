@@ -1,0 +1,395 @@
+{
+  "extensionDescription": {
+    "message": "移除網址中的垃圾。"
+  },
+  "default_blocked_params": {
+    "message": "預設封鎖的參數"
+  },
+  "default_blocked_params_descr": {
+    "message": "Neat URL 預設會從網址中移除這些參數。"
+  },
+  "blocked_params": {
+    "message": "封鎖的參數"
+  },
+  "blocked_params_descr": {
+    "message": "要從網址中移除的參數，區分大小寫。若只要在某個網域封鎖參數，請使用 param@domain.com。<br/><br/><a href='https://github.com/Smile4ever/Neat-URL/blob/master/README.md#parameter-rules'>參數規則</a>"
+  },
+  "icon_animation": {
+    "message": "圖示動畫"
+  },
+  "icon_animation_descr": {
+    "message": "Neat URL 清理網址時顯示的動畫。"
+  },
+  "icon_animation_none": {
+    "message": "無動畫"
+  },
+  "icon_animation_missing_underscore": {
+    "message": "消失的底線"
+  },
+  "icon_animation_rotate": {
+    "message": "旋轉圖示"
+  },
+  "icon_animation_surprise_me": {
+    "message": "給我驚喜"
+  },
+  "icon_theme": {
+    "message": "圖示主題"
+  },
+  "icon_theme_descr": {
+    "message": "預設使用深色圖示。你可以變更此選項以使用淺色圖示。"
+  },
+  "icon_theme_dark": {
+    "message": "一律使用深色圖示"
+  },
+  "icon_theme_light": {
+    "message": "一律使用淺色圖示"
+  },
+  "show_counter": {
+    "message": "顯示計數器"
+  },
+  "show_counter_descr": {
+    "message": "顯示一個計數器，顯示已改寫的網址數量。"
+  },
+  "counter_background_color": {
+    "message": "計數器背景顏色"
+  },
+  "counter_background_color_descr": {
+    "message": "計數器使用的背景顏色。"
+  },
+  "advanced": {
+    "message": "進階"
+  },
+  "advanced_descr": {
+    "message": "這些選項可能會咬人。"
+  },
+  "blacklist": {
+    "message": "網域黑名單"
+  },
+  "blacklist_descr": {
+    "message": "網域清單。Neat URL 不會在這些網站上運作。"
+  },
+  "url_request_types": {
+    "message": "網址請求類型"
+  },
+  "counter_default_color": {
+    "message": "使用預設的計數器顏色"
+  },
+  "savepreferences": {
+    "message": "儲存偏好設定"
+  },
+  "notify_preferences_saved": {
+    "message": "已儲存偏好設定"
+  },
+  "change_links_in_page": {
+    "message": "變更頁面中的連結"
+  },
+  "change_links_in_page_descr": {
+    "message": "載入頁面時，從所有連結中移除封鎖的參數。"
+  },
+  "host_permission_missing": {
+    "message": "Neat URL 需要存取所有網站才能清理網址。"
+  },
+  "host_permission_grant": {
+    "message": "允許存取"
+  },
+  "linkumori_notice": {
+    "message": "Linkumori 已恢復為 Neat URL。你自己的參數和白名單中的網域都已保留：可以在「封鎖的參數」和「網域黑名單」中找到它們。"
+  },
+  "linkumori_notice_dismiss": {
+    "message": "確定"
+  },
+  "clean_nested": {
+    "message": "清理參數中的網址"
+  },
+  "clean_nested_descr": {
+    "message": "也清理作為參數值的網址，例如 ?url=https://example.com/?utm_source=x。預設為關閉，因為有些網站會檢查這類連結是否被變更。"
+  },
+  "keep_signed_urls": {
+    "message": "保留已簽署的網址"
+  },
+  "keep_signed_urls_descr": {
+    "message": "不變更含有簽章參數（sig、hmac 或以 signature 結尾的名稱）的網址。變更它們會導致下載和連結失效。"
+  },
+  "import_export": {
+    "message": "匯入與匯出"
+  },
+  "import_export_descr": {
+    "message": "將所有偏好設定儲存到檔案，或從檔案載入。"
+  },
+  "export_settings": {
+    "message": "匯出"
+  },
+  "import_settings": {
+    "message": "匯入"
+  },
+  "import_done": {
+    "message": "已匯入偏好設定。"
+  },
+  "import_failed": {
+    "message": "此檔案不包含 Neat URL 的偏好設定。"
+  },
+  "show_log": {
+    "message": "記錄"
+  },
+  "log_descr": {
+    "message": "Neat URL 最近清理的網址。記錄只保存在記憶體中，重新啟動瀏覽器後會清空。"
+  },
+  "log_filter": {
+    "message": "篩選"
+  },
+  "log_clear": {
+    "message": "清除記錄"
+  },
+  "log_save": {
+    "message": "儲存記錄以回報錯誤",
+    "description": "Saves the log to a file"
+  },
+  "log_report_title": {
+    "message": "回報問題"
+  },
+  "log_report_descr": {
+    "message": "網址清理得不對，或某個網站無法正常運作？儲存記錄，並將檔案附加到 GitHub 上的新 issue。該檔案包含下方的網址和你的偏好設定，因此請使用篩選只儲存相關的網址。"
+  },
+  "log_report_github": {
+    "message": "在 GitHub 上建立新 issue"
+  },
+  "log_clear_confirm": {
+    "message": "確定要清除記錄嗎？將移除 $COUNT$ 個已清理的網址。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_empty": {
+    "message": "尚未清理任何網址。"
+  },
+  "log_empty_since": {
+    "message": "自 $SINCE$ 以來尚未清理任何網址。",
+    "description": "Shown on the Log tab when the log is empty. $SINCE$ is the time of the browser start or of the last Clear.",
+    "placeholders": {
+      "since": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_column_rules": {
+    "message": "規則",
+    "description": "Column with the parameter rules that cleaned the URL"
+  },
+  "log_save_title": {
+    "message": "檔案中包含的內容"
+  },
+  "log_save_always": {
+    "message": "一律包含：Neat URL 的版本、你的瀏覽器和平台，以及你的其他偏好設定。"
+  },
+  "log_save_urls": {
+    "message": "顯示的已清理網址（$COUNT$）",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "log_save_own_rules": {
+    "message": "你的自訂規則"
+  },
+  "log_save_own_rules_descr": {
+    "message": "取消勾選你不想公開的內容。在檔案中，被排除的規則會替換為「(own rule)」。"
+  },
+  "log_save_unchecked_defaults": {
+    "message": "已取消勾選的預設參數"
+  },
+  "log_save_cancel": {
+    "message": "取消"
+  },
+  "log_save_confirm": {
+    "message": "儲存"
+  },
+  "language": {
+    "message": "語言"
+  },
+  "language_browser": {
+    "message": "瀏覽器語言",
+    "description": "First choice of the language picker: use the language of the browser"
+  },
+  "link_github": {
+    "message": "GitHub"
+  },
+  "link_donate": {
+    "message": "捐款"
+  },
+  "menu_enabled": {
+    "message": "已啟用",
+    "description": "Checkbox in the menu of the toolbar button: Neat URL is enabled"
+  },
+  "preferences": {
+    "message": "偏好設定"
+  },
+  "about": {
+    "message": "在 $BROWSER$ 中，網址由 $ENGINE$ 清理。",
+    "description": "Shown on the options page. $ENGINE$ is the name of a browser API and is not translated.",
+    "placeholders": {
+      "browser": {
+        "content": "$1"
+      },
+      "engine": {
+        "content": "$2"
+      }
+    }
+  },
+  "appearance": {
+    "message": "外觀"
+  },
+  "test_url": {
+    "message": "測試網址"
+  },
+  "test_url_descr": {
+    "message": "貼上網址，查看 Neat URL 會移除什麼。測試會使用此頁面上的偏好設定，即使尚未儲存。"
+  },
+  "test_url_placeholder": {
+    "message": "https://example.com/?utm_source=newsletter",
+    "description": "An example URL, shown in the empty field"
+  },
+  "test_url_unchanged": {
+    "message": "Neat URL 不會變更此網址。"
+  },
+  "test_url_not_web": {
+    "message": "Neat URL 不會變更此網址：只會清理 http:// 和 https:// 網址。"
+  },
+  "test_url_blacklisted": {
+    "message": "Neat URL 不會變更此網址：此網域在「網域黑名單」中。"
+  },
+  "test_url_signed": {
+    "message": "Neat URL 不會變更此網址：這是已簽署的網址（進階分頁中的「保留已簽署的網址」）。"
+  },
+  "test_url_suggestions": {
+    "message": "要移除哪個參數？點選規則即可將其加入封鎖的參數，然後儲存。"
+  },
+  "test_url_rule_global": {
+    "message": "$RULE$（所有網站）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      }
+    }
+  },
+  "test_url_rule_domain": {
+    "message": "$RULE$（僅 $DOMAIN$）",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_rule_value": {
+    "message": "$RULE$（僅限此值，僅 $DOMAIN$）",
+    "description": "A rule that removes the parameter only when it has this value",
+    "placeholders": {
+      "rule": {
+        "content": "$1"
+      },
+      "domain": {
+        "content": "$2"
+      }
+    }
+  },
+  "test_url_invalid": {
+    "message": "這不是有效的網址。"
+  },
+  "default_blocked_params_uncheck": {
+    "message": "取消勾選參數或類別，即可在網址中保留它。"
+  },
+  "search_params": {
+    "message": "搜尋參數"
+  },
+  "default_params_count": {
+    "message": "將移除 $TOTAL$ 個參數中的 $ON$ 個",
+    "description": "Shown above the list of default blocked parameters",
+    "placeholders": {
+      "on": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "list_count": {
+    "message": "項目數：$COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_hint": {
+    "message": "以逗號或換行分隔各項。"
+  },
+  "list_invalid": {
+    "message": "無效，已忽略：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_looks_like_domain": {
+    "message": "看起來是網域，而不是參數：$ITEMS$。若要指定某個網域的參數，請寫成 parameter@domain。",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_duplicates": {
+    "message": "重複：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "list_already_default": {
+    "message": "已是預設封鎖的參數：$ITEMS$",
+    "placeholders": {
+      "items": {
+        "content": "$1"
+      }
+    }
+  },
+  "url_request_types_choose_descr": {
+    "message": "Neat URL 會清理這些請求類型的網址。預設值為 main_frame：在分頁中開啟的頁面。請參閱<a href='https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/ResourceType' target='_blank'>資源類型清單</a>。",
+    "description": "Please leave the link intact. You can translate the normal text and the text of the link. main_frame must stay the same."
+  },
+  "request_types_none": {
+    "message": "未選擇類型，因此使用 main_frame。"
+  },
+  "restore_defaults": {
+    "message": "還原預設值"
+  },
+  "restore_defaults_descr": {
+    "message": "將所有偏好設定還原為預設值。儲存前不會有任何變更。"
+  },
+  "revert_changes": {
+    "message": "復原變更"
+  },
+  "unsaved_changes": {
+    "message": "有尚未儲存的變更。"
+  },
+  "import_confirm": {
+    "message": "要從 $FILE$ 匯入 $COUNT$ 項偏好設定嗎？它們將取代你目前的偏好設定。",
+    "description": "$FILE$ is the name of the file",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "file": {
+        "content": "$2"
+      }
+    }
+  }
+}
