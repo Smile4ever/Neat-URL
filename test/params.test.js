@@ -71,3 +71,18 @@ test("compileConfig reports invalid parameters", () => {
 	assert.deepStrictEqual(config.invalid, ["b@"]);
 	assert.deepStrictEqual(config.entries.map((e) => e.raw), ["a", "c"]);
 });
+
+test("compileConfig without the default parameters (#279)", () => {
+	let config = params.compileConfig({ defaultParams: ["a", "b"], useDefaultParams: false, overrides: "b", blockedParams: "c" });
+	assert.deepStrictEqual(config.entries.map((e) => e.raw), ["c"]);
+	assert.deepStrictEqual(params.compileConfig({ defaultParams: ["a"], useDefaultParams: true }).entries.map((e) => e.raw), ["a"]);
+});
+
+test("removesNothing", () => {
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: ["a"] })), false);
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: ["a"], useDefaultParams: false })), true);
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: ["a"], overrides: "a" })), true);
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: ["a"], useDefaultParams: false, blockedParams: "!b@x.com" })), true);
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: [], blockedParams: "#?b" })), false);
+	assert.strictEqual(params.removesNothing(params.compileConfig({ defaultParams: [], removeTextFragments: true })), false);
+});

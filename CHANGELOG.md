@@ -1,3 +1,19 @@
+2026.10.24.2
+=====
+* Firefox: URLs on addons.mozilla.org and support.mozilla.org are cleaned again, for example ?src=search with the new default parameter src@addons.mozilla.org, fixes #136. Firefox doesn't let extensions change these requests, so Neat URL loads the clean URL in the tab after the page started loading.
+* New default parameter: pp@youtube.com, fixes #302
+* New default parameters: srnd@bloomberg.com, feature@youtu.be, journalCode@*.hogrefe.com, via*@sciencedirect.com (?via%3Dihub) and sh@forbes.com, fixes #277
+* New default parameters: gad_source and gad_campaignid (Google Ads)
+* New default parameters from Cyprias' neat-url, fixes #214: WT.mc_id, WT.mc_ev and WT.srch (Webtrends), wt_mc_o (Webtrekk), __twitter_impression, creative, creativeASIN, ie, linkCode and linkId on Amazon, ab_channel and attr_tag on YouTube, emc and partner on nytimes.com, st on reddit.com and #Echobox after the hash
+* New default parameters: igsh and igshid on instagram.com, fixes #310
+* Chrome: about three times fewer declarativeNetRequest rules (90 instead of 250 with the defaults). Wildcards like utm_* get their rules once instead of once per website, so more default parameters for specific websites fit within Chrome's limit of 1000 regex rules.
+* Default blocked parameters: new switch "Use the default blocked parameters" to turn them all off and remove only your own blocked parameters, fixes #279. Parameters that a new version adds stay off too, and your choices per parameter are kept for when you turn it on again. Without own blocked parameters Neat URL asks before turning them off, and the options page warns when Neat URL removes no parameters at all.
+* Sync preferences: new option in Advanced, off by default, fixes #123. The preferences are the same on every device where the option is on, through the account of the browser (Firefox Sync, or a Google or Microsoft account). When you turn it on and another device has synchronized different preferences, Neat URL asks which ones to keep. The last change wins; a device with an older version of Neat URL doesn't take over the preferences of a newer version.
+* Remove text fragments: new option in Preferences, off by default, fixes #306. It removes the text that a link highlights (#:~:text=...), which search engines and "Copy link to highlight" add. An anchor before it (#intro) and other directives stay.
+* campaign_id is no longer a default parameter: PayPal needs it for donation pages, fixes #305. It is a generic name that other websites use for their own purposes too.
+* Icon theme: new option "Follow the browser theme", the new default, fixes #252. Light icons on a dark theme of Firefox, dark icons on a light theme. Chrome keeps the dark icons. "Always use dark icons", the old default, becomes "Follow the browser theme" once; you can choose dark icons again on the options page.
+* Websites: Neat URL works on all websites except a list of domains (as before), or only on a list of domains, fixes #191. Each choice keeps its own list; only the list of the chosen option is used.
+
 2026.10.24.1
 =====
 * Firefox for Android: Neat URL can be installed there. Before, it would not have cleaned any URL, because Firefox for Android has no menus for the toolbar button and that stopped the background script. There is no menu to disable Neat URL on Android; the Log is on the options page.

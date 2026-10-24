@@ -30,21 +30,24 @@ Neat URL is a Manifest V3 extension for Firefox and Chrome. Both versions use th
 | Ending parameters (`$/ref@amazon.*`, `$$/ref`) | ✅ | ✅ | |
 | Header lines in the parameter lists (`Name:`) | ✅ | ✅ | |
 | Default parameters and override list | ✅ | ✅ | |
-| Domain blacklist, also with wildcards (`archive.*`) | ✅ | ✅ | |
+| Turn off all default parameters | ✅ | ✅ | |
+| Websites: all except a list of domains, or only a list of domains, also with wildcards (`archive.*`) | ✅ | ✅ | |
 | Keep signed URLs | ✅ | ✅ | |
+| Remove text fragments (`#:~:text=`) | ✅ | ✅ | Like hash parameters, only when the browser loads a page (see [3]). |
 | Clean URLs inside parameters | ✅ | ⚠️ | [7] |
 | Change links in page | ✅ | ✅ | Links that the page adds later are cleaned when they are used (click, middle click, context menu, keyboard). These changes are not counted. |
 | URL request types | ✅ | ⚠️ | [4] |
 | Counter | ✅ | ✅ | Chrome counts a cleaned navigation once, even when it took several internal redirects. |
 | Counter color | ✅ | ✅ | |
 | Icon animation | ✅ | ✅ | |
-| Icon theme | ✅ | ✅ | |
+| Icon theme | ✅ | ⚠️ | "Follow the browser theme" (the default) uses light icons on a dark theme. Chrome doesn't tell its service worker the color scheme, so there it always uses dark icons. |
 | Click the toolbar button: the options page with the URL of the tab in "Test a URL" | ✅ | ✅ | |
 | Enable/disable in the menu of the toolbar button (right-click → Enabled) | ✅ | ✅ | Neat URL is enabled again after a browser restart. |
 | Options page in its own tab, with a Log tab (the last 500 cleaned URLs) | ✅ | ✅ | Right-click the toolbar button → Log opens the Log tab. The log is kept in memory only. |
 | Logging to the console | ✅ | ⚠️ | [5] |
 | Import and export of the preferences | ✅ | ✅ | |
-| Links to addons.mozilla.org | ⚠️ | — | [6] |
+| Sync preferences between devices (`storage.sync`) | ✅ | ✅ | Off by default, every device turns it on itself. |
+| Links to addons.mozilla.org and support.mozilla.org | ⚠️ | — | [6] |
 | Chrome Web Store pages | — | ❌ | [6] |
 | Other parameters keep their encoding | ✅ | ✅ | `?q=a+b%20c&flag` stays like that; only the removed parameters disappear. |
 | `gws_rd=cr` kept on google.com | ✅ | ✅ | Workaround for [firefoxaddons#76](https://github.com/Smile4ever/firefoxaddons/issues/76). |
@@ -63,7 +66,7 @@ Neat URL is a Manifest V3 extension for Firefox and Chrome. Both versions use th
 
 5. **Logging to the console in Chrome.** The log page works the same in both browsers. The console log is in the console of the service worker (`chrome://extensions` → Neat URL → "service worker"). It shows each cleaned navigation with the URL after the first internal redirect, plus the number of active rules after every change of the preferences.
 
-6. **Restricted sites.** Browsers don't let extensions change requests to their own add-on stores. In Firefox, Neat URL works around this for addons.mozilla.org: it updates the tab with the clean URL after the page has started loading. To clean other Mozilla domains, change `extensions.webextensions.restrictedDomains` in `about:config`. Chrome has no such workaround for the Chrome Web Store.
+6. **Restricted sites.** Browsers don't let extensions change requests to their own add-on stores: Firefox doesn't show requests to the domains in `extensions.webextensions.restrictedDomains` to `webRequest` at all. `tabs.onUpdated` does report the URL of such a tab, so for addons.mozilla.org and support.mozilla.org Neat URL loads the clean URL in the tab (`tabs.update` with `loadReplace`). The page with the parameters has then already started loading, so it loads twice. accounts.firefox.com is left alone, because changing a sign-in URL can break it. To clean other Mozilla domains, remove them from `extensions.webextensions.restrictedDomains` in `about:config`. Chrome has no such workaround for the Chrome Web Store.
 
 7. **URLs inside parameters** (off by default). When a parameter value is a URL itself (encoded or not, with or without `https://`), Neat URL also cleans that URL with the rules of its own domain, up to three levels deep. It is off by default because some sites check that such a link was not changed, for example login redirects. In Firefox the URL is cleaned before the request is sent. Chrome rules can't decode and encode a value, so in Chrome Neat URL loads the clean URL in the tab right after the navigation started: the request for the original URL has started by then, and in the end the clean page is shown.
 

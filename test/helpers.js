@@ -15,16 +15,20 @@ const DEFAULT_PARAMS = JSON.parse(fs.readFileSync(path.join(ROOT, "data/default-
 const SUFFIX_LIST = fs.readFileSync(path.join(ROOT, "data/publicsuffix-ccSLD.txt"), "utf8").split(/\r?\n/).filter((line) => line != "");
 const CASES = JSON.parse(fs.readFileSync(path.join(__dirname, "cases.json"), "utf8"));
 
-// caseConfig: { blocked, overrides, blacklist, cleanNested, keepSigned } as stored in the preferences
+// caseConfig: { blocked, useDefaults, overrides, websites, blacklist, whitelist, cleanNested, keepSigned, textFragments } as stored in the preferences
 function makeConfig(caseConfig){
 	caseConfig = caseConfig || {};
 	return params.compileConfig({
 		defaultParams: DEFAULT_PARAMS,
+		useDefaultParams: caseConfig.useDefaults,
 		overrides: caseConfig.overrides || "",
 		blockedParams: caseConfig.blocked || "",
+		websites: caseConfig.websites || "all_except",
 		blacklist: caseConfig.blacklist || "",
+		whitelist: caseConfig.whitelist || "",
 		cleanNested: caseConfig.cleanNested,
 		keepSigned: caseConfig.keepSigned,
+		removeTextFragments: caseConfig.textFragments,
 		suffixList: SUFFIX_LIST
 	});
 }

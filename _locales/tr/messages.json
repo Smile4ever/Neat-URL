@@ -36,7 +36,10 @@
     "message": "Simge teması"
   },
   "icon_theme_descr": {
-    "message": "Varsayılan olarak koyu simgeler kullanılır. Açık simgeler kullanmak için bu seçeneği değiştirebilirsiniz."
+    "message": "Varsayılan olarak simgeler tarayıcı temasını izler: koyu temada açık simgeler, açık temada koyu simgeler. Her zaman koyu veya açık simgeler de kullanabilirsiniz."
+  },
+  "icon_theme_auto": {
+    "message": "Tarayıcı temasını izle"
   },
   "icon_theme_dark": {
     "message": "Her zaman koyu simgeler kullan"
@@ -62,11 +65,26 @@
   "advanced_descr": {
     "message": "Bu seçenekler ısırabilir."
   },
-  "blacklist": {
-    "message": "Alan adı kara listesi"
+  "websites": {
+    "message": "Web siteleri"
   },
-  "blacklist_descr": {
-    "message": "Alan adı listesi. Neat URL bu web sitelerinde çalışmaz."
+  "websites_descr": {
+    "message": "Neat URL'nin URL'leri temizlediği yerler. Bir alan adı alt alan adlarını da kapsar, joker karakterler de çalışır: archive.org ve archive.ph için archive.*. Her seçeneğin kendi listesi vardır."
+  },
+  "websites_all_except": {
+    "message": "Tüm web siteleri, bu alan adları hariç"
+  },
+  "websites_only": {
+    "message": "Yalnızca bu alan adları"
+  },
+  "websites_only_empty": {
+    "message": "Bu liste boşsa Neat URL tüm web sitelerinde URL'leri temizler."
+  },
+  "blacklist": {
+    "message": "Web siteleri: tümü, bu alan adları hariç"
+  },
+  "whitelist": {
+    "message": "Web siteleri: yalnızca bu alan adları"
   },
   "url_request_types": {
     "message": "URL istek türleri"
@@ -93,7 +111,7 @@
     "message": "Erişime izin ver"
   },
   "linkumori_notice": {
-    "message": "Linkumori yeniden Neat URL oldu. Kendi parametreleriniz ve beyaz listedeki alan adları korundu: Engellenen parametreler ve Alan adı kara listesi bölümlerinde bulabilirsiniz."
+    "message": "Linkumori yeniden Neat URL oldu. Kendi parametreleriniz ve beyaz listedeki alan adları korundu: Engellenen parametreler ve Web siteleri (Tüm web siteleri, bu alan adları hariç) bölümlerinde bulabilirsiniz."
   },
   "linkumori_notice_dismiss": {
     "message": "Tamam"
@@ -109,6 +127,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "İmza parametresi (sig, hmac veya signature ile biten bir ad) olan URL'leri değiştirmez. Bunları değiştirmek indirmeleri ve bağlantıları bozar."
+  },
+  "remove_text_fragments": {
+    "message": "Metin parçalarını kaldır"
+  },
+  "remove_text_fragments_descr": {
+    "message": "Bir bağlantının sayfada vurguladığı metni (#:~:text=...) kaldırır; bunu arama motorları ve \"Vurgulanan bağlantıyı kopyala\" ekler. Sayfa artık o metne kaydırılmaz. #section gibi bir bağlantı noktası kalır."
   },
   "import_export": {
     "message": "İçe ve dışa aktar"
@@ -258,7 +282,10 @@
     "message": "Neat URL bu URL'yi değiştirmez: yalnızca http:// ve https:// URL'leri temizlenir."
   },
   "test_url_blacklisted": {
-    "message": "Neat URL bu URL'yi değiştirmez: alan adı \"Alan adı kara listesi\" içinde."
+    "message": "Neat URL bu URL'yi değiştirmez: alan adı Web siteleri altındaki \"Tüm web siteleri, bu alan adları hariç\" listesinde."
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL bu URL'yi değiştirmez: alan adı Web siteleri altındaki \"Yalnızca bu alan adları\" listesinde değil."
   },
   "test_url_signed": {
     "message": "Neat URL bu URL'yi değiştirmez: bu imzalı bir URL (Gelişmiş sekmesinde \"İmzalı URL'leri koru\")."
@@ -317,6 +344,21 @@
         "content": "$2"
       }
     }
+  },
+  "use_default_params": {
+    "message": "Varsayılan engellenen parametreleri kullan"
+  },
+  "use_default_params_descr": {
+    "message": "Yalnızca kendi engellediğiniz parametreleri kaldırmak için bunu kapatın. Neat URL'nin yeni bir sürümünün eklediği parametreler de kapalı olur. Aşağıdaki listedeki seçimleriniz korunur."
+  },
+  "default_params_off": {
+    "message": "Kapalı: yalnızca kendi engellediğiniz parametreler kaldırılır"
+  },
+  "use_default_params_confirm": {
+    "message": "Kendi engellediğiniz parametre yok, bu yüzden Neat URL hiçbir parametreyi kaldırmayacak. Varsayılan engellenen parametreler yine de kapatılsın mı?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL hiçbir parametreyi kaldırmıyor: varsayılan engellenen parametreleri açın veya kendi engellediğiniz parametreleri ekleyin."
   },
   "list_count": {
     "message": "Öğe: $COUNT$",
@@ -391,5 +433,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "Tercihleri eşitle"
+  },
+  "sync_descr": {
+    "message": "Bu seçeneğin açık olduğu her cihazda aynı tercihleri kullan. Tercihler tarayıcı hesabınızda saklanır (Firefox Sync ya da Google veya Microsoft hesabınız)."
+  },
+  "sync_uploaded": {
+    "message": "$TIME$ tarihinde eşitlendi.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "Başka bir cihazın tercihleri $TIME$ tarihinde alındı.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "Eşitlenmedi: tercihler, tarayıcının izin verdiği 100 KB'tan büyük. Bunun yerine Dışa aktar ve İçe aktar'ı kullanın."
+  },
+  "sync_newer_version": {
+    "message": "Eşitlenmedi: başka bir cihaz Neat URL'nin daha yeni bir sürümünü kullanıyor. Bu cihazdaki Neat URL'yi güncelleyin."
+  },
+  "sync_failed": {
+    "message": "Eşitleme başarısız oldu. Tarayıcıda eşitleme açık mı?"
+  },
+  "sync_confirm": {
+    "message": "Başka bir cihaz tercihlerini zaten eşitledi ve bunlar buradaki tercihlerden farklı.\n\nTamam: diğer cihazın tercihlerini kullan.\nİptal: bu cihazın tercihlerini koru ve diğer cihazlara gönder."
   }
 }

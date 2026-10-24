@@ -40,7 +40,7 @@ npx puppeteer browsers install firefox@esr_140.0esr
 FIREFOX_EXECUTABLE=<path printed by the command above> node test/e2e/run.mjs firefox
 ```
 
-`test/cases.json` is the shared list of test cases: a URL, the expected URL and optionally a `config` with your own parameters (`blocked`), an override list (`overrides`), a blacklist (`blacklist`), `cleanNested` or `keepSigned`. A case with `"nested": true` or `"fallback": true` is not done by the Chrome rules but by `chrome.js` (see [architecture.md](architecture.md)); `expectedRules` is then what the rules alone give. Each case runs:
+`test/cases.json` is the shared list of test cases: a URL, the expected URL and optionally a `config` with your own parameters (`blocked`), an override list (`overrides`), `websites` (`all_except` or `only`, the default is `all_except`) with a blacklist (`blacklist`) or a whitelist (`whitelist`), `cleanNested` or `keepSigned`. A case with `"nested": true` or `"fallback": true` is not done by the Chrome rules but by `chrome.js` (see [architecture.md](architecture.md)); `expectedRules` is then what the rules alone give. Each case runs:
 
 * against `cleanUrl()` (Firefox engine)
 * against the Chrome rules in a simulation of `declarativeNetRequest` (twice, for both possible behaviours of a redirect that changes nothing)
@@ -70,10 +70,12 @@ Texts are in `_locales/<language>/messages.json`. English (`en`) is the default.
    * save the preferences, then turn Neat URL off and on with the menu of the toolbar button (right-click → Enabled)
    * click the toolbar button on a page with `utm_source`: the options page opens with that URL in Test a URL, also when it is already open
    * restart the browser with restored tabs
-   * counter, animation, a link to addons.mozilla.org
+   * counter, animation, a link to addons.mozilla.org with `?src=search` and `src@addons.mozilla.org` in Blocked parameters
    * the options "Clean URLs inside parameters" and "Change links in page"
+   * the option "Remove text fragments" with a link like `https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments#:~:text=highlight`: the page loads without `#:~:text=` (with the option off it scrolls to the text)
    * export the preferences, change something, import the file again
-   * options page: Test a URL, uncheck a default parameter (Test a URL no longer removes it), unsaved changes bar, Undo changes, Restore defaults
+   * Sync preferences in two profiles signed in to the same account: a saved change arrives in the other profile; turning it on where the preferences differ asks which ones to keep
+   * options page: Test a URL, uncheck a default parameter (Test a URL no longer removes it), turn off Use the default blocked parameters with an empty Blocked parameters (asks first, then the warning shows), unsaved changes bar, Undo changes, Restore defaults
    * sign in to a Google account and download a file from a site with signed links (#307, #314)
    * turn off access to all websites in the add-on manager: the options page shows the button to allow it again
 4. The same manual check in Chrome (without addons.mozilla.org and the access button).

@@ -39,6 +39,22 @@ test("options.applied gets the rules that changed the URL (for the log)", () => 
 	assert.deepStrictEqual(applied("https://example.com/?url=https%3A%2F%2Fexample.org%2F%3Ffbclid%3Dx", { cleanNested: true }), ["fbclid"]);
 });
 
+test("removeTextDirectives (#306)", () => {
+	let r = clean.removeTextDirectives;
+	assert.strictEqual(r("#:~:text=a"), "");
+	assert.strictEqual(r("#intro:~:text=a&text=b"), "#intro");
+	assert.strictEqual(r("#:~:text=a&other=b"), "#:~:other=b");
+	assert.strictEqual(r("#intro"), "#intro");
+	assert.strictEqual(r("#:~:other=b"), "#:~:other=b");
+	assert.strictEqual(r("#:~:textual=a"), "#:~:textual=a");
+});
+
+test("a removed text fragment is logged as #:~:text=", () => {
+	let applied = new Set();
+	clean.cleanUrl("https://example.com/#:~:text=a", makeConfig({ textFragments: true }), { applied });
+	assert.deepStrictEqual(Array.from(applied), ["#:~:text="]);
+});
+
 test("removeParams keeps other parts exactly", () => {
 	assert.strictEqual(clean.removeParams("a=1&b&c=%20", (key) => key == "a"), "b&c=%20");
 	assert.strictEqual(clean.removeParams("a%5Fb=1&c=2", (key) => key == "a_b"), "c=2");

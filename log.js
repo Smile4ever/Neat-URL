@@ -157,7 +157,7 @@ async function getTechnicalDetails(){
 }
 
 // The lists with the user's own rules, which can be left out of the file
-const OWN_RULE_LISTS = ["neat_url_blocked_params", "neat_url_override_default_blocked_params", "neat_url_blacklist"];
+const OWN_RULE_LISTS = ["neat_url_blocked_params", "neat_url_override_default_blocked_params", "neat_url_blacklist", "neat_url_whitelist"];
 // Replaces a left out rule in the entries. Not translated: the file is for a bug report on GitHub.
 const OWN_RULE = "(own rule)";
 

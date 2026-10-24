@@ -3,7 +3,7 @@
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/Smile4ever/Neat-URL",
 	"manifest_version": 3,
-	"version": "2026.10.24.1",
+	"version": "2026.10.24.2",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/dark/neaturl-48.png",
@@ -26,6 +26,13 @@
 	},
 	"action": {
 		"default_icon": "icons/dark/neaturl-96-state0.png",
+		"theme_icons": [
+			{
+				"light": "icons/light/neaturl-96-state0.png",
+				"dark": "icons/dark/neaturl-96-state0.png",
+				"size": 96
+			}
+		],
 		"default_title": "Neat URL"
 	},
 	"content_scripts": [
@@ -49,7 +56,9 @@
 			"src/core/params.js",
 			"src/core/clean.js",
 			"src/core/migrate.js",
+			"src/core/sync.js",
 			"src/background/common.js",
+			"src/background/sync.js",
 			"src/background/firefox.js"
 		],
 		"service_worker": "src/background/chrome-sw.js"

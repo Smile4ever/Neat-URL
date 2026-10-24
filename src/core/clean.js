@@ -45,6 +45,21 @@
 		return queryString != "" && queryString.split("&").some((part) => isSignatureKey(decodePart(part).key));
 	}
 
+	// Text fragments (#:~:text=..., https://github.com/Smile4ever/Neat-URL/issues/306) highlight text on the page.
+	// The fragment directive starts at the first :~: and has directives separated by &. Only the text directives
+	// are removed: the anchor before :~: (#intro) and other directives stay.
+	const TEXT_FRAGMENT_RULE = "#:~:text=";
+
+	function removeTextDirectives(hash){
+		let index = hash.indexOf(":~:");
+		if(index < 0) return hash;
+		let directives = hash.substring(index + 3).split("&");
+		let kept = directives.filter((directive) => !directive.startsWith("text="));
+		if(kept.length == directives.length) return hash;
+		let fragment = hash.substring(1, index) + (kept.length > 0 ? ":~:" + kept.join("&") : "");
+		return fragment == "" ? "" : "#" + fragment;
+	}
+
 	// A parameter value that is a URL itself, with or without a scheme:
 	// ?url=example2.com%3Futm_source%3Dx or ?to=https://example2.com/?utm_source=x
 	const NESTED_URL = /^(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?::\d+)?(?:\/[^?#]*)?\?/i;
@@ -88,7 +103,7 @@
 		if(url.protocol != "http:" && url.protocol != "https:") return null;
 
 		let hostInfo = domain.splitHost(url.hostname, config.suffixSet);
-		if(domain.isBlacklisted(hostInfo, config.blacklist)) return null;
+		if(domain.isBlacklisted(hostInfo, config.blacklist) || !domain.isWhitelisted(hostInfo, config.whitelist)) return null;
 		if(config.keepSigned && isSigned(url.search.substring(1))) return null;
 
 		return config.entries.filter((entry) => domain.matchesPattern(entry.pattern, hostInfo) && !isGwsRdException(entry, hostInfo, url));
@@ -142,6 +157,11 @@
 				hash = fragment == "" ? "" : "#" + fragment;
 			}
 		}
+		if(config.removeTextFragments && hash != ""){
+			let withoutText = removeTextDirectives(hash);
+			if(withoutText != hash) apply({ raw: TEXT_FRAGMENT_RULE });
+			hash = withoutText;
+		}
 
 		// Ending rules cut the path at the last occurrence of the token, e.g. $/ref@amazon.*
 		// They only apply if no query parameters are left, unless they start with $$ or it is an Amazon product page (/dp/)
@@ -168,6 +188,6 @@
 		return url.href;
 	}
 
-	NeatURL.clean = { cleanUrl, removeParams, getActiveEntries, isSignatureKey };
+	NeatURL.clean = { cleanUrl, removeParams, removeTextDirectives, getActiveEntries, isSignatureKey, TEXT_FRAGMENT_RULE };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.clean;
 })(globalThis);

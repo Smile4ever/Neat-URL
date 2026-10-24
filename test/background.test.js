@@ -19,15 +19,25 @@ function event(){
 	};
 }
 
+// The storage.sync of an account: every device (createBrowser with options.cloud) gets its storage.onChanged
+function createCloud(){
+	return { store: {}, devices: [] };
+}
+
 function createBrowser(initialStorage, options){
 	options = options || {};
 	let local = Object.assign({}, initialStorage);
 	let session = {};
 	let onChanged = event();
+	let cloud = options.cloud || createCloud();
+	let fire = (changes, name) => {
+		if(name == "local") setTimeout(() => onChanged.fire(changes, name), 0);
+		if(name == "sync") for(let device of cloud.devices) setTimeout(() => device.fire(changes, name), 0);
+	};
 	let area = (store, name) => ({
 		get: async (keys) => {
 			let result = {};
-			for(let key of [].concat(keys)) if(store[key] !== undefined) result[key] = JSON.parse(JSON.stringify(store[key]));
+			for(let key of keys == null ? Object.keys(store) : [].concat(keys)) if(store[key] !== undefined) result[key] = JSON.parse(JSON.stringify(store[key]));
 			return result;
 		},
 		set: async (values) => {
@@ -36,18 +46,24 @@ function createBrowser(initialStorage, options){
 				changes[key] = { oldValue: store[key], newValue: values[key] };
 				store[key] = values[key];
 			}
-			if(name == "local") setTimeout(() => onChanged.fire(changes, name), 0);
+			fire(changes, name);
 		},
 		remove: async (keys) => {
-			for(let key of [].concat(keys)) delete store[key];
+			let changes = {};
+			for(let key of [].concat(keys)){
+				changes[key] = { oldValue: store[key] };
+				delete store[key];
+			}
+			if(name == "sync") fire(changes, name);
 		}
 	});
+	cloud.devices.push(onChanged);
 
 	return {
 		local: local,
 		sessionData: session,
-		runtime: { getManifest: () => ({ version: "5.0.0" }), getURL: (p) => p, onMessage: event(), onStartup: event(), onInstalled: event(), openOptionsPage: () => {} },
-		storage: { local: area(local, "local"), session: area(session, "session"), onChanged: onChanged },
+		runtime: { getManifest: () => ({ version: options.version || "5.0.0" }), getURL: (p) => p, onMessage: event(), onStartup: event(), onInstalled: event(), openOptionsPage: () => {} },
+		storage: { local: area(local, "local"), session: area(session, "session"), sync: area(cloud.store, "sync"), onChanged: onChanged },
 		action: { setIcon: () => {}, setTitle: () => {}, setBadgeText: () => {}, setBadgeBackgroundColor: () => {}, onClicked: event() },
 		contextMenus: { onClicked: event(), removeAll: async () => {}, create: () => {}, update: async () => {} },
 		tabs: { onActivated: event(), onUpdated: event(), onRemoved: event(), query: async () => [], update: () => {}, created: [], create: async function(details){ this.created.push(details); } },
@@ -56,14 +72,17 @@ function createBrowser(initialStorage, options){
 	};
 }
 
-function loadBackground(browser){
+function loadBackground(browser, globals){
 	let context = {
 		browser: browser,
 		console: console,
 		URL: URL,
 		setTimeout: setTimeout,
+		clearTimeout: clearTimeout,
+		TextEncoder: TextEncoder,
 		fetch: (file) => new Promise((resolve) => setTimeout(() => resolve({ text: async () => fs.readFileSync(path.join(ROOT, file), "utf8") }), browser.fetchDelay))
 	};
+	Object.assign(context, globals);
 	context.globalThis = context;
 	vm.createContext(context);
 	for(let script of SCRIPTS) vm.runInContext(fs.readFileSync(path.join(ROOT, script), "utf8"), context, { filename: script });
@@ -121,6 +140,29 @@ test("the toolbar button opens the options with the URL of the tab", async () =>
 	assert.strictEqual(browser.local.neat_url_enabled, undefined, "a click doesn't disable Neat URL");
 });
 
+test("addons.mozilla.org: the tab is loaded again with the clean URL (#136)", async () => {
+	let browser = createBrowser({ neat_url_blocked_params: "src@addons.mozilla.org, src@example.com" });
+	let updates = [];
+	browser.tabs.update = async (tabId, details) => { updates.push([tabId, details.url, details.loadReplace]); };
+	let context = loadBackground(browser);
+	await context.NeatURL.background.ensureState();
+	let onTabUpdated = context.NeatURL.firefox.onTabUpdated;
+
+	onTabUpdated(3, { url: "https://addons.mozilla.org/en-US/firefox/addon/neat-url/?src=search" });
+	onTabUpdated(3, { url: "https://addons.mozilla.org/en-US/firefox/addon/neat-url/" });
+	onTabUpdated(4, { url: "https://example.com/?src=search" }); // webRequest cleans this one
+	onTabUpdated(5, { status: "complete" });
+	await wait(10);
+	assert.deepStrictEqual(JSON.parse(JSON.stringify(updates)), [[3, "https://addons.mozilla.org/en-US/firefox/addon/neat-url/", true]]);
+	assert.strictEqual(browser.sessionData.neat_url_log.length, 1, "in the log");
+
+	await browser.storage.local.set({ neat_url_enabled: false });
+	await wait(50);
+	onTabUpdated(3, { url: "https://addons.mozilla.org/en-US/firefox/addon/neat-url/?src=search" });
+	await wait(10);
+	assert.strictEqual(updates.length, 1, "not when Neat URL is disabled");
+});
+
 test("Firefox for Android: no menus, no windows and no icon or counter methods", async () => {
 	let browser = createBrowser({ neat_url_counter_default_color: false });
 	delete browser.contextMenus;
@@ -141,6 +183,35 @@ test("Firefox for Android: no menus, no windows and no icon or counter methods",
 	browser.action.onClicked.fire({ url: "https://example.com/?utm_source=a" });
 	await wait(10);
 	assert.deepStrictEqual(JSON.parse(JSON.stringify(messages)), [{ action: "show-options", view: "preferences", testUrl: "https://example.com/?utm_source=a" }]);
+});
+
+test("the icon theme follows the color scheme of the browser (#252)", async () => {
+	let scheme = { matches: false, listeners: [], addEventListener: (type, fn) => scheme.listeners.push(fn) };
+	let browser = createBrowser();
+	let icons = [];
+	browser.action.setIcon = (details) => icons.push(details.path);
+	let context = loadBackground(browser, { matchMedia: (query) => query == "(prefers-color-scheme: dark)" ? scheme : null });
+	await context.NeatURL.background.ensureState();
+	assert.strictEqual(icons.pop(), "icons/dark/neaturl-96-state0.png", "light theme");
+
+	scheme.matches = true;
+	scheme.listeners.forEach((fn) => fn());
+	assert.strictEqual(icons.pop(), "icons/light/neaturl-96-state0.png", "dark theme");
+
+	await browser.storage.local.set({ neat_url_icon_theme: "dark" });
+	await wait(50);
+	assert.strictEqual(icons.pop(), "icons/dark/neaturl-96-state0.png", "always dark icons");
+	scheme.listeners.forEach((fn) => fn());
+	assert.strictEqual(icons.length, 0, "a fixed theme ignores the color scheme");
+});
+
+test("the icon theme without matchMedia (service worker of Chrome) uses dark icons", async () => {
+	let browser = createBrowser();
+	let icons = [];
+	browser.action.setIcon = (details) => icons.push(details.path);
+	let context = loadBackground(browser);
+	await context.NeatURL.background.ensureState();
+	assert.deepStrictEqual(icons, ["icons/dark/neaturl-96-state0.png"]);
 });
 
 test("migration doesn't remove own parameters on every start (B1, B2)", async () => {
@@ -209,4 +280,110 @@ test("update from Linkumori: its settings are imported once and the options page
 	assert.deepStrictEqual(["PurifyUrlsSettings", "customRules", "whitelist", "theme"].filter((key) => key in browser.local), []);
 	assert.strictEqual(browser.local.neat_url_linkumori_notice, true);
 	assert.deepStrictEqual(browser.tabs.created.map((tab) => tab.url), ["options.html#preferences"], "opened once");
+});
+
+/// Sync preferences (#123): devices with the same storage.sync
+const UPLOAD_WAIT = 2300; // UPLOAD_DELAY of src/background/sync.js and some room
+const chunksOf = (cloud, pref) => Object.keys(cloud.store).filter((key) => key.startsWith("neat_url_sync_chunk:" + pref + ":"));
+
+function sendMessage(browser, message){
+	return new Promise((resolve) => {
+		for(let listener of browser.runtime.onMessage.listeners) listener(message, {}, resolve);
+	});
+}
+
+test("sync: a change on one device arrives on the other device", async () => {
+	let cloud = createCloud();
+	let a = createBrowser({ neat_url_sync: true }, { cloud });
+	let b = createBrowser({ neat_url_sync: true }, { cloud });
+	loadBackground(a);
+	let contextB = loadBackground(b);
+	await wait(20);
+
+	await a.storage.local.set({ neat_url_blocked_params: "nb@tweakers.net" });
+	await wait(UPLOAD_WAIT);
+	assert.strictEqual(b.local.neat_url_blocked_params, "nb@tweakers.net");
+	assert.strictEqual(a.local.neat_url_sync_status.result, "uploaded");
+	assert.strictEqual(b.local.neat_url_sync_status.result, "downloaded", "the download is no local change, so device B doesn't upload it again");
+	assert.ok(!a.local.neat_url_sync_pending && !b.local.neat_url_sync_pending);
+	assert.ok(contextB.NeatURL.background.getState().config.entries.some((e) => e.raw == "nb@tweakers.net"));
+});
+
+test("sync: a large list of parameters is split into chunks", async () => {
+	let cloud = createCloud();
+	let list = Array.from({ length: 3000 }, (_, i) => "param_" + i + "@example.com").join("\n") + "\nnaïve€";
+	let a = createBrowser({ neat_url_sync: true }, { cloud });
+	let b = createBrowser({ neat_url_sync: true }, { cloud });
+	loadBackground(a);
+	loadBackground(b);
+	await wait(20);
+
+	await a.storage.local.set({ neat_url_blocked_params: list });
+	await wait(UPLOAD_WAIT);
+	assert.ok(chunksOf(cloud, "neat_url_blocked_params").length > 1);
+	assert.strictEqual(b.local.neat_url_blocked_params, list);
+
+	// A shorter list leaves no old chunks behind
+	await a.storage.local.set({ neat_url_blocked_params: "x" });
+	await wait(UPLOAD_WAIT);
+	assert.deepStrictEqual(chunksOf(cloud, "neat_url_blocked_params"), ["neat_url_sync_chunk:neat_url_blocked_params:0"]);
+	assert.strictEqual(b.local.neat_url_blocked_params, "x");
+});
+
+test("sync: turning it on keeps the preferences of this device or takes the synchronized ones", async () => {
+	let cloud = createCloud();
+	let a = createBrowser({ neat_url_sync: true }, { cloud });
+	let b = createBrowser({ neat_url_blacklist: "b.example" }, { cloud });
+	loadBackground(a);
+	loadBackground(b);
+	await wait(20);
+	await a.storage.local.set({ neat_url_blacklist: "a.example" });
+	await wait(UPLOAD_WAIT);
+	assert.strictEqual(b.local.neat_url_blacklist, "b.example", "off on device B");
+
+	await sendMessage(b, { action: "sync-enable", use: "synced" });
+	assert.strictEqual(b.local.neat_url_blacklist, "a.example");
+
+	let c = createBrowser({ neat_url_blacklist: "c.example" }, { cloud });
+	loadBackground(c);
+	await wait(20);
+	await sendMessage(c, { action: "sync-enable", use: "local" });
+	await wait(50);
+	assert.strictEqual(a.local.neat_url_blacklist, "c.example");
+	assert.strictEqual(b.local.neat_url_blacklist, "c.example");
+
+	await sendMessage(b, { action: "sync-disable" });
+	await c.storage.local.set({ neat_url_blacklist: "c2.example" });
+	await wait(UPLOAD_WAIT);
+	assert.strictEqual(a.local.neat_url_blacklist, "c2.example");
+	assert.strictEqual(b.local.neat_url_blacklist, "c.example", "off again on device B");
+});
+
+test("sync: a change that was not uploaded yet is uploaded at the next start", async () => {
+	let cloud = createCloud();
+	let b = createBrowser({ neat_url_sync: true }, { cloud });
+	loadBackground(b);
+	// The background of device A was suspended before the upload
+	let a = createBrowser({ neat_url_sync: true, neat_url_whitelist: "late.example", neat_url_sync_pending: Date.now() }, { cloud });
+	loadBackground(a);
+	await wait(100);
+	assert.strictEqual(b.local.neat_url_whitelist, "late.example");
+});
+
+test("sync: an older version doesn't use the preferences of a newer version", async () => {
+	let cloud = createCloud();
+	let newer = createBrowser({ neat_url_sync: true }, { cloud, version: "2099.1.1" });
+	let older = createBrowser({ neat_url_sync: true, neat_url_blacklist: "old.example" }, { cloud, version: "2026.10.24" });
+	loadBackground(newer);
+	loadBackground(older);
+	await wait(20);
+
+	await newer.storage.local.set({ neat_url_blacklist: "new.example" });
+	await wait(UPLOAD_WAIT);
+	assert.strictEqual(older.local.neat_url_blacklist, "old.example");
+	assert.strictEqual(older.local.neat_url_sync_status.result, "newer_version");
+
+	await older.storage.local.set({ neat_url_blacklist: "old2.example" });
+	await wait(UPLOAD_WAIT);
+	assert.strictEqual(newer.local.neat_url_blacklist, "new.example", "the older version doesn't upload");
 });

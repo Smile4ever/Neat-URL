@@ -36,7 +36,10 @@
 	  "message": "アイコンのテーマ"
   },
   "icon_theme_descr": {
-	  "message": "既定では暗いアイコンが使用されます。明るいアイコンに変更することができます。"
+	  "message": "既定ではアイコンはブラウザーのテーマに従います：暗いテーマでは明るいアイコン、明るいテーマでは暗いアイコンになります。常に暗いアイコンまたは明るいアイコンを使うこともできます。"
+  },
+  "icon_theme_auto": {
+	  "message": "ブラウザーのテーマに従う"
   },
   "icon_theme_dark": {
 	  "message": "常に暗いアイコンを使用する"
@@ -66,11 +69,26 @@
   "advanced_descr": {
     "message": "これらのオプションは悪い影響を及ぼすかもしれません。"
   },
-  "blacklist": {
-    "message": "ドメインのブロックリスト"
+  "websites": {
+    "message": "ウェブサイト"
   },
-  "blacklist_descr": {
-    "message": "ドメインのリストです。Neat URLは、これらのウェブサイトでは作動しません。"
+  "websites_descr": {
+    "message": "Neat URL が URL を整理する場所です。ドメインにはそのサブドメインも含まれ、ワイルドカードも使えます：archive.* は archive.org と archive.ph に一致します。どちらの選択肢もそれぞれのリストを保持します。"
+  },
+  "websites_all_except": {
+    "message": "すべてのウェブサイト（これらのドメインを除く）"
+  },
+  "websites_only": {
+    "message": "これらのドメインのみ"
+  },
+  "websites_only_empty": {
+    "message": "このリストが空のときは、Neat URL はすべてのウェブサイトで URL を整理します。"
+  },
+  "blacklist": {
+    "message": "ウェブサイト：すべて（これらのドメインを除く）"
+  },
+  "whitelist": {
+    "message": "ウェブサイト：これらのドメインのみ"
   },
   "url_request_types": {
     "message": "URLのリクエスト型"
@@ -97,7 +115,7 @@
     "message": "アクセスを許可"
   },
   "linkumori_notice": {
-    "message": "Linkumori は Neat URL に戻りました。独自のパラメーターとホワイトリストのドメインは保持されています。「ブロックされるパラメーター」と「ドメインのブロックリスト」にあります。"
+    "message": "Linkumori は Neat URL に戻りました。独自のパラメーターとホワイトリストのドメインは保持されています。「ブロックされるパラメーター」と「ウェブサイト」（すべてのウェブサイト（これらのドメインを除く））にあります。"
   },
   "linkumori_notice_dismiss": {
     "message": "OK"
@@ -113,6 +131,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "署名パラメーター（sig、hmac、または signature で終わる名前）を含む URL は変更しません。変更するとダウンロードやリンクが使えなくなります。"
+  },
+  "remove_text_fragments": {
+    "message": "テキストフラグメントを削除する"
+  },
+  "remove_text_fragments_descr": {
+    "message": "リンクがページ内で強調表示するテキスト (#:~:text=...) を削除します。検索エンジンや「ハイライトへのリンクをコピー」で追加されるものです。ページはそのテキストまでスクロールしなくなります。#section のようなアンカーは残ります。"
   },
   "import_export": {
     "message": "インポートとエクスポート"
@@ -268,7 +292,10 @@
     "message": "Neat URLはこのURLを変更しません: クリーンにされるのはhttp://とhttps://のURLだけです。"
   },
   "test_url_blacklisted": {
-    "message": "Neat URLはこのURLを変更しません: ドメインが「ドメインのブロックリスト」に含まれています。"
+    "message": "Neat URLはこのURLを変更しません: ドメインが「ウェブサイト」の「すべてのウェブサイト（これらのドメインを除く）」のリストに含まれています。"
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URLはこのURLを変更しません: ドメインが「ウェブサイト」の「これらのドメインのみ」のリストに含まれていません。"
   },
 
   "test_url_signed": {
@@ -332,6 +359,22 @@
         "content": "$2"
       }
     }
+  },
+
+  "use_default_params": {
+    "message": "既定でブロックされるパラメーターを使用する"
+  },
+  "use_default_params_descr": {
+    "message": "オフにすると、自分で追加したブロックされるパラメーターだけを削除します。Neat URL の新しいバージョンで追加されるパラメーターもオフになります。下のリストでの選択は保持されます。"
+  },
+  "default_params_off": {
+    "message": "オフ: 自分で追加したブロックされるパラメーターだけが削除されます"
+  },
+  "use_default_params_confirm": {
+    "message": "自分で追加したブロックされるパラメーターがないため、Neat URL はパラメーターを一つも削除しなくなります。それでも既定でブロックされるパラメーターをオフにしますか?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL はパラメーターを削除しません: 既定でブロックされるパラメーターをオンにするか、ブロックされるパラメーターを自分で追加してください。"
   },
 
   "list_count": {
@@ -419,5 +462,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "設定を同期"
+  },
+  "sync_descr": {
+    "message": "このオプションがオンになっているすべてのデバイスで同じ設定を使用します。設定はブラウザーのアカウント（Firefox Sync、または Google か Microsoft のアカウント）に保存されます。"
+  },
+  "sync_uploaded": {
+    "message": "$TIME$ に同期しました。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "$TIME$ に別のデバイスの設定を受信しました。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "同期されていません: 設定がブラウザーで許可されている 100 KB を超えています。代わりにエクスポートとインポートを使用してください。"
+  },
+  "sync_newer_version": {
+    "message": "同期されていません: 別のデバイスが新しいバージョンの Neat URL を使用しています。このデバイスの Neat URL を更新してください。"
+  },
+  "sync_failed": {
+    "message": "同期に失敗しました。ブラウザーで同期がオンになっていますか？"
+  },
+  "sync_confirm": {
+    "message": "別のデバイスがすでに設定を同期しており、ここの設定とは異なります。\n\nOK: 別のデバイスの設定を使用します。\nキャンセル: このデバイスの設定を保持し、ほかのデバイスに送信します。"
   }
 }

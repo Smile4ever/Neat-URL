@@ -36,7 +36,10 @@
 	  "message": "Icon theme"
   },
   "icon_theme_descr": {
-	  "message": "Dark icons are used by default. You can change this option to use light icons."
+	  "message": "By default the icons follow the theme of the browser: light icons on a dark theme, dark icons on a light theme. You can also always use dark or light icons."
+  },
+  "icon_theme_auto": {
+	  "message": "Follow the browser theme"
   },
   "icon_theme_dark": {
 	  "message": "Always use dark icons"
@@ -66,11 +69,26 @@
   "advanced_descr": {
     "message": "These options may bite."
   },
-  "blacklist": {
-    "message": "Domain blacklist"
+  "websites": {
+    "message": "Websites"
   },
-  "blacklist_descr": {
-    "message": "List of domains. Neat URL will not work on these websites."
+  "websites_descr": {
+    "message": "Where Neat URL cleans URLs. A domain also covers its subdomains, wildcards work too: archive.* for archive.org and archive.ph. Both choices keep their own list."
+  },
+  "websites_all_except": {
+    "message": "All websites, except these domains"
+  },
+  "websites_only": {
+    "message": "Only these domains"
+  },
+  "websites_only_empty": {
+    "message": "When this list is empty, Neat URL cleans URLs on all websites."
+  },
+  "blacklist": {
+    "message": "Websites: all, except these domains"
+  },
+  "whitelist": {
+    "message": "Websites: only these domains"
   },
   "url_request_types": {
     "message": "URL request types"
@@ -97,7 +115,7 @@
     "message": "Allow access"
   },
   "linkumori_notice": {
-    "message": "Linkumori is Neat URL again. Your own parameters and whitelisted domains are kept: you find them in Blocked parameters and Domain blacklist."
+    "message": "Linkumori is Neat URL again. Your own parameters and whitelisted domains are kept: you find them in Blocked parameters and under Websites (All websites, except these domains)."
   },
   "linkumori_notice_dismiss": {
     "message": "OK"
@@ -113,6 +131,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "Don't change URLs with a signature parameter (sig, hmac or a name that ends with signature). Changing them breaks downloads and links."
+  },
+  "remove_text_fragments": {
+    "message": "Remove text fragments"
+  },
+  "remove_text_fragments_descr": {
+    "message": "Remove the text that a link highlights on the page (#:~:text=...), which search engines and \"Copy link to highlight\" add. The page then no longer scrolls to that text. An anchor like #section stays."
   },
   "import_export": {
     "message": "Import and export"
@@ -268,7 +292,10 @@
     "message": "Neat URL doesn't change this URL: only http:// and https:// URLs are cleaned."
   },
   "test_url_blacklisted": {
-    "message": "Neat URL doesn't change this URL: the domain is in \"Domain blacklist\"."
+    "message": "Neat URL doesn't change this URL: the domain is in the list \"All websites, except these domains\" under Websites."
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL doesn't change this URL: the domain is not in the list \"Only these domains\" under Websites."
   },
 
   "test_url_signed": {
@@ -332,6 +359,22 @@
         "content": "$2"
       }
     }
+  },
+
+  "use_default_params": {
+    "message": "Use the default blocked parameters"
+  },
+  "use_default_params_descr": {
+    "message": "Turn this off to remove only your own blocked parameters. Parameters that a new version of Neat URL adds are then off too. Your choices in the list below are kept."
+  },
+  "default_params_off": {
+    "message": "Off: only your own blocked parameters are removed"
+  },
+  "use_default_params_confirm": {
+    "message": "You have no blocked parameters of your own, so Neat URL won't remove any parameter. Turn off the default blocked parameters anyway?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL removes no parameters: turn on the default blocked parameters or add your own blocked parameters."
   },
 
   "list_count": {
@@ -419,5 +462,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "Sync preferences"
+  },
+  "sync_descr": {
+    "message": "Use the same preferences on every device where this option is on. They are stored with your browser account (Firefox Sync, or your Google or Microsoft account)."
+  },
+  "sync_uploaded": {
+    "message": "Synchronized on $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "Preferences of another device received on $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "Not synchronized: the preferences are larger than the 100 KB that the browser allows. Use Export and Import instead."
+  },
+  "sync_newer_version": {
+    "message": "Not synchronized: another device uses a newer version of Neat URL. Update Neat URL on this device."
+  },
+  "sync_failed": {
+    "message": "Synchronizing failed. Is sync turned on in the browser?"
+  },
+  "sync_confirm": {
+    "message": "Another device has already synchronized its preferences, and they are different from the preferences here.\n\nOK: use the preferences of the other device.\nCancel: keep the preferences of this device and send them to the other devices."
   }
 }

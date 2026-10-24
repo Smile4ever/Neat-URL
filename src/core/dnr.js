@@ -7,7 +7,10 @@
 //   stops the rules of broader patterns (which may remove parameters that are excluded for this pattern).
 // * Rules for wildcards, hash parameters and endings have a higher priority, but their regexFilter only
 //   matches when they actually change the URL. Each redirect removes something, until the union rule is left.
-// * The blacklist and signed URLs get allow rules with the highest priority.
+//   So they are created once per pattern, with only its own entries, above the union rules of all patterns.
+//   Only a pattern with an exclusion that overlaps a wildcard gets them again with the merged entries, on top.
+// * The blacklist and signed URLs get allow rules with the highest priority. With a whitelist, every rule
+//   only covers the part of its domain pattern that is in the whitelist.
 // * Some rules can't be expressed (for example "remove all parameters except one"). compileDnrRules returns
 //   them as unsupported; chrome.js handles those navigations by updating the tab.
 (function(root){
@@ -35,8 +38,15 @@
 	const PRIORITY_WILDCARD = 4;
 	const PRIORITY_HASH = 5;
 	const PRIORITY_ENDING = 6;
+	// Bands: the union rules of all patterns, above them the wildcard, hash and ending rules of all patterns
+	// (each pattern only with its own entries), and on top the complete rules of patterns with an exclusion
+	// that overlaps a wildcard of a broader pattern.
+	const BAND_HIGH = 1000;
+	const BAND_TOP = 2000;
 	// Blacklist and signed URLs: above every pattern
 	const PRIORITY_NEVER_CHANGE = 10000;
+	// Text fragments: only match when they change the URL, so they can be above the rules of every pattern
+	const PRIORITY_TEXT_FRAGMENT = PRIORITY_NEVER_CHANGE - 1;
 
 	const PORT = "(?::[0-9]+)?";
 	// A public suffix: a two-level suffix like co.uk, or a single label like com
@@ -120,6 +130,34 @@
 		return patterns;
 	}
 
+	// The part of pattern p that is also in pattern w, or null if they don't overlap
+	function intersect(p, w, suffixSet){
+		if(covers(w, p, suffixSet)) return p;
+		if(covers(p, w, suffixSet)) return w;
+		// Like addIntersections: *.google.com and mail.google.* overlap on mail.google.com
+		let [rootPattern, other] = p.type == "root" ? [p, w] : [w, p];
+		if(rootPattern.type != "root") return null;
+		let info = domain.splitHost(rootPattern.domain, suffixSet);
+		if(info.suffix == "" || !domain.isSameOrSubdomain(other.domain, info.minusSuffix)) return null;
+		if(other.type == "suffix") return { type: "exact", domain: other.domain + "." + info.suffix };
+		if(other.type == "rootSuffix") return { type: "root", domain: other.domain + "." + info.suffix };
+		return null;
+	}
+
+	// A regex can't say "every host except these", so with a whitelist every entry gets the part
+	// of its pattern that is in the whitelist (a global entry gets the whitelist patterns themselves).
+	function restrictToWhitelist(config){
+		if(config.whitelist.length == 0) return config.entries;
+		let result = new Map();
+		for(let entry of config.entries){
+			for(let allowed of config.whitelist){
+				let pattern = intersect(entry.pattern, allowed, config.suffixSet);
+				if(pattern) result.set(entry.raw + " " + domain.patternKey(pattern), Object.assign({}, entry, { pattern: pattern }));
+			}
+		}
+		return Array.from(result.values());
+	}
+
 	function knownNamesForPrefix(prefix, config){
 		let names = defaults.VERSION_4_DEFAULT_PARAMS.concat(config.entries.filter((e) => e.kind == "query" && params.isExactName(e)).map((e) => e.name));
 		return names.map((name) => name.split("@")[0]).filter((name) => name.startsWith(prefix) && !name.includes("*"));
@@ -149,6 +187,13 @@
 		}
 		// An exact name, possibly with a value
 		return params.entryMatchesKey(entry, exclude.name, exclude.value);
+	}
+
+	// Does an exclusion overlap a wildcard, value or name length? The rules of broader patterns must not
+	// apply to such a pattern, because they would remove the excluded parameter.
+	function hasConflict(entries){
+		let excludes = entries.filter((e) => e.kind == "exclude");
+		return entries.some((e) => e.kind == "query" && !params.isExactName(e) && excludes.some((exclude) => conflictsWithExclusion(e, exclude)));
 	}
 
 	// Collects everything that applies to the hosts of one pattern.
@@ -305,6 +350,23 @@
 		return rules;
 	}
 
+	// The text directives of the fragment directive (#intro:~:text=a&text=b), like removeTextDirectives() in clean.js.
+	// Each redirect removes one run of them; the redirected request is matched again.
+	function buildTextFragmentRules(pattern){
+		let H = "https?://" + hostRegex(pattern);
+		let T = "text=[^&]*";
+		return [
+			// #:~:text=a&text=b: only text directives and no anchor
+			regexRedirect("^(" + H + "[^#]*)#:~:(?:" + T + "&)*" + T + "$", "\\1"),
+			// #intro:~:text=a: only text directives after an anchor
+			regexRedirect("^(" + H + "[^#]*#.+?):~:(?:" + T + "&)*" + T + "$", "\\1"),
+			// #:~:text=a&other: text directives at the start
+			regexRedirect("^(" + H + "[^#]*#.*?:~:)(?:" + T + "&)+(.*)$", "\\1\\2"),
+			// #:~:other&text=a: text directives after another directive
+			regexRedirect("^(" + H + "[^#]*#.*?:~:[^#]*?)(?:&" + T + ")+((?:&.*)?)$", "\\1\\2")
+		].map((rule) => Object.assign(rule, { priority: PRIORITY_TEXT_FRAGMENT }));
+	}
+
 	// options: { types: ["main_frame"], firstId: 1, maxAlternatives: 6 }
 	function compileDnrRules(config, options){
 		options = options || {};
@@ -319,7 +381,8 @@
 		let patterns = [{ type: "global", domain: "" }];
 		groups.set("global:", []);
 
-		for(let entry of config.entries){
+		let restricted = restrictToWhitelist(config);
+		for(let entry of restricted){
 			let key = domain.patternKey(entry.pattern);
 			if(!groups.has(key)){
 				groups.set(key, []);
@@ -329,7 +392,7 @@
 		}
 
 		// Make sure the gws_rd exception for google.com gets its own pattern
-		if(config.entries.some((e) => e.raw == "gws_rd@google.*")) patterns.push({ type: "exact", domain: "google.com" });
+		if(restricted.some((e) => e.raw == "gws_rd@google.*")) patterns.push({ type: "exact", domain: "google.com" });
 		patterns = addIntersections(unique(patterns.map(domain.patternKey)).map((key) => patterns.find((p) => domain.patternKey(p) == key)), config.suffixSet);
 
 		let rules = [];
@@ -343,14 +406,34 @@
 			rules.push({ priority: PRIORITY_NEVER_CHANGE, action: { type: "allow" }, condition: { regexFilter: "^[^#]*[?&](?:sig|hmac|[^&=#]*signature)(?:[=&#]|$)" } });
 		}
 
+		// With a whitelist, only on the whitelisted domains (the blacklist and signed URLs have allow rules above)
+		if(config.removeTextFragments){
+			let textPatterns = config.whitelist.length > 0 ? config.whitelist : [{ type: "global", domain: "" }];
+			for(let pattern of textPatterns) rules.push(...buildTextFragmentRules(pattern));
+		}
+
+		let maxAlternatives = options.maxAlternatives || MAX_ALTERNATIVES;
+		let add = (rule, priority) => {
+			rule.priority += priority;
+			rules.push(rule);
+		};
 		for(let pattern of patterns){
 			let supersets = patterns.filter((q) => covers(q, pattern, config.suffixSet));
 			let entries = [].concat(...supersets.map((q) => groups.get(domain.patternKey(q)) || []));
 			let rank = supersets.length;
 
-			for(let rule of buildRulesForPattern(pattern, mergeEntries(pattern, entries, config, unsupported), options.maxAlternatives || MAX_ALTERNATIVES)){
-				rule.priority += rank * 10;
-				rules.push(rule);
+			if(hasConflict(entries)){
+				for(let rule of buildRulesForPattern(pattern, mergeEntries(pattern, entries, config, unsupported), maxAlternatives)) add(rule, BAND_TOP + rank * 10);
+				continue;
+			}
+
+			// The rules above the union only match when they change the URL, so the broader patterns don't need to be repeated
+			for(let rule of buildRulesForPattern(pattern, mergeEntries(pattern, entries, config, unsupported), maxAlternatives)){
+				if(rule.priority < PRIORITY_WILDCARD) add(rule, rank * 10);
+			}
+			let own = groups.get(domain.patternKey(pattern)) || [];
+			for(let rule of buildRulesForPattern(pattern, mergeEntries(pattern, own, config, unsupported), maxAlternatives)){
+				if(rule.priority >= PRIORITY_WILDCARD) add(rule, BAND_HIGH + rank * 10);
 			}
 		}
 
@@ -382,6 +465,6 @@
 		return unsupported.some((u) => domain.matchesPattern(u.pattern, hostInfo) && active.some((e) => e.raw == u.raw));
 	}
 
-	NeatURL.dnr = { compileDnrRules, needsFallback, toResourceTypes, covers, addIntersections, hostRegex, escapeRegex };
+	NeatURL.dnr = { compileDnrRules, needsFallback, toResourceTypes, covers, addIntersections, intersect, hostRegex, escapeRegex };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.dnr;
 })(globalThis);

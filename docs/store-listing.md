@@ -24,7 +24,7 @@ The Chrome Web Store shows at most 5 screenshots: use 1 to 5. addons.mozilla.org
 | [3-default-parameters.png](../images/store/3-default-parameters.png) | 170 default parameters in categories. Uncheck a parameter or a category to keep it in URLs. |
 | [8-dark-mode.png](../images/store/8-dark-mode.png) | The options page follows the dark mode of your system. |
 | [4-own-rules.png](../images/store/4-own-rules.png) | Your own rules: per website, with wildcards, exclusions and values. Invalid rules are pointed out before you save. |
-| [7-advanced.png](../images/store/7-advanced.png) | Advanced options: change links in pages, keep signed URLs, clean URLs inside parameters, request types, import and export. |
+| [7-advanced.png](../images/store/7-advanced.png) | Advanced options: change links in pages, keep signed URLs, clean URLs inside parameters, request types, sync, import and export. |
 | [6-appearance.png](../images/store/6-appearance.png) | Choose the icon animation, the icon theme and the counter on the toolbar button. |
 
 ## Description for addons.mozilla.org
@@ -46,11 +46,11 @@ After: https://www.theverge.com/tech/review
 - Click the toolbar button to test the URL of the current tab.
 - **Log**: the last 500 cleaned URLs, with the removed parameters struck through. It is kept in memory only.
 - Your own rules: for all websites or one website, with wildcards, exclusions and values (see below).
-- A domain blacklist for websites that Neat URL should leave alone.
+- Choose the websites: all websites except a list of domains, or only a list of domains.
 - Keeps signed URLs (like `X-Amz-Signature`) unchanged, so downloads keep working.
 - Optional: clean the links in a page, and clean URLs inside parameters.
 - A counter and an animation on the toolbar button. Right-click it to disable Neat URL until the browser restarts.
-- Import and export of your preferences.
+- Sync your preferences between devices, or import and export them.
 - Dark mode, and the options page in 16 languages.
 
 **Rules**
@@ -69,7 +69,7 @@ Start a line with `Name:` to group your rules. All rules are explained on [GitHu
 
 **Privacy**
 
-Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs.
+Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs. With "Sync preferences" on, Firefox stores your preferences with your Firefox account.
 
 **Requirements**
 
@@ -101,11 +101,11 @@ FEATURES
 • Click the toolbar button to test the URL of the current tab.
 • Log: the last 500 cleaned URLs, with the removed parameters struck through. It is kept in memory only.
 • Your own rules: for all websites or one website, with wildcards, exclusions and values (see below).
-• A domain blacklist for websites that Neat URL should leave alone.
+• Choose the websites: all websites except a list of domains, or only a list of domains.
 • Keeps signed URLs (like X-Amz-Signature) unchanged, so downloads keep working.
 • Optional: clean the links in a page, and clean URLs inside parameters.
 • A counter and an animation on the toolbar button. Right-click it to disable Neat URL until the browser restarts.
-• Import and export of your preferences.
+• Sync your preferences between devices, or import and export them.
 • Dark mode, and the options page in 16 languages.
 
 Neat URL uses declarativeNetRequest: Chrome itself removes the parameters, before the request leaves your browser.
@@ -124,7 +124,7 @@ $/ref@amazon.* — remove everything after /ref in the path
 Start a line with "Name:" to group your rules. All rules are explained on GitHub: https://github.com/Smile4ever/Neat-URL#parameter-rules
 
 PRIVACY
-Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs.
+Neat URL doesn't collect or send any data. It needs access to all websites to clean their URLs. With "Sync preferences" on, the browser stores your preferences with your Google or Microsoft account.
 
 REQUIREMENTS
 Chrome 121 or newer.

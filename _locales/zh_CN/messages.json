@@ -36,7 +36,10 @@
 	  "message": "图标主题"
   },
   "icon_theme_descr": {
-	  "message": "默认使用暗色图标。您可以更改此选项以使用明亮图标。"
+	  "message": "默认情况下图标跟随浏览器主题：深色主题使用明亮图标，浅色主题使用暗色图标。您也可以始终使用暗色或明亮图标。"
+  },
+  "icon_theme_auto": {
+	  "message": "跟随浏览器主题"
   },
   "icon_theme_dark": {
 	  "message": "始终使用暗色图标"
@@ -63,11 +66,26 @@
   "advanced_descr": {
     "message": "慎重修改，以防故障。"
   },
-  "blacklist": {
-	  "message": "域名黑名单"
+  "websites": {
+	  "message": "网站"
   },
-  "blacklist_descr": {
-  	"message": "域名列表。Neat URL 不会在这些网站上运行。"
+  "websites_descr": {
+	  "message": "Neat URL 清理网址的范围。域名也包括其子域名，也可以使用通配符：archive.* 匹配 archive.org 和 archive.ph。两个选项各自保留自己的列表。"
+  },
+  "websites_all_except": {
+	  "message": "所有网站，但这些域名除外"
+  },
+  "websites_only": {
+	  "message": "仅这些域名"
+  },
+  "websites_only_empty": {
+	  "message": "此列表为空时，Neat URL 会清理所有网站上的网址。"
+  },
+  "blacklist": {
+	  "message": "网站：全部，但这些域名除外"
+  },
+  "whitelist": {
+    "message": "网站：仅这些域名"
   },
   "url_request_types": {
     "message": "网址请求类型"
@@ -94,7 +112,7 @@
     "message": "允许访问"
   },
   "linkumori_notice": {
-    "message": "Linkumori 已恢复为 Neat URL。你自己的参数和白名单中的域名都已保留：可以在“拦截参数”和“域名黑名单”中找到它们。"
+    "message": "Linkumori 已恢复为 Neat URL。你自己的参数和白名单中的域名都已保留：可以在“拦截参数”和“网站”（所有网站，但这些域名除外）中找到它们。"
   },
   "linkumori_notice_dismiss": {
     "message": "确定"
@@ -110,6 +128,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "不更改带有签名参数（sig、hmac 或以 signature 结尾的名称）的网址。更改它们会导致下载和链接失效。"
+  },
+  "remove_text_fragments": {
+    "message": "移除文本片段"
+  },
+  "remove_text_fragments_descr": {
+    "message": "移除链接在页面上高亮的文本（#:~:text=...），由搜索引擎和“复制高亮内容的链接”添加。页面将不再滚动到该文本。像 #section 这样的锚点会保留。"
   },
   "import_export": {
     "message": "导入和导出"
@@ -264,7 +288,10 @@
     "message": "Neat URL 不会更改此网址：只清理 http:// 和 https:// 网址。"
   },
   "test_url_blacklisted": {
-    "message": "Neat URL 不会更改此网址：该域名在“Domain blacklist”中。"
+    "message": "Neat URL 不会更改此网址：该域名在“网站”下的“所有网站，但这些域名除外”列表中。"
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL 不会更改此网址：该域名不在“网站”下的“仅这些域名”列表中。"
   },
 
   "test_url_signed": {
@@ -328,6 +355,22 @@
         "content": "$2"
       }
     }
+  },
+
+  "use_default_params": {
+    "message": "使用默认拦截的参数"
+  },
+  "use_default_params_descr": {
+    "message": "关闭后只移除你自己添加的拦截参数。Neat URL 新版本添加的参数也会处于关闭状态。下方列表中的选择会被保留。"
+  },
+  "default_params_off": {
+    "message": "已关闭：只移除你自己添加的拦截参数"
+  },
+  "use_default_params_confirm": {
+    "message": "你没有自己添加的拦截参数，因此 Neat URL 将不会移除任何参数。仍然关闭默认拦截的参数吗？"
+  },
+  "no_params_warning": {
+    "message": "Neat URL 不会移除任何参数：请开启默认拦截的参数，或添加你自己的拦截参数。"
   },
 
   "list_count": {
@@ -415,5 +458,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "同步设置"
+  },
+  "sync_descr": {
+    "message": "在开启此选项的每台设备上使用相同的设置。设置保存在你的浏览器账户中（Firefox Sync，或你的 Google 或 Microsoft 账户）。"
+  },
+  "sync_uploaded": {
+    "message": "已于 $TIME$ 同步。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "已于 $TIME$ 收到另一台设备的设置。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "未同步：设置超过了浏览器允许的 100 KB。请改用导出和导入。"
+  },
+  "sync_newer_version": {
+    "message": "未同步：另一台设备使用的是更新版本的 Neat URL。请在此设备上更新 Neat URL。"
+  },
+  "sync_failed": {
+    "message": "同步失败。浏览器中是否已开启同步？"
+  },
+  "sync_confirm": {
+    "message": "另一台设备已经同步了它的设置，并且与这里的设置不同。\n\n确定：使用另一台设备的设置。\n取消：保留此设备的设置，并发送到其他设备。"
   }
 }

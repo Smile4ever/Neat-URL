@@ -61,11 +61,15 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 
 		let config = NeatURL.params.compileConfig({
 			defaultParams: defaultParams,
+			useDefaultParams: prefs.neat_url_use_default_params,
 			overrides: prefs.neat_url_override_default_blocked_params,
 			blockedParams: prefs.neat_url_blocked_params,
+			websites: prefs.neat_url_websites,
 			blacklist: prefs.neat_url_blacklist,
+			whitelist: prefs.neat_url_whitelist,
 			cleanNested: prefs.neat_url_clean_nested,
 			keepSigned: prefs.neat_url_keep_signed_urls,
+			removeTextFragments: prefs.neat_url_remove_text_fragments,
 			suffixList: suffixText.split(/\r?\n/).map((line) => line.trim()).filter((line) => line != "")
 		});
 
@@ -115,8 +119,17 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		return "icons/" + theme + "/" + file;
 	}
 
+	// "auto" follows the color scheme of the browser, fixes #252: light icons on a dark theme.
+	// The event page of Firefox follows the browser theme. The service worker of Chrome has no matchMedia, so it uses dark icons.
+	const darkScheme = typeof root.matchMedia == "function" ? root.matchMedia("(prefers-color-scheme: dark)") : null;
+	if(darkScheme) darkScheme.addEventListener("change", () => {
+		if(state && state.prefs.neat_url_icon_theme == "auto") applyState();
+	});
+
 	function iconTheme(){
-		return state ? state.prefs.neat_url_icon_theme : "dark";
+		let theme = state ? state.prefs.neat_url_icon_theme : "auto";
+		if(theme == "auto") return darkScheme && darkScheme.matches ? "light" : "dark";
+		return theme;
 	}
 
 	function resolveIconURL(file){
@@ -278,8 +291,10 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 			config: {
 				entries: state.config.entries,
 				blacklist: state.config.blacklist,
+				whitelist: state.config.whitelist,
 				cleanNested: state.config.cleanNested,
 				keepSigned: state.config.keepSigned,
+				removeTextFragments: state.config.removeTextFragments,
 				suffixList: Array.from(state.config.suffixSet)
 			}
 		};

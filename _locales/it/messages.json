@@ -36,7 +36,10 @@
     "message": "Tema dell'icona"
   },
   "icon_theme_descr": {
-    "message": "Per impostazione predefinita si usano icone scure. Puoi cambiare questa opzione per usare icone chiare."
+    "message": "Per impostazione predefinita le icone seguono il tema del browser: icone chiare con un tema scuro, icone scure con un tema chiaro. Puoi anche usare sempre icone scure o chiare."
+  },
+  "icon_theme_auto": {
+    "message": "Segui il tema del browser"
   },
   "icon_theme_dark": {
     "message": "Usa sempre icone scure"
@@ -62,11 +65,26 @@
   "advanced_descr": {
     "message": "Queste opzioni possono mordere."
   },
-  "blacklist": {
-    "message": "Lista nera dei domini"
+  "websites": {
+    "message": "Siti web"
   },
-  "blacklist_descr": {
-    "message": "Elenco di domini. Neat URL non funzionerà su questi siti web."
+  "websites_descr": {
+    "message": "Dove Neat URL pulisce gli URL. Un dominio include anche i suoi sottodomini, e i caratteri jolly funzionano: archive.* per archive.org e archive.ph. Ogni scelta ha la sua lista."
+  },
+  "websites_all_except": {
+    "message": "Tutti i siti web, tranne questi domini"
+  },
+  "websites_only": {
+    "message": "Solo questi domini"
+  },
+  "websites_only_empty": {
+    "message": "Se questa lista è vuota, Neat URL pulisce gli URL su tutti i siti web."
+  },
+  "blacklist": {
+    "message": "Siti web: tutti, tranne questi domini"
+  },
+  "whitelist": {
+    "message": "Siti web: solo questi domini"
   },
   "url_request_types": {
     "message": "Tipi di richiesta URL"
@@ -93,7 +111,7 @@
     "message": "Consenti accesso"
   },
   "linkumori_notice": {
-    "message": "Linkumori torna a essere Neat URL. I tuoi parametri e i domini nella lista bianca sono stati mantenuti: li trovi in Parametri bloccati e Lista nera dei domini."
+    "message": "Linkumori torna a essere Neat URL. I tuoi parametri e i domini nella lista bianca sono stati mantenuti: li trovi in Parametri bloccati e in Siti web (Tutti i siti web, tranne questi domini)."
   },
   "linkumori_notice_dismiss": {
     "message": "OK"
@@ -109,6 +127,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "Non modifica gli URL con un parametro di firma (sig, hmac o un nome che finisce con signature). Modificarli rompe download e link."
+  },
+  "remove_text_fragments": {
+    "message": "Rimuovi i frammenti di testo"
+  },
+  "remove_text_fragments_descr": {
+    "message": "Rimuove il testo che un link evidenzia nella pagina (#:~:text=...), aggiunto dai motori di ricerca e da \"Copia link all'evidenziazione\". La pagina non scorre più fino a quel testo. Un'ancora come #section resta."
   },
   "import_export": {
     "message": "Importa ed esporta"
@@ -258,7 +282,10 @@
     "message": "Neat URL non modifica questo URL: vengono puliti solo gli URL http:// e https://."
   },
   "test_url_blacklisted": {
-    "message": "Neat URL non modifica questo URL: il dominio è in \"Lista nera dei domini\"."
+    "message": "Neat URL non modifica questo URL: il dominio è nella lista \"Tutti i siti web, tranne questi domini\" in Siti web."
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL non modifica questo URL: il dominio non è nella lista \"Solo questi domini\" in Siti web."
   },
   "test_url_signed": {
     "message": "Neat URL non modifica questo URL: è un URL firmato (\"Mantieni gli URL firmati\" nella scheda Avanzate)."
@@ -317,6 +344,21 @@
         "content": "$2"
       }
     }
+  },
+  "use_default_params": {
+    "message": "Usa i parametri bloccati predefiniti"
+  },
+  "use_default_params_descr": {
+    "message": "Disattiva questa opzione per rimuovere solo i tuoi parametri bloccati. Anche i parametri aggiunti da una nuova versione di Neat URL saranno disattivati. Le tue scelte nell'elenco qui sotto vengono mantenute."
+  },
+  "default_params_off": {
+    "message": "Disattivato: vengono rimossi solo i tuoi parametri bloccati"
+  },
+  "use_default_params_confirm": {
+    "message": "Non hai parametri bloccati personali, quindi Neat URL non rimuoverà alcun parametro. Disattivare comunque i parametri bloccati predefiniti?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL non rimuove alcun parametro: attiva i parametri bloccati predefiniti o aggiungi i tuoi parametri bloccati."
   },
   "list_count": {
     "message": "Elementi: $COUNT$",
@@ -391,5 +433,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "Sincronizza le preferenze"
+  },
+  "sync_descr": {
+    "message": "Usa le stesse preferenze su ogni dispositivo in cui questa opzione è attiva. Vengono salvate con il tuo account del browser (Firefox Sync, o il tuo account Google o Microsoft)."
+  },
+  "sync_uploaded": {
+    "message": "Sincronizzato il $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "Preferenze di un altro dispositivo ricevute il $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "Non sincronizzato: le preferenze superano i 100 KB consentiti dal browser. Usa invece Esporta e Importa."
+  },
+  "sync_newer_version": {
+    "message": "Non sincronizzato: un altro dispositivo usa una versione più recente di Neat URL. Aggiorna Neat URL su questo dispositivo."
+  },
+  "sync_failed": {
+    "message": "La sincronizzazione non è riuscita. La sincronizzazione è attiva nel browser?"
+  },
+  "sync_confirm": {
+    "message": "Un altro dispositivo ha già sincronizzato le sue preferenze, e sono diverse dalle preferenze di qui.\n\nOK: usa le preferenze dell’altro dispositivo.\nAnnulla: mantieni le preferenze di questo dispositivo e inviale agli altri dispositivi."
   }
 }

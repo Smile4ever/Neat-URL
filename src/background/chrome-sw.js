@@ -6,6 +6,8 @@ importScripts(
 	"../core/clean.js",
 	"../core/dnr.js",
 	"../core/migrate.js",
+	"../core/sync.js",
 	"common.js",
+	"sync.js",
 	"chrome.js"
 );

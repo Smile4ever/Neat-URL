@@ -13,8 +13,8 @@ const ROOT = path.join(__dirname, "..");
 
 const COMMON_FILES = [
 	"_locales", "css", "data", "icons", "options.html", "options.js", "log.js",
-	"src/core/defaults.js", "src/core/domain.js", "src/core/params.js", "src/core/clean.js", "src/core/migrate.js",
-	"src/background/common.js", "src/content/links.js"
+	"src/core/defaults.js", "src/core/domain.js", "src/core/params.js", "src/core/clean.js", "src/core/migrate.js", "src/core/sync.js",
+	"src/background/common.js", "src/background/sync.js", "src/content/links.js"
 ];
 
 const TARGETS = {
@@ -31,6 +31,7 @@ const TARGETS = {
 		manifest: (manifest) => {
 			delete manifest.background.scripts;
 			delete manifest.browser_specific_settings;
+			delete manifest.action.theme_icons;
 			manifest.permissions = manifest.permissions.filter((permission) => permission != "webRequestBlocking");
 		}
 	}

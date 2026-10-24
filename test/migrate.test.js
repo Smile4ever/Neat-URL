@@ -76,9 +76,18 @@ test("old counter color upgrade", () => {
 });
 
 test("icon themes for notifications become dark or light", () => {
-	assert.strictEqual(migrate.migrate({ neat_url_version: "5.0.0", neat_url_icon_theme: "dark_notiflight" }, "2026.10.24", DEFAULT_PARAMS).changes.neat_url_icon_theme, "dark");
+	assert.strictEqual(migrate.migrate({ neat_url_version: "5.0.0", neat_url_icon_theme: "dark_notiflight" }, "2026.10.24", DEFAULT_PARAMS).changes.neat_url_icon_theme, "auto", "dark becomes auto (#252)");
 	assert.strictEqual(migrate.migrate({ neat_url_version: "5.0.0", neat_url_icon_theme: "light_notifdark" }, "2026.10.24", DEFAULT_PARAMS).changes.neat_url_icon_theme, "light");
 	assert.strictEqual(migrate.migrate({ neat_url_version: "5.0.0", neat_url_icon_theme: "light" }, "2026.10.24", DEFAULT_PARAMS).changes.neat_url_icon_theme, undefined);
+});
+
+test("dark icons become auto once, for updates from before 2026.10.24.2 (#252)", () => {
+	let changes = (stored) => migrate.migrate(stored, "2026.10.24.2", DEFAULT_PARAMS).changes;
+	assert.strictEqual(changes({ neat_url_version: "2026.10.24.1", neat_url_icon_theme: "dark" }).neat_url_icon_theme, "auto");
+	assert.strictEqual(changes({ neat_url_icon_theme: "dark" }).neat_url_icon_theme, "auto", "very old versions without neat_url_version");
+	assert.strictEqual(changes({ neat_url_version: "2026.10.24.1", neat_url_icon_theme: "light" }).neat_url_icon_theme, undefined);
+	assert.strictEqual(changes({ neat_url_version: "2026.10.24.2", neat_url_icon_theme: "dark" }).neat_url_icon_theme, undefined, "chosen again after the update");
+	assert.strictEqual(migrate.migrate({ neat_url_version: "2026.10.24.2", neat_url_icon_theme: "dark" }, "2026.10.25", DEFAULT_PARAMS).changes.neat_url_icon_theme, undefined, "only once");
 });
 
 // Linkumori was an update of Neat URL in the Chrome Web Store: its data is in storage.local when 2026.10.24 is installed

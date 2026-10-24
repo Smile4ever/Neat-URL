@@ -73,17 +73,49 @@
 
 		<div class="option">
 			<div class="labelbox">
-				<label for="neat_url_blacklist"><span data-i18n="blacklist">Domain blacklist</span></label><div class="descr" data-i18n="blacklist_descr">List of domains. Neat URL will not work on these websites.</div>
+				<label for="neat_url_remove_text_fragments"><span data-i18n="remove_text_fragments">Remove text fragments</span></label><div class="descr" data-i18n="remove_text_fragments_descr">Remove the text that a link highlights on the page (#:~:text=...), which search engines and "Copy link to highlight" add. The page then no longer scrolls to that text. An anchor like #section stays.</div>
 			</div>
 			<div>
-				<textarea id="neat_url_blacklist" rows="5" data-check="domains" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-				<div class="list-status" data-for="neat_url_blacklist"></div>
+				<input type="checkbox" class="switch" id="neat_url_remove_text_fragments">
 			</div>
 		</div>
 
 		<div class="hr"></div>
 
 		<div class="option">
+			<div class="labelbox">
+				<label for="neat_url_websites"><span data-i18n="websites">Websites</span></label><div class="descr" data-i18n="websites_descr">Where Neat URL cleans URLs. A domain also covers its subdomains, wildcards work too: archive.* for archive.org and archive.ph. Both choices keep their own list.</div>
+			</div>
+			<div>
+				<select id="neat_url_websites">
+					<option value="all_except" id="websites_all_except_label" data-i18n="websites_all_except">All websites, except these domains</option>
+					<option value="only" id="websites_only_label" data-i18n="websites_only">Only these domains</option>
+				</select>
+				<div class="websites-list" data-websites="all_except">
+					<textarea id="neat_url_blacklist" rows="5" data-check="domains" aria-labelledby="websites_all_except_label" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+					<div class="list-status" data-for="neat_url_blacklist"></div>
+				</div>
+				<div class="websites-list" data-websites="only">
+					<textarea id="neat_url_whitelist" rows="5" data-check="domains" aria-labelledby="websites_only_label" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+					<div class="list-status" data-for="neat_url_whitelist"></div>
+					<div class="descr" data-i18n="websites_only_empty">When this list is empty, Neat URL cleans URLs on all websites.</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="hr"></div>
+
+		<div class="option">
+			<div class="labelbox">
+				<label for="neat_url_use_default_params"><span data-i18n="use_default_params">Use the default blocked parameters</span></label><div class="descr" data-i18n="use_default_params_descr">Turn this off to remove only your own blocked parameters. Parameters that a new version of Neat URL adds are then off too. Your choices in the list below are kept.</div>
+			</div>
+			<div>
+				<input type="checkbox" class="switch" id="neat_url_use_default_params">
+				<div id="no_params_warning" class="warning" role="status" hidden data-i18n="no_params_warning">Neat URL removes no parameters: turn on the default blocked parameters or add your own blocked parameters.</div>
+			</div>
+		</div>
+
+		<div class="option" id="default_params_option">
 			<div class="labelbox">
 				<label id="default_params_label" for="default_params_search"><span data-i18n="default_blocked_params">Default blocked parameters</span></label><div class="descr" data-i18n="default_blocked_params_descr">These are the default parameters that Neat URL will remove from the URL.</div>
 				<div class="descr" data-i18n="default_blocked_params_uncheck">Uncheck a parameter to keep it in URLs.</div>
@@ -120,10 +152,11 @@
 
 		<div class="option">
 			<div class="labelbox">
-				<label for="neat_url_icon_theme"><span data-i18n="icon_theme">Icon theme</span></label><div class="descr" data-i18n="icon_theme_descr">Dark icons are used by default. You can change this option to use light icons.</div>
+				<label for="neat_url_icon_theme"><span data-i18n="icon_theme">Icon theme</span></label><div class="descr" data-i18n="icon_theme_descr">By default the icons follow the theme of the browser: light icons on a dark theme, dark icons on a light theme. You can also always use dark or light icons.</div>
 			</div>
 			<div>
 				<select id="neat_url_icon_theme">
+					<option value="auto" data-i18n="icon_theme_auto">Follow the browser theme</option>
 					<option value="dark" data-i18n="icon_theme_dark">Always use dark icons</option>
 					<option value="light" data-i18n="icon_theme_light">Always use light icons</option>				</select>
 			</div>
@@ -207,6 +240,18 @@
 
 		<div class="option">
 			<div class="labelbox">
+				<label for="neat_url_sync"><span data-i18n="sync">Sync preferences</span></label><div class="descr" data-i18n="sync_descr">Use the same preferences on every device where this option is on. They are stored with your browser account (Firefox Sync, or your Google or Microsoft account).</div>
+			</div>
+			<div>
+				<input type="checkbox" class="switch" id="neat_url_sync">
+				<div id="sync_status" role="status"></div>
+			</div>
+		</div>
+
+		<div class="hr"></div>
+
+		<div class="option">
+			<div class="labelbox">
 				<label><span data-i18n="import_export">Import and export</span></label><div class="descr" data-i18n="import_export_descr">Save all preferences to a file, or load them from a file.</div>
 			</div>
 			<div>
@@ -271,6 +316,7 @@
 				<label class="include"><input type="checkbox" id="include_neat_url_blocked_params" checked><span data-i18n="blocked_params">Blocked parameters</span> <span class="count"></span></label>
 				<label class="include"><input type="checkbox" id="include_neat_url_override_default_blocked_params" checked><span data-i18n="log_save_unchecked_defaults">Unchecked default parameters</span> <span class="count"></span></label>
 				<label class="include"><input type="checkbox" id="include_neat_url_blacklist" checked><span data-i18n="blacklist">Domain blacklist</span> <span class="count"></span></label>
+				<label class="include"><input type="checkbox" id="include_neat_url_whitelist" checked><span data-i18n="whitelist">Domain whitelist</span> <span class="count"></span></label>
 
 				<div class="dialog-buttons">
 					<button type="submit" value="cancel"><span data-i18n="log_save_cancel">Cancel</span></button>
@@ -284,6 +330,7 @@
 	<script src="src/core/domain.js"></script>
 	<script src="src/core/params.js"></script>
 	<script src="src/core/clean.js"></script>
+	<script src="src/core/sync.js"></script>
     <script src="options.js" defer></script>
     <script src="log.js" defer></script>
   </body>

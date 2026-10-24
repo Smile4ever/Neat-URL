@@ -22,8 +22,8 @@ test("the default config stays well within Chrome's limits", () => {
 	let { rules, warnings } = dnr.compileDnrRules(makeConfig(), { types: ["main_frame"] });
 	assert.deepStrictEqual(warnings, []);
 	let regexRules = rules.filter((rule) => rule.condition.regexFilter).length;
-	assert.ok(rules.length < 500, "rules: " + rules.length);
-	assert.ok(regexRules < 300, "regex rules: " + regexRules);
+	assert.ok(rules.length < 200, "rules: " + rules.length);
+	assert.ok(regexRules < 200, "regex rules: " + regexRules);
 });
 
 test("with one alternative per rule the default config is still within Chrome's limits", () => {
@@ -96,4 +96,26 @@ test("intersections of overlapping patterns", () => {
 	let keys = patterns.map(domain.patternKey);
 	assert.ok(keys.includes("exact:mail.google.com"));
 	assert.ok(keys.includes("root:sub.example.co.uk"));
+});
+
+test("intersect: the part of a pattern that is in the whitelist", () => {
+	let suffixSet = makeConfig().suffixSet;
+	let p = (raw) => domain.parsePattern(raw);
+	let key = (a, b) => { let result = dnr.intersect(a, b, suffixSet); return result && domain.patternKey(result); };
+	assert.strictEqual(key({ type: "global", domain: "" }, p("*.example.com")), "root:example.com");
+	assert.strictEqual(key(p("*.example.com"), p("*.shop.example.com")), "root:shop.example.com");
+	assert.strictEqual(key(p("shop.example.com"), p("*.example.com")), "exact:shop.example.com");
+	assert.strictEqual(key(p("google.*"), p("*.google.com")), "exact:google.com");
+	assert.strictEqual(key(p("*.mail.google.*"), p("*.google.com")), "root:mail.google.com");
+	assert.strictEqual(key(p("*.example.com"), p("example.*")), "exact:example.com");
+	assert.strictEqual(key(p("google.*"), p("*.mail.google.com")), null);
+	assert.strictEqual(key(p("*.example.com"), p("*.example.org")), null);
+	assert.strictEqual(key(p("amazon.*"), p("google.*")), null);
+});
+
+test("with a whitelist, no rule matches other domains", () => {
+	let { rules } = dnr.compileDnrRules(makeConfig({ websites: "only", whitelist: "example.com" }), { types: ["main_frame"] });
+	let redirects = rules.filter((rule) => rule.action.type == "redirect");
+	assert.ok(redirects.length > 0);
+	assert.ok(redirects.every((rule) => !new RegExp(rule.condition.regexFilter, "i").test("https://other.org/?utm_source=a&fbclid=b&ved=1#?pk_kwd=1")));
 });

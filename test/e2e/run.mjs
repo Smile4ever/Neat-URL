@@ -78,6 +78,25 @@ async function launchChrome(){
 		counted: async () => {
 			let badge = await options.evaluate(`chrome.storage.session.get("neat_url_badge")`);
 			return Object.values(badge.neat_url_badge || {}).reduce((a, b) => a + b, 0);
+		},
+		// Sync preferences (#123) with the real storage.sync of the service worker. Another device is
+		// simulated by writing to storage.sync from the options page.
+		syncCheck: async () => {
+			await options.evaluate(`chrome.runtime.sendMessage({ action: "sync-enable", use: "local" })`);
+			await options.evaluate(`chrome.storage.local.set({ neat_url_blacklist: "sync.example" })`);
+			await wait(3500);
+			let uploaded = await options.evaluate(`chrome.storage.sync.get(null).then((items) => NeatURL.sync.fromSyncItems(items).prefs.neat_url_blacklist)`);
+
+			await options.evaluate(`chrome.storage.sync.get(null).then((items) => {
+				let synced = NeatURL.sync.fromSyncItems(items);
+				let prefs = Object.assign({}, synced.prefs, { neat_url_blacklist: "remote.example" });
+				return chrome.storage.sync.set(NeatURL.sync.toSyncItems(prefs, synced.version, Date.now()));
+			})`);
+			await wait(1500);
+			let downloaded = await options.evaluate(`chrome.storage.local.get("neat_url_blacklist").then((r) => r.neat_url_blacklist)`);
+
+			await options.evaluate(`chrome.runtime.sendMessage({ action: "sync-disable" })`);
+			return { ok: uploaded == "sync.example" && downloaded == "remote.example", text: `uploaded ${uploaded}, downloaded ${downloaded}` };
 		}
 	};
 }
@@ -98,17 +117,39 @@ async function launchFirefox(){
 	let variantRoot = fs.mkdtempSync(path.join(os.tmpdir(), "neat-url-e2e-firefox-"));
 	let variant = 0;
 
+	// A copy of the build that runs script in the background, first or after all other scripts
+	let installVariant = async (script, last) => {
+		let dir = path.join(variantRoot, String(variant++));
+		fs.cpSync(path.join(ROOT, "dist/firefox"), dir, { recursive: true });
+		fs.writeFileSync(path.join(dir, "e2e-config.js"), script);
+		let manifest = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8"));
+		if(last) manifest.background.scripts.push("e2e-config.js");
+		else manifest.background.scripts.unshift("e2e-config.js");
+		fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest));
+		await browser.installExtension(dir);
+	};
+
 	return {
 		browser,
 		setPrefs: async (prefs) => {
-			let dir = path.join(variantRoot, String(variant++));
-			fs.cpSync(path.join(ROOT, "dist/firefox"), dir, { recursive: true });
-			fs.writeFileSync(path.join(dir, "e2e-config.js"), `browser.storage.local.set(${JSON.stringify(prefs)});\n`);
-			let manifest = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8"));
-			manifest.background.scripts.unshift("e2e-config.js");
-			fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest));
-			await browser.installExtension(dir);
+			await installVariant(`browser.storage.local.set(${JSON.stringify(prefs)});\n`);
 			await wait(2500); // the new copy must have stored its preferences
+		},
+		// Sync preferences (#123) with the real storage.sync. The background can't be reached from here, so after
+		// a successful upload it blocks the parameter e2esync, and a navigation shows the result.
+		syncCheck: async (page) => {
+			await installVariant(`browser.storage.local.set({ neat_url_blocked_params: "", neat_url_blacklist: "sync.example", neat_url_sync: true, neat_url_sync_pending: Date.now() })
+				.then(() => NeatURL.backgroundSync.upload())
+				.then(() => browser.storage.sync.get(null))
+				.then((items) => {
+					let synced = NeatURL.sync.fromSyncItems(items);
+					if(synced && synced.prefs.neat_url_blacklist == "sync.example") return browser.storage.local.set({ neat_url_sync: false, neat_url_blacklist: "", neat_url_blocked_params: "e2esync" });
+				});\n`, true);
+			await wait(3500);
+			await page.goto("about:blank");
+			await page.goto(toLocal("https://example.com/?e2esync=1&x=1"), { waitUntil: "load" });
+			let ok = page.url() == toLocal("https://example.com/?x=1");
+			return { ok, text: ok ? "uploaded sync.example" : "not uploaded: " + page.url() };
 		},
 		cleanup: () => fs.rmSync(variantRoot, { recursive: true, force: true })
 	};
@@ -116,7 +157,7 @@ async function launchFirefox(){
 
 // Option "Change links in page": a link in the page, and a link that the page adds later and that is clicked
 async function testLinksInPage(driver, page){
-	await driver.setPrefs({ neat_url_blocked_params: "", neat_url_override_default_blocked_params: "", neat_url_blacklist: "", neat_url_change_links_in_page: true });
+	await driver.setPrefs({ neat_url_use_default_params: true, neat_url_blocked_params: "", neat_url_override_default_blocked_params: "", neat_url_websites: "all_except", neat_url_blacklist: "", neat_url_whitelist: "", neat_url_change_links_in_page: true });
 	await page.goto("about:blank");
 	await page.goto(toLocal("https://example.com/links-page"), { waitUntil: "load" });
 	await wait(1500); // the second link is added after 500 ms
@@ -156,11 +197,15 @@ async function run(name){
 			if(config != currentConfig){
 				let caseConfig = c.config || {};
 				let prefs = {
+					neat_url_use_default_params: caseConfig.useDefaults !== false,
 					neat_url_blocked_params: caseConfig.blocked || "",
 					neat_url_override_default_blocked_params: caseConfig.overrides || "",
+					neat_url_websites: caseConfig.websites || "all_except",
 					neat_url_blacklist: caseConfig.blacklist || "",
+					neat_url_whitelist: caseConfig.whitelist || "",
 					neat_url_clean_nested: caseConfig.cleanNested === true,
 					neat_url_keep_signed_urls: caseConfig.keepSigned !== false,
+					neat_url_remove_text_fragments: caseConfig.textFragments === true,
 					neat_url_change_links_in_page: false
 				};
 				await driver.setPrefs(prefs);
@@ -192,6 +237,12 @@ async function run(name){
 		}
 
 		if("change links in page".includes(ONLY)) failures += await testLinksInPage(driver, page);
+
+		if(driver.syncCheck && ONLY == ""){
+			let result = await driver.syncCheck(page);
+			if(!result.ok) failures++;
+			console.log(`${result.ok ? "ok  " : "FAIL"} sync preferences: ${result.text}`);
+		}
 
 		if(driver.logPage && ONLY == ""){
 			let log = await driver.logPage();

@@ -34,9 +34,10 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		if(!settings || !settings.enabled || !settings.changeLinks) return;
 		settings.config.suffixSet = new Set(settings.config.suffixList);
 
-		// Not on blacklisted websites
+		// Not on blacklisted websites, and only on whitelisted websites
 		let hostInfo = NeatURL.domain.splitHost(location.hostname, settings.config.suffixSet);
 		if(NeatURL.domain.isBlacklisted(hostInfo, settings.config.blacklist)) return;
+		if(!NeatURL.domain.isWhitelisted(hostInfo, settings.config.whitelist)) return;
 
 		for(let type of ["mousedown", "auxclick", "contextmenu", "keydown", "focusin", "touchstart"]){
 			document.addEventListener(type, onUse, { capture: true, passive: true });

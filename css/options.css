@@ -260,11 +260,16 @@ textarea.has-warning {
 	min-width: 0;
 }
 
+.websites-list {
+	margin-top: 8px;
+}
+
 #test_url {
 	width: 100%;
 }
 
-.option.disabled .labelbox {
+.option.disabled .labelbox,
+#default_params_option.disabled .params {
 	opacity: 0.5;
 }
 

@@ -109,8 +109,8 @@
 		return entry;
 	}
 
-	// Blacklist entries are domain patterns. A plain domain also matches its subdomains.
-	function parseBlacklist(list){
+	// Entries of the blacklist and the whitelist are domain patterns. A plain domain also matches its subdomains.
+	function parseDomainList(list){
 		let result = [];
 		for(let item of parseList(list)){
 			let pattern = domain.parsePattern(item.replace(/^\./, ""));
@@ -121,10 +121,15 @@
 		return result;
 	}
 
-	// options: { defaultParams: [], overrides: "" | [], blockedParams: "" | [], blacklist: "" | [], suffixList: [],
-	//            cleanNested: false, keepSigned: true }
+	// options: { defaultParams: [], useDefaultParams: true, overrides: "" | [], blockedParams: "" | [], websites: "all_except" | "only",
+	//            blacklist: "" | [], whitelist: "" | [], suffixList: [], cleanNested: false, keepSigned: true,
+	//            removeTextFragments: false }
+	// Only the list of the websites choice is used: all websites except the blacklist, or only the whitelist.
+	// The other list stays stored, but is empty in the config.
+	// Without the default parameters, the overrides stay stored for when they are turned on again.
 	function compileConfig(options){
-		let params = effectiveParams(options.defaultParams || [], parseList(options.overrides), parseList(options.blockedParams));
+		let defaultParams = options.useDefaultParams === false ? [] : options.defaultParams || [];
+		let params = effectiveParams(defaultParams, parseList(options.overrides), parseList(options.blockedParams));
 		let entries = [];
 		let invalid = [];
 
@@ -137,11 +142,18 @@
 		return {
 			entries: entries,
 			invalid: invalid,
-			blacklist: parseBlacklist(options.blacklist),
+			blacklist: options.websites == "only" ? [] : parseDomainList(options.blacklist),
+			whitelist: options.websites == "only" ? parseDomainList(options.whitelist) : [],
 			cleanNested: options.cleanNested === true,
 			keepSigned: options.keepSigned !== false,
+			removeTextFragments: options.removeTextFragments === true,
 			suffixSet: options.suffixSet || new Set(options.suffixList || [])
 		};
+	}
+
+	// No rule that removes something: no default and no own parameters, or only exclusions (!name), and text fragments are kept
+	function removesNothing(config){
+		return !config.removeTextFragments && config.entries.every((entry) => entry.kind == "exclude");
 	}
 
 	// Is this an exact parameter name, that declarativeNetRequest can remove with removeParams?
@@ -157,6 +169,6 @@
 		return entry.prefix ? key.startsWith(entry.name) : key == entry.name;
 	}
 
-	NeatURL.params = { parseList, splitLabel, effectiveParams, parseEntry, parseBlacklist, compileConfig, entryMatchesKey, isExactName };
+	NeatURL.params = { parseList, splitLabel, effectiveParams, parseEntry, parseDomainList, compileConfig, removesNothing, entryMatchesKey, isExactName };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.params;
 })(globalThis);

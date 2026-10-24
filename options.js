@@ -80,6 +80,7 @@ function translatePage(){
 	i18n();
 	renderLanguagePicker();
 	renderAbout();
+	renderSync().catch(console.error);
 	showView();
 }
 
@@ -126,6 +127,7 @@ function formChanged(){
 	updateDefaultParams();
 	renderRequestTypes();
 	updateCounterOptions();
+	updateWebsitesList();
 	for(let textarea of document.querySelectorAll("textarea[data-check]")) checkList(textarea);
 	testUrl();
 	updateSaveBar();
@@ -251,7 +253,22 @@ function updateDefaultParams(){
 	}
 
 	let on = defaultParams.filter((param) => !overrides.has(param)).length;
-	document.querySelector("#default_params_count").textContent = message("default_params_count", [String(on), String(defaultParams.length)]);
+	let use = control("neat_url_use_default_params").checked;
+	document.querySelector("#default_params_count").textContent = use ? message("default_params_count", [String(on), String(defaultParams.length)]) : message("default_params_off");
+	// Turned off, the list keeps the choices for when the default parameters are turned on again
+	document.querySelector("#default_params_option").classList.toggle("disabled", !use);
+	for(let input of document.querySelectorAll("#default_params input")) input.disabled = !use;
+
+	document.querySelector("#no_params_warning").hidden = !NeatURL.params.removesNothing(getConfig(getFormValues()));
+}
+
+// Turning off the default parameters while there are no own blocked parameters would turn off Neat URL without a sign of it
+function confirmDefaultParamsOff(){
+	let checkbox = control("neat_url_use_default_params");
+	if(checkbox.checked || !NeatURL.params.removesNothing(getConfig(getFormValues()))) return;
+	if(confirm(message("use_default_params_confirm"))) return;
+	checkbox.checked = true;
+	formChanged();
 }
 
 // A search shows the categories and parameters that match, and opens the categories
@@ -307,11 +324,15 @@ function checkList(textarea){
 function getConfig(values){
 	return NeatURL.params.compileConfig({
 		defaultParams: defaultParams,
+		useDefaultParams: values.neat_url_use_default_params,
 		overrides: values.neat_url_override_default_blocked_params,
 		blockedParams: values.neat_url_blocked_params,
+		websites: values.neat_url_websites,
 		blacklist: values.neat_url_blacklist,
+		whitelist: values.neat_url_whitelist,
 		cleanNested: values.neat_url_clean_nested,
 		keepSigned: values.neat_url_keep_signed_urls,
+		removeTextFragments: values.neat_url_remove_text_fragments,
 		suffixSet: suffixSet
 	});
 }
@@ -338,9 +359,12 @@ function parseTestUrl(text){
 function unchangedReason(href, config){
 	let url = new URL(href);
 	if(url.protocol != "http:" && url.protocol != "https:") return "test_url_not_web";
-	if(NeatURL.domain.isBlacklisted(NeatURL.domain.splitHost(url.hostname, config.suffixSet), config.blacklist)) return "test_url_blacklisted";
+	let hostInfo = NeatURL.domain.splitHost(url.hostname, config.suffixSet);
+	if(NeatURL.domain.isBlacklisted(hostInfo, config.blacklist)) return "test_url_blacklisted";
+	if(!NeatURL.domain.isWhitelisted(hostInfo, config.whitelist)) return "test_url_not_whitelisted";
 	let signed = Array.from(url.searchParams.keys()).some(NeatURL.clean.isSignatureKey);
 	if(config.keepSigned && signed) return "test_url_signed";
+	if(NeatURL.params.removesNothing(config)) return "no_params_warning";
 	return "test_url_unchanged";
 }
 
@@ -362,7 +386,7 @@ function testUrl(){
 	if(cleaned == href){
 		let reason = unchangedReason(href, config);
 		result.appendChild(element("div", "descr", message(reason)));
-		if(reason == "test_url_unchanged") result.appendChild(renderSuggestions(cleaned, config));
+		if(reason == "test_url_unchanged" || reason == "no_params_warning") result.appendChild(renderSuggestions(cleaned, config));
 		return;
 	}
 
@@ -463,6 +487,12 @@ function renderRequestTypes(){
 }
 
 /// Counter: the color only matters when the counter is shown
+/// Websites: only the list of the chosen option is shown and used, the other list is kept
+function updateWebsitesList(){
+	let websites = control("neat_url_websites").value;
+	for(let list of document.querySelectorAll(".websites-list")) list.hidden = list.dataset.websites != websites;
+}
+
 function updateCounterOptions(){
 	let shown = control("neat_url_show_counter").checked;
 	let defaultColor = control("neat_url_counter_default_color").checked;
@@ -495,14 +525,7 @@ function downloadJson(data, fileName){
 // Only known preferences with the right type are imported
 function getImportValues(data){
 	let preferences = data && data.preferences ? data.preferences : data;
-	if(preferences == null || typeof preferences != "object") return null;
-
-	let values = {};
-	for(let p in PREFS){
-		if(!(p in preferences)) continue;
-		let expected = PREFS[p].type == "checked" ? "boolean" : "string";
-		if(typeof preferences[p] == expected) values[p] = preferences[p];
-	}
+	let values = NeatURL.defaults.validPrefs(preferences);
 	return Object.keys(values).length > 0 ? values : null;
 }
 
@@ -523,6 +546,44 @@ async function importSettings(file){
 	savedValues = await getPreferences();
 	setFormValues(savedValues);
 	status.textContent = message("import_done");
+}
+
+/// Sync preferences (src/background/sync.js). The switch works right away, without the save bar,
+/// and it is not one of the preferences: every device has its own.
+const SYNC_KEY = "neat_url_sync";
+const SYNC_STATUS_KEY = "neat_url_sync_status";
+
+function syncStatusText(status){
+	let time = new Date(status.time).toLocaleString();
+	switch(status.result){
+		case "uploaded": return message("sync_uploaded", [time]);
+		case "downloaded": return message("sync_downloaded", [time]);
+		case "too_big": return message("sync_too_big");
+		case "newer_version": return message("sync_newer_version");
+		default: return message("sync_failed");
+	}
+}
+
+async function renderSync(){
+	let stored = await browser.storage.local.get([SYNC_KEY, SYNC_STATUS_KEY]);
+	let on = stored[SYNC_KEY] === true;
+	document.querySelector("#neat_url_sync").checked = on;
+	document.querySelector("#sync_status").textContent = on && stored[SYNC_STATUS_KEY] ? syncStatusText(stored[SYNC_STATUS_KEY]) : "";
+}
+
+async function toggleSync(on){
+	if(!on){
+		await browser.runtime.sendMessage({ action: "sync-disable" });
+		return renderSync();
+	}
+	// Another device may have synchronized its preferences already
+	let synced = NeatURL.sync.fromSyncItems(await browser.storage.sync.get(null));
+	let use = "local";
+	if(synced && Object.keys(NeatURL.sync.changedPrefs(synced.prefs, await getPreferences())).length > 0){
+		use = confirm(message("sync_confirm")) ? "synced" : "local";
+	}
+	await browser.runtime.sendMessage({ action: "sync-enable", use: use });
+	return renderSync();
 }
 
 // Without access to all websites Neat URL can't clean URLs (in Firefox the user can revoke this)
@@ -668,6 +729,9 @@ for(let p in PREFS){
 }
 
 // Another tab or an import changed the preferences: show them, unless there are changes that are not saved
+browser.storage.onChanged.addListener((changes, area) => {
+	if(area == "local" && (SYNC_KEY in changes || SYNC_STATUS_KEY in changes)) renderSync().catch(console.error);
+});
 browser.storage.onChanged.addListener(async (changes, area) => {
 	if(area != "local" || savedValues == null || !Object.keys(changes).some((key) => key in PREFS)) return;
 	let dirty = isDirty();
@@ -682,6 +746,7 @@ document.querySelector("#revert_changes").addEventListener("click", () => {
 });
 document.querySelector("#restore_defaults").addEventListener("click", () => setFormValues(NeatURL.defaults.getDefaultPrefs()));
 document.querySelector("#default_params_search").addEventListener("input", filterDefaultParams);
+control("neat_url_use_default_params").addEventListener("change", confirmDefaultParamsOff);
 document.querySelector("#test_url").addEventListener("input", () => {
 	clearTimeout(testTimer);
 	testTimer = setTimeout(testUrl, 150);
@@ -694,7 +759,11 @@ document.querySelector("#dismiss_linkumori_notice").addEventListener("click", ()
 	document.querySelector(".noticeBanner").hidden = true;
 	browser.storage.local.remove(LINKUMORI_NOTICE_KEY);
 });
-document.querySelector("#export_settings").addEventListener("click", () => exportSettings().catch(console.error));
+document.querySelector("#neat_url_sync").addEventListener("change", (e) => toggleSync(e.target.checked).catch((error) => {
+	console.error("[Neat URL]: could not change the sync", error);
+	renderSync().catch(console.error);
+}));
+document.querySelector("#export_settings").addEventListener("click",() => exportSettings().catch(console.error));
 document.querySelector("#import_settings").addEventListener("click", () => document.querySelector("#import_file").click());
 document.querySelector("#import_file").addEventListener("change", (e) => {
 	if(e.target.files.length > 0) importSettings(e.target.files[0]).catch(console.error);

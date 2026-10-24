@@ -4,11 +4,9 @@
 	const NeatURL = root.NeatURL;
 	const background = NeatURL.background;
 
-	const applyAfter = 1000;
-	// Used by addons.mozilla.org handling
-	let globalNeatURL = "";
-	let globalCurrentURL = "";
-	let globalTabId = -1;
+	// Firefox doesn't show requests to these domains to webRequest (extensions.webextensions.restrictedDomains),
+	// but tabs.onUpdated does report their URL. Not accounts.firefox.com: changing a sign-in URL can break it.
+	const RESTRICTED_HOSTS = ["addons.mozilla.org", "support.mozilla.org"];
 
 	function handleRequest(details){
 		let state = background.getState();
@@ -23,38 +21,29 @@
 		}
 		if(newUrl == details.url) return;
 
-		let leanURL = new URL(newUrl);
-		if(leanURL.hostname == "addons.mozilla.org"){
-			// webRequest blocking is not supported on mozilla.org, lets fix this
-			// but only if we are navigating to addons.mozilla.org and there doesn't exist a tab yet with the same URL
-			if(details.type != "main_frame") return;
-			if(globalNeatURL == newUrl) return;
-
-			globalNeatURL = newUrl;
-			globalCurrentURL = details.url;
-			globalTabId = details.tabId;
-
-			setTimeout(() => {
-				browser.tabs.query({ url: globalCurrentURL }).then((tabs) => {
-					if(globalNeatURL == null || globalNeatURL == "") return;
-
-					for(let tab of tabs){
-						background.log(`really updating '${tab.url}' to '${globalNeatURL}'`);
-						browser.tabs.update(tab.id, { url: globalNeatURL });
-						background.reportCleaned({ url: tab.url, type: details.type, tabId: globalTabId }, globalNeatURL);
-					}
-
-					setTimeout(() => {
-						globalNeatURL = "";
-						globalCurrentURL = "";
-					}, applyAfter);
-				}, null);
-			}, applyAfter);
-		}else{
-			background.reportCleaned(details, newUrl);
-		}
-
+		background.reportCleaned(details, newUrl);
 		return { redirectUrl: newUrl };
+	}
+
+	// A tab on a restricted domain: load the clean URL in the tab, in place of the history entry with the parameters
+	function onTabUpdated(tabId, changeInfo){
+		let state = background.getState();
+		if(changeInfo.url == undefined || state == null || !state.enabled || !state.types.includes("main_frame")) return;
+		let host;
+		try{
+			host = new URL(changeInfo.url).hostname;
+		}catch(ex){
+			return;
+		}
+		if(!RESTRICTED_HOSTS.includes(host)) return;
+
+		let newUrl = NeatURL.clean.cleanUrl(changeInfo.url, state.config);
+		if(newUrl == changeInfo.url) return;
+		background.reportCleaned({ url: changeInfo.url, type: "main_frame", tabId: tabId }, newUrl);
+		// Firefox for Android may not know loadReplace
+		Promise.resolve().then(() => browser.tabs.update(tabId, { url: newUrl, loadReplace: true }))
+			.catch(() => browser.tabs.update(tabId, { url: newUrl }))
+			.catch((error) => console.error("[Neat URL]: could not clean " + changeInfo.url, error));
 	}
 
 	function onBeforeRequest(details){
@@ -69,8 +58,9 @@
 	// Registered for all request types: neat_url_types is checked in handleRequest,
 	// because the listener must be registered synchronously before the preferences are known.
 	browser.webRequest.onBeforeRequest.addListener(onBeforeRequest, { urls: ["<all_urls>"] }, ["blocking"]);
+	browser.tabs.onUpdated.addListener(onTabUpdated, { properties: ["url"] });
 
 	background.ensureState();
 
-	NeatURL.firefox = { onBeforeRequest };
+	NeatURL.firefox = { onBeforeRequest, onTabUpdated };
 })(globalThis);

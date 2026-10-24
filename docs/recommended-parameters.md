@@ -35,9 +35,9 @@ Tracking
 * sr_share (SimpleReach - https://web.archive.org/web/20190817204709/http://docs.simplereach.com/how-tos-1/setting-up-tracking-parameters-for-social-distribution)
 
 For addons.mozilla.org:
-src@addons.mozilla.org, source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
+source@addons.mozilla.org, surveyversion@addons.mozilla.org, updateChannel@addons.mozilla.org, fxVersion@addons.mozilla.org, isDefaultBrowser@addons.mozilla.org, searchEngine@addons.mozilla.org, syncSetup@addons.mozilla.org, type@addons.mozilla.org, flowId@addons.mozilla.org
 
-(only works when extensions.webextensions.restrictedDomains is edited in about:config)
+(src@addons.mozilla.org is a default parameter. Firefox doesn't let extensions change requests to addons.mozilla.org, so Neat URL loads the clean URL in the tab after the page started loading)
 (test URL https://support.mozilla.org/de/kb/enterprise-roots?as=u&utm_source=inproduct)
 
 Other parameters you can consider (website unknown)
@@ -52,14 +52,11 @@ Parameters that people suggested in GitHub issues and that are not a default yet
 
 | Rule | Website | Issue | Note |
 | --- | --- | --- | --- |
-| `igsh@instagram.com` | Instagram | [#310](https://github.com/Smile4ever/Neat-URL/issues/310) | share link of a reel or post |
-| `pp@youtube.com` | YouTube | [#302](https://github.com/Smile4ever/Neat-URL/issues/302) | was used for notification clicks, now contains the search term (base64) |
 | `snr@steamcommunity.com` | Steam | [#309](https://github.com/Smile4ever/Neat-URL/issues/309) | |
 | `maca@dw.com` | DW | [#281](https://github.com/Smile4ever/Neat-URL/issues/281) | |
 | `visit_id@*.bilibili.com` | bilibili | [#296](https://github.com/Smile4ever/Neat-URL/issues/296) | |
 | `usp@*.google.com` | Google Docs, Colab | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | `?usp=sharing` on shared links |
 | `s@*.substack.com` | Substack | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | `?s=r` |
-| `srnd@bloomberg.com` | Bloomberg | [#277](https://github.com/Smile4ever/Neat-URL/issues/277), [#208](https://github.com/Smile4ever/Neat-URL/issues/208) | |
 | `lang@twitter.com`, `lang@x.com` | X (Twitter) | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | the language of the page, not tracking |
 | `hl@google.*` | Google | [#277](https://github.com/Smile4ever/Neat-URL/issues/277) | the language of Google, not tracking: not a good default |
 | `client@google.*` | Google | [#215](https://github.com/Smile4ever/Neat-URL/issues/215) | `client=firefox-b-d` is added by Firefox itself |
@@ -69,9 +66,5 @@ Parameters that people suggested in GitHub issues and that are not a default yet
 | `si@ebay.*`, `item@ebay.*` | eBay | [#135](https://github.com/Smile4ever/Neat-URL/issues/135) | to investigate: `item` may be needed by some pages; `_trksid`, `_trkparms` and `hash` are already defaults |
 | `#?ref@spiegel.de` | Der Spiegel | [#133](https://github.com/Smile4ever/Neat-URL/issues/133) | a parameter after the `#` |
 | `highlight@docs.python.org` | Sphinx documentation | [#279](https://github.com/Smile4ever/Neat-URL/issues/279) | the search term on a Sphinx search result; `highlight` on its own is too generic |
-
-Exclusions that were suggested:
-
-| Rule | Website | Issue | Note |
-| --- | --- | --- | --- |
-| `!campaign_id@paypal.com` | PayPal | [#305](https://github.com/Smile4ever/Neat-URL/issues/305) | `campaign_id` (a default) is needed for donation pages like https://www.paypal.com/donate?campaign_id=... |
+| `CNDID` | Condé Nast (Wired, The New Yorker, ...) | [#214](https://github.com/Smile4ever/Neat-URL/issues/214) | newsletter subscriber ID; it was a default before and was removed because its use was unknown |
+| `amp`, `referrer` | | [#214](https://github.com/Smile4ever/Neat-URL/issues/214) | too generic for a default: `amp` selects the AMP version of a page, `referrer` is used by logins and forms |

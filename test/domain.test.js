@@ -40,11 +40,21 @@ test("matchesPattern", () => {
 });
 
 test("isBlacklisted (B9)", () => {
-	let blacklisted = (host, list) => domain.isBlacklisted(domain.splitHost(host, suffixSet), params.parseBlacklist(list));
+	let blacklisted = (host, list) => domain.isBlacklisted(domain.splitHost(host, suffixSet), params.parseDomainList(list));
 	assert.ok(blacklisted("www.example.com", "example.com"));
 	assert.ok(blacklisted("sub.example.com", "example.com"));
 	assert.ok(!blacklisted("example.com", "ample.com"));
 	assert.ok(blacklisted("archive.org", "archive.*"));
 	assert.ok(!blacklisted("web.archive.org", "archive.*"));
 	assert.ok(blacklisted("web.archive.org", "*.archive.*"));
+});
+
+test("isWhitelisted", () => {
+	let whitelisted = (host, list) => domain.isWhitelisted(domain.splitHost(host, suffixSet), params.parseDomainList(list));
+	assert.ok(whitelisted("example.org", ""));
+	assert.ok(whitelisted("www.example.com", "example.com"));
+	assert.ok(whitelisted("sub.example.com", "example.com"));
+	assert.ok(!whitelisted("example.org", "example.com"));
+	assert.ok(whitelisted("google.co.uk", "google.*"));
+	assert.ok(!whitelisted("news.google.com", "google.*"));
 });

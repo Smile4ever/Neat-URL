@@ -143,6 +143,12 @@
 		// 2026.10.24 has no notifications anymore, so the themes "dark/light icons except for notifications" are just dark or light
 		if(stored.neat_url_icon_theme == "dark_notiflight") changes.neat_url_icon_theme = "dark";
 		if(stored.neat_url_icon_theme == "light_notifdark") changes.neat_url_icon_theme = "light";
+		// 2026.10.24.2 follows the browser theme by default (#252). Dark was the default before and saving stores every field,
+		// so dark is set to auto once: auto still uses dark icons on a light theme.
+		let iconTheme = changes.neat_url_icon_theme || stored.neat_url_icon_theme;
+		if(iconTheme == "dark" && (previousVersion == undefined || compareVersions(previousVersion, "2026.10.24.2") < 0)){
+			changes.neat_url_icon_theme = "auto";
+		}
 
 		changes.neat_url_version = currentVersion;
 		return { changes: changes };

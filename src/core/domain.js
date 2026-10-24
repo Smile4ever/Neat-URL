@@ -85,11 +85,16 @@
 		return false;
 	}
 
-	// blacklist: domain patterns (params.parseBlacklist), hostInfo: the result of splitHost
+	// blacklist: domain patterns (params.parseDomainList), hostInfo: the result of splitHost
 	function isBlacklisted(hostInfo, blacklist){
 		return blacklist.some((pattern) => matchesPattern(pattern, hostInfo));
 	}
 
-	NeatURL.domain = { stripWww, splitHost, parsePattern, patternKey, matchesPattern, isSameOrSubdomain, isBlacklisted };
+	// An empty whitelist allows every website
+	function isWhitelisted(hostInfo, whitelist){
+		return whitelist.length == 0 || whitelist.some((pattern) => matchesPattern(pattern, hostInfo));
+	}
+
+	NeatURL.domain = { stripWww, splitHost, parsePattern, patternKey, matchesPattern, isSameOrSubdomain, isBlacklisted, isWhitelisted };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.domain;
 })(globalThis);

@@ -36,7 +36,10 @@
     "message": "圖示主題"
   },
   "icon_theme_descr": {
-    "message": "預設使用深色圖示。你可以變更此選項以使用淺色圖示。"
+    "message": "預設情況下圖示會跟隨瀏覽器主題：深色主題使用淺色圖示，淺色主題使用深色圖示。你也可以一律使用深色或淺色圖示。"
+  },
+  "icon_theme_auto": {
+    "message": "跟隨瀏覽器主題"
   },
   "icon_theme_dark": {
     "message": "一律使用深色圖示"
@@ -62,11 +65,26 @@
   "advanced_descr": {
     "message": "這些選項可能會咬人。"
   },
-  "blacklist": {
-    "message": "網域黑名單"
+  "websites": {
+    "message": "網站"
   },
-  "blacklist_descr": {
-    "message": "網域清單。Neat URL 不會在這些網站上運作。"
+  "websites_descr": {
+    "message": "Neat URL 清理網址的範圍。網域也包含其子網域，也可以使用萬用字元：archive.* 符合 archive.org 和 archive.ph。兩個選項各自保留自己的清單。"
+  },
+  "websites_all_except": {
+    "message": "所有網站，但這些網域除外"
+  },
+  "websites_only": {
+    "message": "僅這些網域"
+  },
+  "websites_only_empty": {
+    "message": "此清單為空時，Neat URL 會清理所有網站上的網址。"
+  },
+  "blacklist": {
+    "message": "網站：全部，但這些網域除外"
+  },
+  "whitelist": {
+    "message": "網站：僅這些網域"
   },
   "url_request_types": {
     "message": "網址請求類型"
@@ -93,7 +111,7 @@
     "message": "允許存取"
   },
   "linkumori_notice": {
-    "message": "Linkumori 已恢復為 Neat URL。你自己的參數和白名單中的網域都已保留：可以在「封鎖的參數」和「網域黑名單」中找到它們。"
+    "message": "Linkumori 已恢復為 Neat URL。你自己的參數和白名單中的網域都已保留：可以在「封鎖的參數」和「網站」（所有網站，但這些網域除外）中找到它們。"
   },
   "linkumori_notice_dismiss": {
     "message": "確定"
@@ -109,6 +127,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "不變更含有簽章參數（sig、hmac 或以 signature 結尾的名稱）的網址。變更它們會導致下載和連結失效。"
+  },
+  "remove_text_fragments": {
+    "message": "移除文字片段"
+  },
+  "remove_text_fragments_descr": {
+    "message": "移除連結在頁面上醒目標示的文字（#:~:text=...），由搜尋引擎和「複製醒目標示的連結」加入。頁面將不再捲動到該文字。像 #section 這樣的錨點會保留。"
   },
   "import_export": {
     "message": "匯入與匯出"
@@ -258,7 +282,10 @@
     "message": "Neat URL 不會變更此網址：只會清理 http:// 和 https:// 網址。"
   },
   "test_url_blacklisted": {
-    "message": "Neat URL 不會變更此網址：此網域在「網域黑名單」中。"
+    "message": "Neat URL 不會變更此網址：此網域在「網站」下的「所有網站，但這些網域除外」清單中。"
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL 不會變更此網址：此網域不在「網站」下的「僅這些網域」清單中。"
   },
   "test_url_signed": {
     "message": "Neat URL 不會變更此網址：這是已簽署的網址（進階分頁中的「保留已簽署的網址」）。"
@@ -317,6 +344,21 @@
         "content": "$2"
       }
     }
+  },
+  "use_default_params": {
+    "message": "使用預設封鎖的參數"
+  },
+  "use_default_params_descr": {
+    "message": "關閉後只移除你自己新增的封鎖參數。Neat URL 新版本新增的參數也會處於關閉狀態。下方清單中的選擇會被保留。"
+  },
+  "default_params_off": {
+    "message": "已關閉：只移除你自己新增的封鎖參數"
+  },
+  "use_default_params_confirm": {
+    "message": "你沒有自己新增的封鎖參數，因此 Neat URL 將不會移除任何參數。仍然要關閉預設封鎖的參數嗎？"
+  },
+  "no_params_warning": {
+    "message": "Neat URL 不會移除任何參數：請開啟預設封鎖的參數，或新增你自己的封鎖參數。"
   },
   "list_count": {
     "message": "項目數：$COUNT$",
@@ -391,5 +433,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "同步偏好設定"
+  },
+  "sync_descr": {
+    "message": "在開啟此選項的每部裝置上使用相同的偏好設定。偏好設定會儲存在您的瀏覽器帳號中（Firefox Sync，或您的 Google 或 Microsoft 帳號）。"
+  },
+  "sync_uploaded": {
+    "message": "已於 $TIME$ 同步。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "已於 $TIME$ 收到另一部裝置的偏好設定。",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "未同步：偏好設定超過瀏覽器允許的 100 KB。請改用匯出與匯入。"
+  },
+  "sync_newer_version": {
+    "message": "未同步：另一部裝置使用較新版本的 Neat URL。請在此裝置上更新 Neat URL。"
+  },
+  "sync_failed": {
+    "message": "同步失敗。瀏覽器中是否已開啟同步？"
+  },
+  "sync_confirm": {
+    "message": "另一部裝置已同步其偏好設定，且與這裡的偏好設定不同。\n\n確定：使用另一部裝置的偏好設定。\n取消：保留此裝置的偏好設定，並傳送到其他裝置。"
   }
 }

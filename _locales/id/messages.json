@@ -36,7 +36,10 @@
     "message": "Tema ikon"
   },
   "icon_theme_descr": {
-    "message": "Ikon gelap digunakan secara bawaan. Anda bisa mengubah opsi ini untuk memakai ikon terang."
+    "message": "Secara bawaan ikon mengikuti tema peramban: ikon terang pada tema gelap, ikon gelap pada tema terang. Anda juga bisa selalu memakai ikon gelap atau terang."
+  },
+  "icon_theme_auto": {
+    "message": "Ikuti tema peramban"
   },
   "icon_theme_dark": {
     "message": "Selalu gunakan ikon gelap"
@@ -62,11 +65,26 @@
   "advanced_descr": {
     "message": "Opsi ini bisa menggigit."
   },
-  "blacklist": {
-    "message": "Daftar hitam domain"
+  "websites": {
+    "message": "Situs web"
   },
-  "blacklist_descr": {
-    "message": "Daftar domain. Neat URL tidak akan bekerja di situs web ini."
+  "websites_descr": {
+    "message": "Tempat Neat URL membersihkan URL. Sebuah domain juga mencakup subdomainnya, dan karakter pengganti juga bisa dipakai: archive.* untuk archive.org dan archive.ph. Setiap pilihan punya daftarnya sendiri."
+  },
+  "websites_all_except": {
+    "message": "Semua situs web, kecuali domain ini"
+  },
+  "websites_only": {
+    "message": "Hanya domain ini"
+  },
+  "websites_only_empty": {
+    "message": "Jika daftar ini kosong, Neat URL membersihkan URL di semua situs web."
+  },
+  "blacklist": {
+    "message": "Situs web: semua, kecuali domain ini"
+  },
+  "whitelist": {
+    "message": "Situs web: hanya domain ini"
   },
   "url_request_types": {
     "message": "Jenis permintaan URL"
@@ -93,7 +111,7 @@
     "message": "Izinkan akses"
   },
   "linkumori_notice": {
-    "message": "Linkumori kembali menjadi Neat URL. Parameter Anda sendiri dan domain di daftar putih tetap disimpan: Anda dapat menemukannya di Parameter yang diblokir dan Daftar hitam domain."
+    "message": "Linkumori kembali menjadi Neat URL. Parameter Anda sendiri dan domain di daftar putih tetap disimpan: Anda dapat menemukannya di Parameter yang diblokir dan di Situs web (Semua situs web, kecuali domain ini)."
   },
   "linkumori_notice_dismiss": {
     "message": "OK"
@@ -109,6 +127,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "Tidak mengubah URL dengan parameter tanda tangan (sig, hmac, atau nama yang berakhiran signature). Mengubahnya merusak unduhan dan tautan."
+  },
+  "remove_text_fragments": {
+    "message": "Hapus fragmen teks"
+  },
+  "remove_text_fragments_descr": {
+    "message": "Hapus teks yang disorot oleh tautan pada halaman (#:~:text=...), yang ditambahkan oleh mesin pencari dan \"Salin tautan ke sorotan\". Halaman tidak lagi menggulir ke teks tersebut. Jangkar seperti #section tetap ada."
   },
   "import_export": {
     "message": "Impor dan ekspor"
@@ -258,7 +282,10 @@
     "message": "Neat URL tidak mengubah URL ini: hanya URL http:// dan https:// yang dibersihkan."
   },
   "test_url_blacklisted": {
-    "message": "Neat URL tidak mengubah URL ini: domainnya ada di \"Daftar hitam domain\"."
+    "message": "Neat URL tidak mengubah URL ini: domainnya ada di daftar \"Semua situs web, kecuali domain ini\" pada Situs web."
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL tidak mengubah URL ini: domainnya tidak ada di daftar \"Hanya domain ini\" pada Situs web."
   },
   "test_url_signed": {
     "message": "Neat URL tidak mengubah URL ini: ini URL bertanda tangan (\"Pertahankan URL bertanda tangan\" di tab Lanjutan)."
@@ -317,6 +344,21 @@
         "content": "$2"
       }
     }
+  },
+  "use_default_params": {
+    "message": "Gunakan parameter yang diblokir secara bawaan"
+  },
+  "use_default_params_descr": {
+    "message": "Matikan ini untuk hanya menghapus parameter yang diblokir milik Anda sendiri. Parameter yang ditambahkan oleh versi baru Neat URL juga akan mati. Pilihan Anda di daftar di bawah tetap disimpan."
+  },
+  "default_params_off": {
+    "message": "Mati: hanya parameter yang diblokir milik Anda sendiri yang dihapus"
+  },
+  "use_default_params_confirm": {
+    "message": "Anda tidak memiliki parameter yang diblokir sendiri, jadi Neat URL tidak akan menghapus parameter apa pun. Tetap matikan parameter yang diblokir secara bawaan?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL tidak menghapus parameter apa pun: nyalakan parameter yang diblokir secara bawaan atau tambahkan parameter yang diblokir milik Anda sendiri."
   },
   "list_count": {
     "message": "Item: $COUNT$",
@@ -391,5 +433,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "Sinkronkan preferensi"
+  },
+  "sync_descr": {
+    "message": "Gunakan preferensi yang sama di setiap perangkat tempat opsi ini aktif. Preferensi disimpan bersama akun browser Anda (Firefox Sync, atau akun Google atau Microsoft Anda)."
+  },
+  "sync_uploaded": {
+    "message": "Disinkronkan pada $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "Preferensi dari perangkat lain diterima pada $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "Tidak disinkronkan: preferensi lebih besar dari 100 KB yang diizinkan browser. Gunakan Ekspor dan Impor sebagai gantinya."
+  },
+  "sync_newer_version": {
+    "message": "Tidak disinkronkan: perangkat lain menggunakan versi Neat URL yang lebih baru. Perbarui Neat URL di perangkat ini."
+  },
+  "sync_failed": {
+    "message": "Sinkronisasi gagal. Apakah sinkronisasi aktif di browser?"
+  },
+  "sync_confirm": {
+    "message": "Perangkat lain sudah menyinkronkan preferensinya, dan preferensi itu berbeda dari preferensi di sini.\n\nOK: gunakan preferensi perangkat lain.\nBatal: pertahankan preferensi perangkat ini dan kirimkan ke perangkat lain."
   }
 }

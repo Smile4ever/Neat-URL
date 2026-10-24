@@ -5,17 +5,21 @@
 	const NeatURL = root.NeatURL = root.NeatURL || {};
 
 	const PREFS = {
+		"neat_url_use_default_params": { "type": "checked", "default": true }, // false: only the user's own parameters, also none that a new version adds
 		"neat_url_override_default_blocked_params": { "type": "value", "default": "" },
 		"neat_url_blocked_params": { "type": "value", "default": "" },
 		"neat_url_icon_animation": { "type": "value", "default": "missing_underscore" }, // none, missing_underscore, rotate or surprise_me
-		"neat_url_icon_theme": { "type": "value", "default": "dark" },
+		"neat_url_icon_theme": { "type": "value", "default": "auto" }, // auto, dark or light
 		"neat_url_show_counter": { "type": "checked", "default": true },
 		"neat_url_counter_color": { "type": "value", "default": "#eeeeee" },
 		"neat_url_counter_default_color": { "type": "checked", "default": true },
 		"neat_url_clean_nested": { "type": "checked", "default": false },
 		"neat_url_keep_signed_urls": { "type": "checked", "default": true },
+		"neat_url_remove_text_fragments": { "type": "checked", "default": false }, // #:~:text=, see clean.js
 		"neat_url_change_links_in_page": { "type": "checked", "default": false },
+		"neat_url_websites": { "type": "value", "default": "all_except" }, // all_except: all websites except neat_url_blacklist, only: only neat_url_whitelist
 		"neat_url_blacklist": { "type": "value", "default": "" },
+		"neat_url_whitelist": { "type": "value", "default": "" },
 		"neat_url_types": { "type": "value", "default": "main_frame" }
 	};
 
@@ -29,6 +33,17 @@
 		return result;
 	}
 
-	NeatURL.defaults = { PREFS, VERSION_4_DEFAULT_PARAMS, getDefaultPrefs };
+	// Only known preferences with the right type, for an import or the synchronized preferences
+	function validPrefs(values){
+		let result = {};
+		if(values == null || typeof values != "object") return result;
+		for(let p in PREFS){
+			let expected = PREFS[p].type == "checked" ? "boolean" : "string";
+			if(p in values && typeof values[p] == expected) result[p] = values[p];
+		}
+		return result;
+	}
+
+	NeatURL.defaults = { PREFS, VERSION_4_DEFAULT_PARAMS, getDefaultPrefs, validPrefs };
 	if(typeof module === "object" && module.exports) module.exports = NeatURL.defaults;
 })(globalThis);

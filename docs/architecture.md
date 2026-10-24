@@ -30,7 +30,7 @@ Both browsers use a non-persistent background in Manifest V3: a Firefox event pa
 * All listeners are registered synchronously when the script starts.
 * The preferences are loaded once into a state object (`ensureState()`) and reloaded on `storage.onChanged`. The options page only writes to `storage.local`.
 * The options page has its own language picker (`neat_url_language` in `storage.local`, not part of the exported preferences). `browser.i18n` always uses the language of the browser, so for another language `options.js` loads `_locales/<language>/messages.json` and fills in the placeholders itself (`message()`); `log.js` uses the same function. The menu of the toolbar button still uses the language of the browser.
-* The options page keeps changes in the form until Save (or Ctrl+S). It compares the form with `storage.local` to show the save bar and warns before the tab is closed with unsaved changes. "Test a URL" runs `cleanUrl()` in the options page with the values of the form, so it also works before saving. The checkboxes of the default parameters write the override list (`neat_url_override_default_blocked_params`), which is a hidden field on the page.
+* The options page keeps changes in the form until Save (or Ctrl+S). It compares the form with `storage.local` to show the save bar and warns before the tab is closed with unsaved changes. "Test a URL" runs `cleanUrl()` in the options page with the values of the form, so it also works before saving. The checkboxes of the default parameters write the override list (`neat_url_override_default_blocked_params`), which is a hidden field on the page. The switch "Use the default blocked parameters" (`neat_url_use_default_params`) leaves out all defaults in `compileConfig()` and keeps the override list. When the preferences remove no parameter at all, the options page shows a warning, and turning off the defaults without own parameters asks for confirmation first.
 * The counter per tab is kept in `storage.session`, and the on/off state (the checkbox "Enabled" in the menu of the toolbar button) in `storage.local` (reset to "on" by `runtime.onStartup`).
 * Migration of stored preferences runs while the state loads, and only when `neat_url_version` is lower than the current version.
 
@@ -38,7 +38,7 @@ Both browsers use a non-persistent background in Manifest V3: a Firefox event pa
 
 `firefox.js` registers one blocking `webRequest.onBeforeRequest` listener for all request types. Firefox needs the listener before the preferences are known, so the listener checks `neat_url_types` itself. When the state is loaded, the listener is synchronous. Right after the background starts, the listener returns a promise that waits for the state, so early requests (for example restored tabs) are cleaned too.
 
-`cleanUrl()` removes parameters by working on the raw query string, so other parameters keep their exact encoding. It leaves blacklisted domains and signed URLs alone. With the option "Clean URLs inside parameters", a parameter value that is a URL itself is decoded, cleaned with `cleanUrl()` (up to three levels deep) and encoded again in the same style.
+`cleanUrl()` removes parameters by working on the raw query string, so other parameters keep their exact encoding. It leaves blacklisted domains, domains outside the whitelist (if it is not empty) and signed URLs alone. Only one of the two lists is used: `compileConfig()` leaves the other one empty, depending on the option Websites (`neat_url_websites`). With the option "Clean URLs inside parameters", a parameter value that is a URL itself is decoded, cleaned with `cleanUrl()` (up to three levels deep) and encoded again in the same style.
 
 ## Chrome engine
 
@@ -60,7 +60,11 @@ Verified in Chrome 156 with a test extension, and covered by the end-to-end test
 
 Every domain pattern (plus a global pattern) gets a set of rules. A pattern contains the parameters of all broader patterns that cover it, so for any host the most specific pattern has everything that applies. Partly overlapping patterns get an extra pattern for the overlap (`*.example.com` and `example.*` overlap on `example.com`).
 
-The priority of a rule is `rank × 10 + kind`. The rank is the number of patterns that cover the pattern, so a more specific pattern has a higher rank.
+The priority of a rule is `band + rank × 10 + kind`. The rank is the number of patterns that cover the pattern, so a more specific pattern has a higher rank. There are three bands:
+
+* 0: the rules of kind 0 to 3 of every pattern, with the entries of the pattern and of all broader patterns.
+* 1000: the rules of kind 4 to 6 of every pattern, with only the entries of the pattern itself. They only match when they change the URL, so they can stay above the union rules of all narrower patterns, and a global wildcard like `utm_*` needs rules only once instead of once per domain pattern.
+* 2000: a pattern with an exclusion that overlaps a wildcard, value or name length of the merged entries (for example `!utm_source@example.com`), and every pattern below it, gets all its rules here with the merged entries. Its allow rule stops the band 1000 rules of broader patterns, which would remove the excluded parameter.
 
 | Kind | Rule | Matches |
 |---:|---|---|
@@ -74,7 +78,9 @@ The priority of a rule is `rank × 10 + kind`. The rank is the number of pattern
 
 Above all patterns, with priority 10000, there are allow rules for the domain blacklist and for signed URLs.
 
-Rules of kind 3 to 6 only match when they change the URL, so they never stop the chain. The union rule is the last step. All rules use a `regexFilter`, so a union rule that changes nothing also stops the rules of broader patterns (point 3 above). The allow rule does the same in case Chrome ever falls back to lower priorities. This matters for exclusions: the broader rules may remove a parameter that is excluded on this domain. The test simulation (`test/helpers.js`) checks both behaviours.
+A regex can't match "every host except these", so the whitelist works the other way around: `restrictToWhitelist()` gives every entry the part of its domain pattern that is in the whitelist (`intersect()`), and drops it if there is none. A global entry gets the whitelist patterns themselves. Hosts outside the whitelist then simply have no rules.
+
+Rules of kind 3 to 6 only match when they change the URL, so they never stop the chain. The union rule of the most specific pattern is the last step. All rules use a `regexFilter`, so a union rule that changes nothing also stops the rules of broader patterns (point 3 above). The allow rule does the same in case Chrome ever falls back to lower priorities. This matters for exclusions: the broader rules may remove a parameter that is excluded on this domain. The test simulation (`test/helpers.js`) checks both behaviours.
 
 A regex can't skip one specific parameter. If an exclusion overlaps a wildcard, that wildcard is replaced by a list of known parameter names for the pattern. If an exclusion overlaps `*`, `KEY{n}` or a parameter with a value, the rule is left out and `compileDnrRules()` returns it as unsupported (see below).
 
@@ -89,6 +95,17 @@ Rules can't decode and encode a parameter value (option "Clean URLs inside param
 ## Log
 
 `reportCleaned()` in `common.js` adds every cleaned URL to a list of the last 500 in `storage.session`. That storage is kept in memory only, so the log is empty after a browser restart, and it survives a suspended background. The Log tab of the options page (`log.js`) reads the list and follows changes with `storage.onChanged`. `neat_url_log_since` in `storage.session` is the moment the log started (set by the background when it is missing, so after a browser start, and by the Clear button); an empty log shows "No URLs have been cleaned since …" with that time. Every entry also has the rules that cleaned the URL, as written in the preferences: `reportCleaned()` runs `cleanUrl()` once more with `options.applied`, so this works the same for both browsers. Save on the Log tab downloads the shown entries as JSON, with the technical details for a bug report (`getTechnicalDetails()` in `log.js`): version, browser, engine, platform, user agent, language, whether Neat URL is enabled and has access to all websites, invalid rules, the number of `declarativeNetRequest` rules (Chrome) and all preferences; Clear asks for confirmation first. The menu of the toolbar button opens the options page on `#log`, in the tab that is already open if there is one. A click on the toolbar button opens `#preferences` with the URL of the tab (`options.html?test=<URL>`); an options page that is already open gets the message `show-options` instead, so it doesn't reload and keeps unsaved changes. In Chrome only the first internal redirect of a navigation is reported, so the log shows the result of `cleanUrl()`, which is where the chain of rules ends.
+
+## Sync preferences
+
+`src/background/sync.js` copies the preferences between `storage.local` and `storage.sync` (#123). `storage.local` stays the source of truth: the rest of Neat URL never reads `storage.sync`. The switch on the Advanced tab is stored per device in `neat_url_sync`, outside the preferences, so it isn't synchronized or exported itself.
+
+* Format (`src/core/sync.js`): `storage.sync` allows 8 KB per item and 100 KB in total, so every preference is stored as JSON in chunks (`neat_url_sync_chunk:<preference>:<n>`), with one item `neat_url_sync_meta` that has the version of Neat URL, the time of the change, and the number of chunks and a hash per preference. Another device may receive the items one by one; until every hash matches, `fromSyncItems()` returns null and the download waits for the next change.
+* Upload: a change of a preference in `storage.local` that differs from `storage.sync` sets `neat_url_sync_pending` to the time of the change, and is uploaded 2 seconds later (`storage.sync` allows 120 writes per minute). A download also changes `storage.local`, but then the preferences are the same as in `storage.sync`, so it isn't uploaded again.
+* Download: a change of the meta item writes the changed preferences to `storage.local`, and `common.js` reloads its state as after saving the options. A pending local change that is newer wins; otherwise the last change wins.
+* The background can be suspended before an upload, so every start of the background uploads a pending change, or else downloads.
+* A device with an older version of Neat URL neither downloads nor uploads the preferences of a newer version, so it can't overwrite them.
+* Turning it on: when `storage.sync` already has other preferences, the options page asks whether to use them (message `sync-enable` with `use: "synced"`) or to keep the preferences of this device and upload them (`use: "local"`). `neat_url_sync_status` has the result of the last synchronization for the options page.
 
 ## Change links in page
 

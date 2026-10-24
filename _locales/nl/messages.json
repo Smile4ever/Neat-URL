@@ -36,7 +36,10 @@
     "message": "Icoonthema"
   },
   "icon_theme_descr": {
-    "message": "Donkere icoontjes worden standaard gebruikt. Je kan deze optie veranderen om lichte icoontjes te gebruiken."
+    "message": "Standaard volgen de icoontjes het thema van de browser: lichte icoontjes bij een donker thema, donkere icoontjes bij een licht thema. Je kan ook altijd donkere of lichte icoontjes gebruiken."
+  },
+  "icon_theme_auto": {
+    "message": "Het thema van de browser volgen"
   },
   "icon_theme_dark": {
     "message": "Gebruik altijd donkere icoontjes"
@@ -66,11 +69,26 @@
   "advanced_descr": {
     "message": "Deze opties kunnen bijten."
   },
-  "blacklist": {
-    "message": "Zwarte lijst van domeinen"
+  "websites": {
+    "message": "Websites"
   },
-  "blacklist_descr": {
-    "message": "Lijst van domeinen. Neat URL zal niet werken op deze websites."
+  "websites_descr": {
+    "message": "Waar Neat URL URL's opschoont. Een domein geldt ook voor zijn subdomeinen, jokertekens werken ook: archive.* voor archive.org en archive.ph. Beide keuzes hebben hun eigen lijst."
+  },
+  "websites_all_except": {
+    "message": "Alle websites, behalve deze domeinen"
+  },
+  "websites_only": {
+    "message": "Alleen deze domeinen"
+  },
+  "websites_only_empty": {
+    "message": "Als deze lijst leeg is, schoont Neat URL URL's op alle websites op."
+  },
+  "blacklist": {
+    "message": "Websites: alle, behalve deze domeinen"
+  },
+  "whitelist": {
+    "message": "Websites: alleen deze domeinen"
   },
   "url_request_types": {
     "message": "URL-aanvraagtypes"
@@ -97,7 +115,7 @@
     "message": "Toegang verlenen"
   },
   "linkumori_notice": {
-    "message": "Linkumori is weer Neat URL. Je eigen parameters en domeinen op de witte lijst zijn bewaard: je vindt ze bij Geblokkeerde parameters en Zwarte lijst van domeinen."
+    "message": "Linkumori is weer Neat URL. Je eigen parameters en domeinen op de witte lijst zijn bewaard: je vindt ze bij Geblokkeerde parameters en onder Websites (Alle websites, behalve deze domeinen)."
   },
   "linkumori_notice_dismiss": {
     "message": "OK"
@@ -113,6 +131,12 @@
   },
   "keep_signed_urls_descr": {
     "message": "Wijzig geen URL's met een handtekeningparameter (sig, hmac of een naam die eindigt op signature). Een wijziging maakt downloads en links onbruikbaar."
+  },
+  "remove_text_fragments": {
+    "message": "Tekstfragmenten verwijderen"
+  },
+  "remove_text_fragments_descr": {
+    "message": "Verwijder de tekst die een link op de pagina markeert (#:~:text=...), die zoekmachines en \"Link naar markering kopiëren\" toevoegen. De pagina scrolt dan niet meer naar die tekst. Een anker zoals #section blijft staan."
   },
   "import_export": {
     "message": "Importeren en exporteren"
@@ -268,7 +292,10 @@
     "message": "Neat URL verandert deze URL niet: alleen http://- en https://-URLs worden opgeschoond."
   },
   "test_url_blacklisted": {
-    "message": "Neat URL verandert deze URL niet: het domein staat in \"Zwarte lijst van domeinen\"."
+    "message": "Neat URL verandert deze URL niet: het domein staat in de lijst \"Alle websites, behalve deze domeinen\" onder Websites."
+  },
+  "test_url_not_whitelisted": {
+    "message": "Neat URL verandert deze URL niet: het domein staat niet in de lijst \"Alleen deze domeinen\" onder Websites."
   },
 
   "test_url_signed": {
@@ -332,6 +359,22 @@
         "content": "$2"
       }
     }
+  },
+
+  "use_default_params": {
+    "message": "Standaard geblokkeerde parameters gebruiken"
+  },
+  "use_default_params_descr": {
+    "message": "Zet dit uit om alleen je eigen geblokkeerde parameters te verwijderen. Parameters die een nieuwe versie van Neat URL toevoegt, staan dan ook uit. Je keuzes in de lijst hieronder blijven bewaard."
+  },
+  "default_params_off": {
+    "message": "Uit: alleen je eigen geblokkeerde parameters worden verwijderd"
+  },
+  "use_default_params_confirm": {
+    "message": "Je hebt geen eigen geblokkeerde parameters, dus Neat URL verwijdert dan geen enkele parameter. Toch de standaard geblokkeerde parameters uitzetten?"
+  },
+  "no_params_warning": {
+    "message": "Neat URL verwijdert geen parameters: zet de standaard geblokkeerde parameters aan of voeg eigen geblokkeerde parameters toe."
   },
 
   "list_count": {
@@ -419,5 +462,39 @@
         "content": "$2"
       }
     }
+  },
+  "sync": {
+    "message": "Voorkeuren synchroniseren"
+  },
+  "sync_descr": {
+    "message": "Gebruik dezelfde voorkeuren op elk apparaat waar deze optie aan staat. Ze worden bewaard bij je browseraccount (Firefox Sync, of je Google- of Microsoft-account)."
+  },
+  "sync_uploaded": {
+    "message": "Gesynchroniseerd op $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_downloaded": {
+    "message": "Voorkeuren van een ander apparaat ontvangen op $TIME$.",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "sync_too_big": {
+    "message": "Niet gesynchroniseerd: de voorkeuren zijn groter dan de 100 KB die de browser toelaat. Gebruik in de plaats Exporteren en Importeren."
+  },
+  "sync_newer_version": {
+    "message": "Niet gesynchroniseerd: een ander apparaat gebruikt een nieuwere versie van Neat URL. Werk Neat URL bij op dit apparaat."
+  },
+  "sync_failed": {
+    "message": "Synchroniseren is mislukt. Staat synchronisatie aan in de browser?"
+  },
+  "sync_confirm": {
+    "message": "Een ander apparaat heeft zijn voorkeuren al gesynchroniseerd, en die verschillen van de voorkeuren hier.\n\nOK: gebruik de voorkeuren van het andere apparaat.\nAnnuleren: behoud de voorkeuren van dit apparaat en stuur ze naar de andere apparaten."
   }
 }
