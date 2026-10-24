@@ -1,3 +1,8 @@
+2026.10.24.1
+=====
+* Firefox for Android: Neat URL can be installed there. Before, it would not have cleaned any URL, because Firefox for Android has no menus for the toolbar button and that stopped the background script. There is no menu to disable Neat URL on Android; the Log is on the options page.
+* CI: the tests run again on GitHub Actions
+
 2026.10.24
 =====
 * The version is now the date of the release. This is the successor of 5.0.0 (and of Linkumori 166.0 formerly Neat URL in the Chrome Web Store).

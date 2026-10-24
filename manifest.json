@@ -3,7 +3,7 @@
 	"description": "__MSG_extensionDescription__",
 	"homepage_url": "https://github.com/Smile4ever/Neat-URL",
 	"manifest_version": 3,
-	"version": "2026.10.24",
+	"version": "2026.10.24.1",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/dark/neaturl-48.png",
@@ -63,6 +63,9 @@
 					"none"
 				]
 			}
+		},
+		"gecko_android": {
+			"strict_min_version": "140.0"
 		}
 	},
 	"minimum_chrome_version": "121"

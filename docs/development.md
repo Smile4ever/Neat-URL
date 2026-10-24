@@ -77,5 +77,6 @@ Texts are in `_locales/<language>/messages.json`. English (`en`) is the default.
    * sign in to a Google account and download a file from a site with signed links (#307, #314)
    * turn off access to all websites in the add-on manager: the options page shows the button to allow it again
 4. The same manual check in Chrome (without addons.mozilla.org and the access button).
+   Firefox for Android (phone over USB with USB debugging: `npx web-ext run -t firefox-android -s dist/firefox --adb-device <id from adb devices> --firefox-apk org.mozilla.firefox`): a link with `utm_source`, the toolbar button in the menu of Firefox, and the options page.
 5. `npm run build` and upload `web-ext-artifacts/neat_url-<version>.firefox.zip` to AMO and `neat_url-<version>.chrome.zip` to the Chrome Web Store.
 6. Chrome Web Store: the privacy form asks for a reason per permission. Use the "Why" column of the permissions table in [browser-support.md](browser-support.md). Neat URL collects no data and sends nothing anywhere.

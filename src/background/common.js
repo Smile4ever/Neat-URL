@@ -123,20 +123,26 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		return resolveIconByTheme(file, iconTheme());
 	}
 
+	// Firefox for Android has no menus, no windows and not every method of the toolbar button: those calls are skipped
+	function callAction(method, details){
+		if(typeof browser.action[method] != "function") return;
+		Promise.resolve(browser.action[method](details)).catch(() => {});
+	}
+
 	function applyState(){
 		let enabled = state.enabled;
-		browser.action.setIcon({ path: resolveIconURL(enabled ? "neaturl-96-state0.png" : "neaturl-96-state0_disabled.png") });
-		browser.action.setTitle({ title: "Neat URL " + version + " - " + (enabled ? "enabled" : "disabled") });
+		callAction("setIcon", { path: resolveIconURL(enabled ? "neaturl-96-state0.png" : "neaturl-96-state0_disabled.png") });
+		callAction("setTitle", { title: "Neat URL " + version + " - " + (enabled ? "enabled" : "disabled") });
 		// The menu may not exist yet right after the start, createContextMenus() then uses the state
 		try{
 			Promise.resolve(browser.contextMenus.update("neaturl-tb-enabled", { checked: enabled })).catch(() => {});
 		}catch(error){}
 
 		if(!state.prefs.neat_url_counter_default_color){
-			browser.action.setBadgeBackgroundColor({ color: state.prefs.neat_url_counter_color });
+			callAction("setBadgeBackgroundColor", { color: state.prefs.neat_url_counter_color });
 		}
 		if(!state.prefs.neat_url_show_counter){
-			browser.action.setBadgeText({ text: "" });
+			callAction("setBadgeText", { text: "" });
 		}
 	}
 
@@ -155,10 +161,10 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		if(images.length == 0) return;
 
 		let time = 350 * images.length;
-		browser.action.setIcon({ path: images[0] });
-		setTimeout(() => browser.action.setIcon({ path: images[1] }), 1 * time);
-		setTimeout(() => browser.action.setIcon({ path: images[2] }), 2 * time);
-		setTimeout(() => browser.action.setIcon({ path: state.enabled ? defaultState : resolveIconURL("neaturl-96-state0_disabled.png") }), 3 * time);
+		callAction("setIcon", { path: images[0] });
+		setTimeout(() => callAction("setIcon", { path: images[1] }), 1 * time);
+		setTimeout(() => callAction("setIcon", { path: images[2] }), 2 * time);
+		setTimeout(() => callAction("setIcon", { path: state.enabled ? defaultState : resolveIconURL("neaturl-96-state0_disabled.png") }), 3 * time);
 	}
 
 	/// Counter
@@ -171,7 +177,7 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 		if(!state || !state.prefs.neat_url_show_counter) return;
 		let counts = await getBadgeCounts();
 		let count = counts[tabId];
-		browser.action.setBadgeText({ text: count ? String(count) : "" });
+		callAction("setBadgeText", { text: count ? String(count) : "" });
 	}
 
 	async function incrementBadgeValue(tabId){
@@ -235,6 +241,7 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 
 	/// Context menu of the toolbar button: enable/disable, preferences and log
 	function createContextMenus(){
+		if(!browser.contextMenus) return;
 		browser.contextMenus.removeAll().then(() => {
 			browser.contextMenus.create({ id: "neaturl-tb-enabled", type: "checkbox", checked: state ? state.enabled : true, title: browser.i18n.getMessage("menu_enabled"), contexts: ["action"] });
 			browser.contextMenus.create({ id: "neaturl-tb-preferences", title: browser.i18n.getMessage("preferences"), contexts: ["action"] });
@@ -252,11 +259,11 @@ globalThis.browser = globalThis.browser || globalThis.chrome;
 			return;
 		}
 		await browser.tabs.update(tabs[0].id, { active: true });
-		await browser.windows.update(tabs[0].windowId, { focused: true });
+		if(browser.windows) await browser.windows.update(tabs[0].windowId, { focused: true });
 		await browser.runtime.sendMessage({ action: "show-options", view: view, testUrl: testUrl }).catch(() => {});
 	}
 
-	browser.contextMenus.onClicked.addListener((info) => {
+	if(browser.contextMenus) browser.contextMenus.onClicked.addListener((info) => {
 		if(info.menuItemId == "neaturl-tb-preferences") openOptionsTab("preferences");
 		if(info.menuItemId == "neaturl-tb-log") openOptionsTab("log");
 		// storage.onChanged reloads the state

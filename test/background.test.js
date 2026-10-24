@@ -121,6 +121,28 @@ test("the toolbar button opens the options with the URL of the tab", async () =>
 	assert.strictEqual(browser.local.neat_url_enabled, undefined, "a click doesn't disable Neat URL");
 });
 
+test("Firefox for Android: no menus, no windows and no icon or counter methods", async () => {
+	let browser = createBrowser({ neat_url_counter_default_color: false });
+	delete browser.contextMenus;
+	delete browser.action.setIcon;
+	delete browser.action.setBadgeText;
+	delete browser.action.setBadgeBackgroundColor;
+	let messages = [];
+	browser.runtime.sendMessage = async (message) => messages.push(message);
+	let context = loadBackground(browser);
+	await context.NeatURL.background.ensureState();
+	browser.runtime.onInstalled.fire();
+
+	let listener = browser.webRequest.onBeforeRequest.listeners[0];
+	assert.strictEqual(listener(request("https://example.com/?utm_source=a&x=1")).redirectUrl, "https://example.com/?x=1");
+
+	// The options page is already open: it gets the URL of the tab without browser.windows
+	browser.tabs.query = async () => [{ id: 2, url: "options.html#log" }];
+	browser.action.onClicked.fire({ url: "https://example.com/?utm_source=a" });
+	await wait(10);
+	assert.deepStrictEqual(JSON.parse(JSON.stringify(messages)), [{ action: "show-options", view: "preferences", testUrl: "https://example.com/?utm_source=a" }]);
+});
+
 test("migration doesn't remove own parameters on every start (B1, B2)", async () => {
 	let browser = createBrowser({ neat_url_version: "5.0.0", neat_url_blocked_params: "utm_source@mysite.com, nb@tweakers.net" });
 	for(let i = 0; i < 2; i++){

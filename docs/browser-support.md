@@ -72,7 +72,7 @@ Neat URL is a Manifest V3 extension for Firefox and Chrome. Both versions use th
 | Browser | Status |
 |---|---|
 | Edge, Brave, Opera, Vivaldi and other Chromium-based browsers | They use the Chrome version. Not tested. |
-| Firefox for Android | Not tested. Firefox for Android supports Manifest V3 and blocking `webRequest`, so the Firefox version may work, but the options page and toolbar button are not made for it. |
+| Firefox for Android | The Firefox version, from Firefox 140 (`gecko_android` in manifest.json). URLs are cleaned like on the desktop. Firefox for Android has no menus, so there is no menu on the toolbar button (enable/disable); the button is in the menu of Firefox and opens Test a URL, and the Log is a tab of the options page. The icon animation and the counter are only shown where Firefox for Android supports them. Not yet tested on a device. |
 | Edge Canary (Android) | Not possible yet: Neat URL is not in the Microsoft Edge Add-ons store. Edge Canary can install most extensions from the Microsoft Edge Add-ons store: go to Settings → About Microsoft Edge and tap the build number 5 times to turn on the developer options. Choose "Extension install by id", then paste the ID from the extension's URL in the Edge Add-ons store (for Bitwarden: `jbkfoedolllekgbhcbcoahefnbanhhlh`). |
 | Thunderbird | Not supported. Thunderbird has other APIs for messages; links in messages open in the browser, where Neat URL works. |
 
