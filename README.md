@@ -2,10 +2,11 @@
 
 Neat URL removes tracking parameters from the URLs you open, like Google Analytics' `utm_source`, Facebook's `fbclid` and Google Ads' `gclid`. The page loads without them, so the link you bookmark, copy or share is clean too.
 
-[Download for Firefox][] (Firefox 140 or newer) or [download for Chrome][] (Chrome 121 or newer).
+[Download for Firefox][] (Firefox 140 or newer), [download for Chrome][] (Chrome 121 or newer) or [download for Edge][] (Edge 121 or newer).
 
 [Download for Firefox]: https://addons.mozilla.org/en-US/firefox/addon/neat-url/
 [Download for Chrome]: https://chrome.google.com/webstore/detail/neat-url/jchobbjgibcahbheicfocecmhocglkco
+[Download for Edge]: https://microsoftedge.microsoft.com/addons/detail/cpdnbjinpdgpjboopnojaldcemijgnao
 
 ![Test a URL on the options page of Neat URL](images/store/1-test-a-url.png)
 
